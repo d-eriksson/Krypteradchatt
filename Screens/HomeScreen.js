@@ -6,7 +6,6 @@ import {
   Button,
   TouchableNativeFeedback,
   Image } from 'react-native';
-import GenerateQR from '../Components/generateQR';
 
 export default class HomeScreen extends Component {
   render() {

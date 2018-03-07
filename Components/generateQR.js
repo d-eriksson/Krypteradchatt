@@ -7,12 +7,12 @@ import {
   Button,
   Image } from 'react-native';
 import { QRCode } from 'react-native-custom-qr-codes';
-
+{/*Create QR component by using <GenerateQE value="[link goes here] />"*/}
 export default class GenerateQR extends Component {
 
   render() {
     return (
-          <QRCode content={this.props.value} codeStyle='dot' linearGradient={['rgb(255,0,0)','rgb(0,255,255)']} gradientDirection={[0,170,0,0]} backgroundColor='#102027'/>
+          <QRCode content={this.props.value} codeStyle='dot' linearGradient={['rgb(0,150,136)','rgb(82, 199, 184)']} gradientDirection={[0,170,0,0]} backgroundColor='rgba(0,0,0,0)'/>
     );
   }
 }
