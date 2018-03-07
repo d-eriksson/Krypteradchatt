@@ -1,25 +1,21 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Button } from 'react-native';
 import QRScanner from './Components/QRScanner';
 import HomeScreen from './Components/HomeScreen';
 import { StackNavigator } from 'react-navigation';
 
 export default class App extends Component {
   render() {
-    return <RootStack/>;
+    return <NavigationApp/>;
   }
 }
 
-const RootStack = StackNavigator(
+const NavigationApp = StackNavigator(
   {
-    Home: {
-      screen: HomeScreen,
-    },
-    Scanner: {
-      screen: QRScanner,
-    },
+    Home: { screen: HomeScreen },
+    Scanner: { screen: QRScanner },
   },
   {
     initialRouteName: 'Home',
+    headerMode: 'none', //excludes the navigation bar
   }
 );
