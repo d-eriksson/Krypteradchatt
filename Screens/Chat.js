@@ -7,7 +7,7 @@ import {
   TouchableNativeFeedback,
   Image } from 'react-native';
 
-export default class HomeScreen extends Component {
+export default class Chat extends Component {
   render() {
     return (
       <View style={styles.container}>
@@ -32,7 +32,7 @@ export default class HomeScreen extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#102027',
+    backgroundColor: '#ffffff',
     alignItems: 'center',
     justifyContent: 'center'
   }

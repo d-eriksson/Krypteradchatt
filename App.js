@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import QRScanner from './Components/QRScanner';
-import HomeScreen from './Components/HomeScreen';
+import QRScanner from './Screens/QRScanner';
+import HomeScreen from './Screens/HomeScreen';
+import Profile from './Screens/Profile';
+import Chat from './Screens/Chat';
 import { StackNavigator } from 'react-navigation';
 
 export default class App extends Component {
@@ -13,9 +15,11 @@ const NavigationApp = StackNavigator(
   {
     Home: { screen: HomeScreen },
     Scanner: { screen: QRScanner },
+    Profile: { screen: Profile },
+    Chat: { screen: Chat },
   },
   {
     initialRouteName: 'Home',
-    headerMode: 'none', //excludes the navigation bar
+    headerMode: 'none',
   }
 );
