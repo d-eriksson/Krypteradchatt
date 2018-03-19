@@ -5,9 +5,12 @@ import Profile from './Screens/Profile';
 import Chat from './Screens/Chat';
 import { StackNavigator } from 'react-navigation';
 
+
 export default class App extends Component {
   render() {
-    return <NavigationApp/>;
+    return (
+		<NavigationApp/>
+	);
   }
 }
 

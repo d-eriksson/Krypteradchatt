@@ -5,7 +5,8 @@ import {
   View,
   Button,
   TouchableNativeFeedback,
-  Image } from 'react-native';
+  Image,
+  } from 'react-native';
 
 export default class HomeScreen extends Component {
   render() {
