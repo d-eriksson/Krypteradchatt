@@ -1,4 +1,4 @@
-import React, { Component, TextInput } from 'react';
+import React, { Component } from 'react';
 import {
   StyleSheet,
   Text,
@@ -6,10 +6,38 @@ import {
   Button,
   TouchableNativeFeedback,
   Image,
-  TouchableOpacity
+  TouchableOpacity,
+  AsyncStorage,
+  TextInput
   } from 'react-native';
 
+
 export default class Profile extends Component {
+  
+  constructor(props){
+  	  super(props)
+	  this.state={
+	  	  name:'', favColor:''
+	  }
+  }
+
+  saveData =()=> {
+	const {name,favColor} = this.state;
+	
+	let profile={
+		name: name,
+		favColor: favColor
+	}
+	AsyncStorage.setItem('profile',
+	JSON.stringify(profile));
+  }
+
+  displayData = async() => {
+  	  let profile = await AsyncStorage.getItem('profile');
+	  let d = JSON.parse(profile);
+	  alert('Chameleon Name: ' + d.name + ' ' + 'Favourite Color: ' + d.favColor);
+  }
+
   render() {
     return (
 
@@ -17,16 +45,37 @@ export default class Profile extends Component {
 			<View style={styles.container}>
 				<View style={styles.profileMenu}>
 					
-					<View style={styles.smeknamnHolder}> 
-						<Text> Smeknamn </Text>
+					<View style={styles.inputHolder}>  
+						<TextInput
+						style={styles.input}
+						placeholder="Chameleon Name"
+						placeholderTextColor="rgba(255,255,255,0.7)"
+						onChangeText={name => this.setState({name})}
+						/>
 					</View>					
 					
-					<View style={styles.smeknamnDisplayer}>
+
+					<View style={styles.inputHolder}>  
+						<TextInput
+						style={styles.input}
+						placeholder="Favourite Color"
+						placeholderTextColor="rgba(255,255,255,0.7)"
+						onChangeText={favColor => this.setState({favColor})}
+						/>
 					</View>
 					
-					<View style={styles.saveButtonHolder}>
-						<TouchableOpacity style={styles.saveButton} onPress={this.saveData}>
-						</TouchableOpacity>
+					<View style={styles.ButtonHolder}>
+						<View>
+							<TouchableOpacity style={styles.Button} onPress={this.saveData}>
+								<Text> Save </Text>
+							</TouchableOpacity>
+						</View>
+
+						<View>
+							<TouchableOpacity style={styles.Button} onPress={this.displayData}>
+								<Text> Display </Text>
+							</TouchableOpacity>
+						</View>
 					</View>
 
 				</View>
@@ -52,10 +101,6 @@ export default class Profile extends Component {
     );
   }
 
-  saveData() {
-	alert('testing');
-
-  }
 
 }
 
@@ -74,7 +119,7 @@ const styles = StyleSheet.create({
 	profileMenu:  {
 		backgroundColor: '#F17F42',
 		justifyContent: 'space-around',
-		alignItems: 'center',
+		alignItems: 'stretch',
 		flex: 4
 
 	},
@@ -82,20 +127,26 @@ const styles = StyleSheet.create({
 		width: 100,
 		height: 100
 	},
-	smeknamnHolder: {
-		backgroundColor: '#2ecc71',
-		width: 100,
-		height: 100
+	inputHolder: {
+		alignItems: 'stretch',
+		justifyContent: 'center'
 	},
-	smeknamnDisplayer: {
-		backgroundColor: '#9b59b6',
-		width: 100,
-		height: 100
-	},
-	saveButton: {
+	Button: {
 		backgroundColor: '#34495e',
+		justifyContent: 'center',
+		alignItems: 'center',
 		width: 100,
 		height: 100
+	},
+	ButtonHolder: {
+		flexDirection: 'row',
+		justifyContent: 'space-around'
+		
+	},
+	input: {
+		backgroundColor: 'rgba(255,255,255,0.2)',
+		padding: 20
 	}
+
 
 });
