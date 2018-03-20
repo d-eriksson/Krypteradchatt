@@ -33,9 +33,14 @@ export default class Profile extends Component {
   }
 
   displayData = async() => {
+	try{
   	  let profile = await AsyncStorage.getItem('profile');
 	  let d = JSON.parse(profile);
 	  alert('Chameleon Name: ' + d.name + ' ' + 'Favourite Color: ' + d.favColor);
+	 }
+	 catch(error){
+	 	 Alert.alert('Error','There was an error while loading the data');
+	 }
   }
 
   render() {
