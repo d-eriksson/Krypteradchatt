@@ -8,22 +8,24 @@ import {
   Image } from 'react-native';
 
 export default class HomeScreen extends Component {
+  static navigationOptions = {
+    title: 'Mina kontakter'
+  }
+
   render() {
     return (
       <View style={styles.container}>
-        {/*<Button
-          onPress={() => this.props.navigation.navigate('Scanner')}
-          title="Open Scanner"
-          color="#00bfa5"
-        >
-        </Button>*/}
-        <TouchableNativeFeedback
-          onPress={() => this.props.navigation.navigate('Profile')}
-        >
-          <Image
-            source={require('../Icons/scan_icon.png')}
-          />
-        </TouchableNativeFeedback>
+          <View style={styles.wrapper}>
+                <View>
+                       <Image />
+                                 <View>
+                                         <Text>Namn</Text>
+                                         <Text>Senaste Chattmeddelandet</Text>
+                                 </View>
+                </View>
+          </View>
+          <Button title="Skapa Chatt" />
+          <Button title="Min Profil" />
       </View>
     );
   }
@@ -32,8 +34,14 @@ export default class HomeScreen extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#102027',
-    alignItems: 'center',
-    justifyContent: 'center'
+    padding: 10
+  },
+  wrapper: {
+    flex: 2
+  },
+  image: {
+    width: 50,
+    height: 50,
+    backgroundColor: 'skyblue'
   }
 });
