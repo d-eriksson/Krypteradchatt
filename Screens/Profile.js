@@ -4,7 +4,6 @@ import {
   Text,
   View,
   Button,
-  TouchableNativeFeedback,
   Image,
   TouchableOpacity,
   AsyncStorage,

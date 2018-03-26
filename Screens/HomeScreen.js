@@ -8,12 +8,19 @@ import {
   } from 'react-native';
 
 export default class HomeScreen extends Component {
+
   render() {
     return (
       <View style={styles.container}>
-          <Image
-            source={require('../Icons/scan_icon.png')}
-          />
+        <View style={styles.wrapper}>
+                <View>
+                       <Image />
+                       <View>
+                            <Text>Namn</Text>
+                            <Text>Senaste Chattmeddelandet</Text>
+                       </View>
+                </View>
+          </View> 
       </View>
     );
   }
@@ -22,8 +29,14 @@ export default class HomeScreen extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#102027',
-    alignItems: 'center',
-    justifyContent: 'center'
+    padding: 10
+  },
+  wrapper: {
+    flex: 2
+  },
+  image: {
+    width: 50,
+    height: 50,
+    backgroundColor: 'skyblue'
   }
 });
