@@ -22,7 +22,13 @@
     "expo": "^25.0.0",
     "react": "16.2.0",
     "react-native": "0.52.0",
+<<<<<<< HEAD
     "react-native-custom-qr-codes": "^1.0.2",
+=======
+    "react-native-asyncstorage": "^1.0.0",
+    "react-native-storage": "^0.2.2",
+    "react-native-text-input": "^1.1.0",
+>>>>>>> task007
     "react-navigation": "^1.4.0"
   }
 }
