@@ -15,7 +15,7 @@ import { BarCodeScanner, Permissions } from 'expo';
 export default class QRScanner extends Component {
   state = {
     hasCameraPermission: null,
-    lastScannedUrl: null,
+    scannedString: null,
   };
 
   componentDidMount() {
@@ -30,15 +30,15 @@ export default class QRScanner extends Component {
   };
 
   _handleBarCodeRead = result => {
-    if (result.data !== this.state.lastScannedUrl) {
-      this.setState({ lastScannedUrl: result.data });
+    if (result.data !== this.state.scannedString) {
+      this.setState({ scannedString: result.data });
     }
   };
 
   render() {
     return (
       <View style={styles.container}>
-      
+
         {this.state.hasCameraPermission === null
           ? <Text>Requesting for camera permission</Text>
           : this.state.hasCameraPermission === false
@@ -53,23 +53,23 @@ export default class QRScanner extends Component {
                 }}
               />}
 
-        {this._maybeRenderUrl()}
+        {this._maybeRenderString()}
 
         <StatusBar hidden />
       </View>
     );
   }
 
-  _maybeRenderUrl = () => {
-    if (!this.state.lastScannedUrl) {
+  _maybeRenderString = () => {
+    if (!this.state.scannedString) {
       return;
     }
 
     return (
       <View style={styles.bottomBar}>
-        <TouchableOpacity style={styles.url} onPress={this._handlePressUrl}>
-          <Text numberOfLines={1} style={styles.urlText}>
-            {this.state.lastScannedUrl}
+        <TouchableOpacity>
+          <Text numberOfLines={1} style={styles.text}>
+            {this.state.scannedString}
           </Text>
         </TouchableOpacity>
       </View>
@@ -93,20 +93,8 @@ const styles = StyleSheet.create({
     padding: 15,
     flexDirection: 'row',
   },
-  url: {
-    flex: 1,
-  },
-  urlText: {
+  text: {
     color: '#fff',
     fontSize: 20,
-  },
-  cancelButton: {
-    marginLeft: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  cancelButtonText: {
-    color: 'rgba(255,255,255,0.8)',
-    fontSize: 18,
   },
 });
