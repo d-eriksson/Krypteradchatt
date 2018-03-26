@@ -3,14 +3,9 @@ import {
   StyleSheet,
   Text,
   View,
-<<<<<<< HEAD
   Button,
-  TouchableNativeFeedback,
   Image,
   } from 'react-native';
-=======
-  Image } from 'react-native';
->>>>>>> task009
 
 export default class HomeScreen extends Component {
   render() {

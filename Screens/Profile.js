@@ -3,7 +3,6 @@ import {
   StyleSheet,
   Text,
   View,
-<<<<<<< HEAD
   Button,
   TouchableNativeFeedback,
   Image,
@@ -12,12 +11,8 @@ import {
   TextInput
   } from 'react-native';
 
-=======
-  Image } from 'react-native';
->>>>>>> task009
-
 export default class Profile extends Component {
-  
+
   constructor(props){
   	  super(props)
 	  this.state={
@@ -27,7 +22,7 @@ export default class Profile extends Component {
 
   saveData =()=> {
 	const {name,favColor} = this.state;
-	
+
 	let profile={
 		name: name,
 		favColor: favColor
@@ -49,23 +44,22 @@ export default class Profile extends Component {
 
   render() {
     return (
-<<<<<<< HEAD
 
 
 			<View style={styles.container}>
 				<View style={styles.profileMenu}>
-					
-					<View style={styles.inputHolder}>  
+
+					<View style={styles.inputHolder}>
 						<TextInput
 						style={styles.input}
 						placeholder="Chameleon Name"
 						placeholderTextColor="rgba(255,255,255,0.7)"
 						onChangeText={name => this.setState({name})}
 						/>
-					</View>					
-					
+					</View>
 
-					<View style={styles.inputHolder}>  
+
+					<View style={styles.inputHolder}>
 						<TextInput
 						style={styles.input}
 						placeholder="Favourite Color"
@@ -73,7 +67,7 @@ export default class Profile extends Component {
 						onChangeText={favColor => this.setState({favColor})}
 						/>
 					</View>
-					
+
 					<View style={styles.ButtonHolder}>
 						<View>
 							<TouchableOpacity style={styles.Button} onPress={this.saveData}>
@@ -89,32 +83,8 @@ export default class Profile extends Component {
 					</View>
 
 				</View>
-				<View style={styles.scannerButtonHolder}>
-					{/*<Button
-					onPress={() => this.props.navigation.navigate('Scanner')}
-					title="Open Scanner"
-					color="#00bfa5"
-					>
-					</Button>*/}
-					<TouchableNativeFeedback
-					onPress={() => this.props.navigation.navigate('Scanner')}
-					>
-					<Image
-					style={styles.scanButton}
-					source={require('../Icons/scan_icon.png')}
-					/>
-					</TouchableNativeFeedback>
-				</View>
 
 			</View>
-
-=======
-      <View style={styles.container}>
-          <Image
-            source={require('../Icons/scan_icon.png')}
-          />
-      </View>
->>>>>>> task009
     );
   }
 
@@ -158,7 +128,7 @@ const styles = StyleSheet.create({
 	ButtonHolder: {
 		flexDirection: 'row',
 		justifyContent: 'space-around'
-		
+
 	},
 	input: {
 		backgroundColor: 'rgba(255,255,255,0.2)',
