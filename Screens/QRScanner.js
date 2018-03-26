@@ -18,10 +18,6 @@ export default class QRScanner extends Component {
     lastScannedUrl: null,
   };
 
-  test(){
-    console.log('it worked');
-  }
-
   componentDidMount() {
     this._requestCameraPermission();
   }
@@ -35,7 +31,6 @@ export default class QRScanner extends Component {
 
   _handleBarCodeRead = result => {
     if (result.data !== this.state.lastScannedUrl) {
-      LayoutAnimation.spring();
       this.setState({ lastScannedUrl: result.data });
     }
   };
@@ -43,7 +38,7 @@ export default class QRScanner extends Component {
   render() {
     return (
       <View style={styles.container}>
-
+      
         {this.state.hasCameraPermission === null
           ? <Text>Requesting for camera permission</Text>
           : this.state.hasCameraPermission === false
@@ -65,25 +60,6 @@ export default class QRScanner extends Component {
     );
   }
 
-  _handlePressUrl = () => {
-    Alert.alert(
-      'Open this URL?',
-      this.state.lastScannedUrl,
-      [
-        {
-          text: 'Yes',
-          onPress: () => Linking.openURL(this.state.lastScannedUrl),
-        },
-        { text: 'No', onPress: () => {} },
-      ],
-      { cancellable: false }
-    );
-  };
-
-  _handlePressCancel = () => {
-    this.setState({ lastScannedUrl: null });
-  };
-
   _maybeRenderUrl = () => {
     if (!this.state.lastScannedUrl) {
       return;
@@ -94,13 +70,6 @@ export default class QRScanner extends Component {
         <TouchableOpacity style={styles.url} onPress={this._handlePressUrl}>
           <Text numberOfLines={1} style={styles.urlText}>
             {this.state.lastScannedUrl}
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.cancelButton}
-          onPress={this._handlePressCancel}>
-          <Text style={styles.cancelButtonText}>
-            Cancel
           </Text>
         </TouchableOpacity>
       </View>
