@@ -20,7 +20,7 @@ export default class HomeScreen extends Component {
                             <Text>Senaste Chattmeddelandet</Text>
                        </View>
                 </View>
-          </View> 
+          </View>
       </View>
     );
   }
