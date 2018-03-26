@@ -3,29 +3,22 @@ import {
   StyleSheet,
   Text,
   View,
+<<<<<<< HEAD
   Button,
   TouchableNativeFeedback,
   Image,
   } from 'react-native';
+=======
+  Image } from 'react-native';
+>>>>>>> task009
 
 export default class HomeScreen extends Component {
   render() {
     return (
       <View style={styles.container}>
-        {/*<Button
-          onPress={() => this.props.navigation.navigate('Scanner')}
-          title="Open Scanner"
-          color="#00bfa5"
-        >
-        </Button>*/}
-        <TouchableNativeFeedback
-          onPress={() => this.props.navigation.navigate('Profile')}
-        >
           <Image
             source={require('../Icons/scan_icon.png')}
           />
-        </TouchableNativeFeedback>
-
       </View>
     );
   }

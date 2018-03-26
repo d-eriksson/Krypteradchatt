@@ -3,6 +3,7 @@ import {
   StyleSheet,
   Text,
   View,
+<<<<<<< HEAD
   Button,
   TouchableNativeFeedback,
   Image,
@@ -11,6 +12,9 @@ import {
   TextInput
   } from 'react-native';
 
+=======
+  Image } from 'react-native';
+>>>>>>> task009
 
 export default class Profile extends Component {
   
@@ -45,6 +49,7 @@ export default class Profile extends Component {
 
   render() {
     return (
+<<<<<<< HEAD
 
 
 			<View style={styles.container}>
@@ -103,6 +108,13 @@ export default class Profile extends Component {
 
 			</View>
 
+=======
+      <View style={styles.container}>
+          <Image
+            source={require('../Icons/scan_icon.png')}
+          />
+      </View>
+>>>>>>> task009
     );
   }
 

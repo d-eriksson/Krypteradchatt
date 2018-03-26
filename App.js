@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import QRScanner from './Screens/QRScanner';
 import HomeScreen from './Screens/HomeScreen';
 import Profile from './Screens/Profile';
-import Chat from './Screens/Chat';
-import { StackNavigator } from 'react-navigation';
+import { TabNavigator } from 'react-navigation';
 
+<<<<<<< HEAD
 
 export default class App extends Component {
   render() {
@@ -15,14 +15,17 @@ export default class App extends Component {
 }
 
 const NavigationApp = StackNavigator(
+=======
+export default TabNavigator(
+>>>>>>> task009
   {
+    Profile: { screen: Profile },
     Home: { screen: HomeScreen },
     Scanner: { screen: QRScanner },
-    Profile: { screen: Profile },
-    Chat: { screen: Chat },
   },
   {
     initialRouteName: 'Home',
-    headerMode: 'none',
+    swipeEnabled: true,
+    tabBarPosition: 'bottom',
   }
 );
