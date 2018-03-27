@@ -7,12 +7,19 @@ import {
   Button,
   Image } from 'react-native';
 import { QRCode } from 'react-native-custom-qr-codes';
+import './shim.js';
 {/*Create QR component by using <GenerateQE value="[link goes here] />"*/}
 export default class GenerateQR extends Component {
 
+var hash = CryptoJS.SHA256("Message");
+alert(hash.toString(CryptoJS.enc.Base64));
+alert(hash.toString(CryptoJS.enc.Latin1));
+alert(hash.toString(CryptoJS.enc.Hex));
+
   render() {
     return (
-          <QRCode content={this.props.value} codeStyle='dot' linearGradient={['rgb(0,150,136)','rgb(82, 199, 184)']} gradientDirection={[0,170,0,0]} backgroundColor='rgba(0,0,0,0)'/>
+
+          <QRCode content={hash} codeStyle='dot' linearGradient={['rgb(0,150,136)','rgb(82, 199, 184)']} gradientDirection={[0,170,0,0]} backgroundColor='rgba(0,0,0,0)'/>
     );
   }
 }
