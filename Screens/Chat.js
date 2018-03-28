@@ -24,6 +24,7 @@ export default class Chat extends Component {
    };
 
 
+
  componentDidMount() {
        subscribe(CHANNEL, messages => {
          this.setState({messages});

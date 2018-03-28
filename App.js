@@ -4,7 +4,7 @@ import HomeScreen from './Screens/HomeScreen';
 import Profile from './Screens/Profile';
 import Chat from './Screens/Chat';
 import { TabNavigator } from 'react-navigation';
-
+import * as SHA from 'js-sha256';
 export default TabNavigator(
   {
     Profile: { screen: Profile },
