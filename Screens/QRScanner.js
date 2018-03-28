@@ -64,6 +64,10 @@ export default class QRScanner extends Component {
     if (!this.state.scannedString) {
       return;
     }
+    var IsThisOurTypeOfQr = true; // ska bytas ut till något som kollar ifall det är våra qr koder.
+    if(IsThisOurTypeOfQr){
+      
+    }
 
     return (
       <View style={styles.bottomBar}>
