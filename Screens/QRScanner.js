@@ -11,6 +11,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { BarCodeScanner, Permissions } from 'expo';
+import ConnectChat from './Components/ConnectChat';
 
 export default class QRScanner extends Component {
   state = {
@@ -66,14 +67,15 @@ export default class QRScanner extends Component {
     }
     var IsThisOurTypeOfQr = true; // ska bytas ut till något som kollar ifall det är våra qr koder.
     if(IsThisOurTypeOfQr){
-      
+      var roomID = "14";
+      var hash = "ajn123+93u193jju2h123hy1398jsnjngdåsudhå1ou239hw1iu2h3889jssq21";
     }
 
     return (
       <View style={styles.bottomBar}>
         <TouchableOpacity>
           <Text numberOfLines={1} style={styles.text}>
-            {this.state.scannedString}
+            <ConnectChat roomID = {roomID} hash= {hash} />
           </Text>
         </TouchableOpacity>
       </View>
