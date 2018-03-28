@@ -32,17 +32,14 @@ export default class HomeScreen extends Component {
 					key='Key'
 					name='Cool Chatt'
 					onPress={() => {
+				
 					fetch('http://83.227.100.223:8080/create')
-					.then((response) => response.json)
-					.then((responseJson) => {
-					this.setState({
-						things: responseJson
-					})
-					alert(this.state.things)
-					})
+					.then((res) => res.json())
+					.then((data) => {
+					this.setState({things: data})
+					alert(this.state.things)	})
+					.catch((err) => alert(err))
 					}}
-						
-						
 				/>
 
 			</View>
