@@ -1,6 +1,8 @@
 {
   "ExpandedNodes": [
     "",
+    "\\Backend",
+    "\\Components",
     "\\Screens"
   ],
   "SelectedNode": "\\Screens\\HomeScreen.js",
