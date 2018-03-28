@@ -13,7 +13,7 @@ export default TabNavigator(
     Chat: { screen: Chat },
   },
   {
-    initialRouteName: 'Home',
+    initialRouteName: 'Chat',
     swipeEnabled: true,
     tabBarPosition: 'bottom',
   }
