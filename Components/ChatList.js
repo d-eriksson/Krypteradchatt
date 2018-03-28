@@ -16,19 +16,21 @@ export default class ChatList extends Component {
   }
 
   componentDidMount() {
-    const url = 'http://api.open-notify.org/astros.json'
+    const url = 'http://83.227.100.223:8080/listchatts'
 
     fetch(url)
     .then((response) => response.json())
     .then((responseJson) => {
       this.setState({
-        dataSource: responseJson.people
+        dataSource: responseJson
       })
     })
     .catch((error) => {
       console.log(error)
     })
   }
+
+
 
   render() {
     return (
@@ -38,8 +40,8 @@ export default class ChatList extends Component {
           renderItem={({ item }) => (
             <ListItem avatar>
               <Body>
-                <Text>{ item.name }</Text>
-                <Text note>{ item.craft }</Text>
+                <Text>{ item.roomID }</Text>
+                <Text note>{ item.connected }</Text>
               </Body>
             </ListItem>
           )}
