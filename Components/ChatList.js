@@ -30,8 +30,6 @@ export default class ChatList extends Component {
     })
   }
 
-
-
   render() {
     return (
       <List>
@@ -39,6 +37,9 @@ export default class ChatList extends Component {
           data={this.state.dataSource}
           renderItem={({ item }) => (
             <ListItem avatar>
+              <Left>
+                <Thumbnail style={{width: 40, height: 40, borderRadius: 40/2}} source={require('../aang.jpg')}></Thumbnail>
+              </Left>
               <Body>
                 <Text>{ item.roomID }</Text>
                 <Text note>{ item.connected }</Text>
