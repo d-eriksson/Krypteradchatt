@@ -59,3 +59,9 @@ Input:
 
 Output:
 None
+
+## http://83.227.100.223:8080/clear/
+this clears all chats that are not connected and was created for longer than 30 minutes ago this runs every hour at minute 59. 
+
+## http://83.227.100.223:8080/listchatts/
+this lists all the chatts that are available, 

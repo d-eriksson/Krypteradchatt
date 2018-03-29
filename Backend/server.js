@@ -1,5 +1,5 @@
 const express = require("express");
-
+var schedule = require('node-schedule');
 var mysql = require('mysql');
 
 // Initialize http server
@@ -71,19 +71,14 @@ app.get('/submit/:roomID/:message/:sentby', function (req, res){
 		})
 	  	
 })
-
 app.get('/create/', function(req,res){
 	var sql ="INSERT INTO chatts(connected) VALUES (0)";
 	con.query(sql, function(err,result){
 		if(err) throw err;
-		console.log("Chatt created!");
+		s = JSON.stringify(result.insertId);
+		res.send(s);
+		console.log("chatt created!");
 	})
-	var sql2 = "SELECT LAST_INSERT_ID()";
-		con.query(sql2, function(err,result){
-		if(err) throw err;
-		res.send(result);
-	})
-
 })
 app.get('/connect/:roomID', function(req,res){
 	var sql = "UPDATE chatts SET connected=1 WHERE roomID = " + mysql.escape(req.params.roomID);
@@ -100,6 +95,23 @@ app.get('/listchatts/',function(req,res){
 		res.send(result);
 	})
 })
+app.get('/clear/', function(req,res){
+	var sql= "DELETE FROM chatts WHERE connected=0 AND TIMESTAMPDIFF(minute,reg_date,CURRENT_TIMESTAMP()) > 30";
+		con.query(sql, function(err, result){
+		if(err) throw err;
+		console.log("Clear!");
+		res.send("");
+	})
+})
+
+var removeUnconnectedChatrooms = schedule.scheduleJob('59 * * * *', function(){
+  var sql= "DELETE FROM chatts WHERE connected=0 AND TIMESTAMPDIFF(minute,reg_date,CURRENT_TIMESTAMP()) > 30";
+		con.query(sql, function(err, result){
+		if(err) throw err;
+		console.log("Clear!");
+	})
+});
+
 
 
 // Launch the server on port 3000
