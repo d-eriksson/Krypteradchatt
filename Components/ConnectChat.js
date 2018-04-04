@@ -10,7 +10,7 @@ export default class ConnectChat extends Component {
   }
 
   componentDidMount() {
-    
+
     const url = 'http://83.227.100.223:8080/connect/' + this.props.roomID;
     fetch(url)
     .then((response) => response.text())
@@ -23,7 +23,7 @@ export default class ConnectChat extends Component {
     .catch((error) => {
       console.log(error)
     })
-    
+
     let room = {
       roomID: this.props.roomID,
       hash: this.props.hash,
@@ -37,7 +37,7 @@ export default class ConnectChat extends Component {
              })
            }
            console.log(result);
-           
+
         });
     });
   }
@@ -50,7 +50,7 @@ export default class ConnectChat extends Component {
     }
     else{
       return("Failed to connect to chat.");
-      
+
     }
   }
 }
