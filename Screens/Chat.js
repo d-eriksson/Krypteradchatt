@@ -1,171 +1,190 @@
+
 import React, { Component } from 'react';
 import {
-  StyleSheet,
-  Text,
-  View,
-  Button,
-  Image,
-  FlatList,
-  TextInput,
-  KeyboardAvoidingView,
-  TouchableOpacity} from 'react-native';
-
-import {send, subscribe} from 'react-native-training-chat-server';
-
-const NAME = 'Alice';
-const CHANNEL = 'TestChannel';
-const AVATAR = 'https://i.pinimg.com/236x/e2/52/cd/e252cde7328c092aa19ea8a6dd50a14b--macro-photography-macros.jpg';
-
-export default class Chat extends Component {
-
-   state = {
-     typing: "",
-     messages: [],
-   };
+StyleSheet,
+View,
+FlatList,
+Image,
+TextInput,
+KeyboardAvoidingView,
+TouchableOpacity } from 'react-native';
+import { List, ListItem, Body, Text, Left, Thumbnail } from 'native-base';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 
- componentDidMount() {
-       subscribe(CHANNEL, messages => {
-         this.setState({messages});
-       });
-  }
+export default class ChatList extends Component {
+
+constructor() {
+super()
+this.state = {
+  typing: "",
+  messageData: [],
+  user: 1,
+  roomID: 1,
+}
+}
+
+refreshDataFromServer(){
+
+  const url = 'http://83.227.100.23:8080/messages/1/'
+
+  fetch(url)
+  .then((response) => response.json())
+  .then((responseJson) => {
+    this.setState({
+      messageData: responseJson
+    })
+  })
+  .catch((error) => {
+    console.log(error)
+  })
+
+}
+
+componentDidMount() {
+  this.refreshDataFromServer();
+}
 
 
-  async sendMessage() {
-    await send({
-      channel: CHANNEL,
-      sender: NAME,
-      avatar: AVATAR,
-      message: this.state.typing
-    });
+async sendMessage() {
+
+  let sender = this.state.user;
+  let msg = this.state.typing;
+  let room = this.state.roomID;
+
+  const url = 'http://83.227.100.223:8080/submit/1/'+msg+'/'+sender+'/'
+
+    fetch(url)
+      .then((response) => response.json())
+      .catch((error) => {
+        console.log(error)
+      })
 
     this.setState({
       typing: '',
     });
-  }
+
+this.refreshDataFromServer();
+}
 
 
 
+render() {
+return (
+  <View style={styles.container}>
 
-  renderItem({item}) {
-     return (
-       <View style={styles.row}>
+    <View style={styles.header}>
+            <Text style={styles.title}>Bob</Text>
+    </View>
 
-        <Image style={styles.avatar} source={{uri: item.avatar}} />
-
-        <View style={styles.rowText}>
-           <Text style={styles.sender}>{item.sender}</Text>
-           <Text style={styles.message}>{item.message}</Text>
-         </View>
-
-       </View>
-     );
-   }
-
-  render() {
-    return (
-      <View style={styles.container}>
+    <View style={styles.contentContainer}>
 
 
-      <View style={styles.header}>
-             <Text style={styles.title}>
-               Bob {this.props.title}
-             </Text>
-           </View>
+        <List>
+          <FlatList
+            data={this.state.messageData}
+            renderItem={({ item }) => (
+              <ListItem style={styles.row}>
+                <Left>
+                  <Thumbnail style= {styles.avatar} source={{uri: 'http://dreamicus.com/data/chameleon/chameleon-02.jpg'}} />
+                </Left>
+                <Body style={styles.text}>
+                  <Text style={styles.name}>{ item.sentby }</Text>
+                  <Text note style={styles.message}>{ item.message }</Text>
+                </Body>
+              </ListItem>
+            )}
+            keyExtractor={(item, index) => index}
+          />
+        </List>
 
+  </View>
 
-        <FlatList
-          data={this.state.messages}
-          renderItem={this.renderItem}
-          inverted
-        />
+  <KeyboardAvoidingView behaviour="padding">
 
-      <KeyboardAvoidingView behavior="padding">
-          <View style={styles.footer}>
+      <View style={styles.footer}>
 
           <TextInput
             value={this.state.typing}
             onChangeText={text => this.setState({typing: text})}
             style={styles.input}
             underlineColorAndroid="transparent"
-            placeholder="Type a secret"
-            />
+            placeholder="Type something nice"
+          />
 
-            <TouchableOpacity onPress={this.sendMessage.bind(this)}>
-              <Text style={styles.send}>Send</Text>
-            </TouchableOpacity>
-
-          </View>
-
-      </KeyboardAvoidingView>
-
+          <TouchableOpacity onPress={this.sendMessage.bind(this)}>
+            <Text style={styles.send}>Send</Text>
+          </TouchableOpacity>
 
       </View>
 
-    );
-  }
+  </KeyboardAvoidingView>
+
+
+  </View>
+
+);
+};
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#102027',
-    justifyContent: 'center'
-  },
-  row: {
-    width: 300,
-     padding: 10,
-     backgroundColor: '#275760',
-     marginBottom: 6,
-   },
-   message: {
-     fontSize: 18,
-     color: 'white',
-   },
-   avatar: {
-     borderRadius: 20,
-     width: 40,
-     height: 40,
-     marginRight: 10,
-   },
-   rowText: {
-     flex: 1,
-   },
-
-   sender: {
-     fontWeight: 'bold',
-     color: 'lightseagreen',
-     paddingRight: 10,
-   },
-   footer: {
-   flexDirection: 'row',
-   backgroundColor: '#eee',
- },
- input: {
-   paddingHorizontal: 20,
-   paddingVertical: 10,
-   fontSize: 18,
-   flex: 1,
- },
- send: {
-   alignSelf: 'center',
-   color: 'lightseagreen',
-   fontSize: 16,
-   fontWeight: 'bold',
-   padding: 20,
- },
- header: {
-    height: 60,
-    flexDirection: 'row',
+container: {
+backgroundColor: '#102027',
+flexDirection : 'column',
+flex : 1
+},
+header: {
+    height: 80,
     backgroundColor: 'lightseagreen',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-end',
     padding: 10,
   },
   title: {
     color: 'white',
     fontWeight: 'bold',
     fontSize: 24,
+  },
+row: {
+margin: 10,
+borderBottomColor:'#102027',
+backgroundColor: '#102027',
+},
+name: {
+  color: '#20b2aa',
+},
+message: {
+color: 'white',
+},
+avatar: {
+width: 50,
+height: 50,
+},
+text:  {
+  padding: 5,
+  width: 100,
+  backgroundColor: '#275760',
+},
+footer: {
+    flexDirection: 'row',
+    backgroundColor: '#eee',
 
   },
+  input: {
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    fontSize: 18,
+    flex: 1,
+  },
+  contentContainer: {
+    flex: 1,
+  },
+  send: {
+    alignSelf: 'center',
+    color: 'lightseagreen',
+    fontSize: 16,
+    fontWeight: 'bold',
+    padding: 20,
+  },
+
 });

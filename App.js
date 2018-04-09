@@ -13,7 +13,7 @@ const TabNav = TabNavigator(
     Chat: { screen: Chat },
   },
   {
-    initialRouteName: 'Home',
+    initialRouteName: 'Chat',
     swipeEnabled: true,
     tabBarPosition: 'bottom',
   }
