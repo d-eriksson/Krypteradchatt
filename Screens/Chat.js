@@ -24,51 +24,48 @@ this.state = {
 }
 }
 
-componentDidMount() {
-const url = 'http://83.227.100.223:8080/messages/1/'
+refreshDataFromServer(){
 
-fetch(url)
-.then((response) => response.json())
-.then((responseJson) => {
-  this.setState({
-    messageData: responseJson
+  const url = 'http://83.227.100.23:8080/messages/1/'
+
+  fetch(url)
+  .then((response) => response.json())
+  .then((responseJson) => {
+    this.setState({
+      messageData: responseJson
+    })
   })
-})
-.catch((error) => {
-  console.log(error)
-})
+  .catch((error) => {
+    console.log(error)
+  })
+
 }
+
+componentDidMount() {
+  this.refreshDataFromServer();
+}
+
 
 async sendMessage() {
 
   let sender = this.state.user;
   let msg = this.state.typing;
+  let room = this.state.roomID;
 
-    fetch('http://83.227.100.223:8080/submit/1/hej/1', {
-          method: 'POST',
-          headers: {
-          'Accept': 'application/json, text/plain',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({sentby: sender, message: msg, })
-    }).then((res) =>  {
-            if (res.ok) {
-              return res.json();
-            } else {
-              throw new Error('Something went wrong');
-            }
-        })
-      .then(((body) => console.log(body)))
+  const url = 'http://83.227.100.223:8080/submit/1/'+msg+'/'+sender+'/'
+
+    fetch(url)
+      .then((response) => response.json())
       .catch((error) => {
         console.log(error)
-      });
-
+      })
 
     this.setState({
       typing: '',
     });
-}
 
+this.refreshDataFromServer();
+}
 
 
 
