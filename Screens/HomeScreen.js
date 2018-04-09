@@ -37,6 +37,6 @@ const styles = StyleSheet.create({
   image: {
     width: 50,
     height: 50,
-    backgroundColor: 'skyblue'
+    backgroundColor: 'white'
   }
 });
