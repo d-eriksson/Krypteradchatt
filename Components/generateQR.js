@@ -12,7 +12,7 @@ export default class GenerateQR extends Component {
 
   render() {
     return (
-          <QRCode content={this.props.value} codeStyle='dot' linearGradient={['rgb(0,150,136)','rgb(82, 199, 184)']} gradientDirection={[0,170,0,0]} backgroundColor='rgba(0,0,0,0)'/>
+          <QRCode content={this.props.value + this.props.sign + this.props.key + this.props.sign + this.props.name } codeStyle='dot' linearGradient={['rgb(0,150,136)','rgb(82, 199, 184)']} gradientDirection={[0,170,0,0]} backgroundColor='rgba(0,0,0,0)'/>
     );
   }
 }

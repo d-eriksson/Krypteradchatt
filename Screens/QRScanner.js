@@ -11,7 +11,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { BarCodeScanner, Permissions } from 'expo';
-import ConnectChat from './Components/ConnectChat';
+import ConnectChat from '../Components/ConnectChat';
 
 export default class QRScanner extends Component {
   state = {
