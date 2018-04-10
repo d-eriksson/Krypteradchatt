@@ -88,6 +88,13 @@ app.get('/connect/:roomID', function(req,res){
 	})
 	res.send("Connected");
 })
+app.get('/lastmessage/:roomID', function(req,res){
+	var sql = "SELECT * FROM chat_messages WHERE roomID= " + mysql.escape(req.params.roomID) + " ORDER BY sentby DESC LIMIT 1"
+	con.query(sql,function(err,result){
+		if(err) throw err;
+		res.send(result);
+	})
+})
 app.get('/listchatts/',function(req,res){
 	var sql = "SELECT * FROM chatts";
 	con.query(sql, function(err,result){
