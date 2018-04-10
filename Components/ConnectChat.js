@@ -45,9 +45,6 @@ export default class ConnectChat extends Component {
   }
 
   render() {
-
         return <Text>{JSON.stringify(this.state.dataSource)}</Text>;
-
-
   }
 }

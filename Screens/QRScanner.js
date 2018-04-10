@@ -67,7 +67,7 @@ export default class QRScanner extends Component {
     }
     var IsThisOurTypeOfQr = true; // ska bytas ut till något som kollar ifall det är våra qr koder.
     if(IsThisOurTypeOfQr){
-      var roomID = "14";
+      var roomID = "1";
       var hash = "ajn123+93u193jju2h123hy1398jsnjngdåsudhå1ou239hw1iu2h3889jssq21";
     }
 

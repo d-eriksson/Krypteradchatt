@@ -14,25 +14,19 @@ export default class ChatList extends Component {
     this.state = {
       dataSource: []
     }
-  }
+}
 
-  componentDidMount() {
-
-    AsyncStorage.getAllKeys((err, keys) => {
-      AsyncStorage.multiGet(keys, (err, stores) => {
-        stores.map((result, i, store) => {
-          // get at each store's key/value so you can work with it
-          let key = store[i][0];
-          let value = store[i][1];
-          if(key != "profile"){
-            this.setState({
-              dataSource: [...this.state.dataSource, value]
-            });
-          }
-        });
-      });
-    });
-    console.log(this.state.dataSource)
+  async componentDidMount() {
+    const data = [];
+    let keys = await AsyncStorage.getAllKeys();
+    for (let inKey of keys) {
+        let obj = await AsyncStorage.getItem(inKey);
+        obj = JSON.parse(obj);
+        if(inKey != "profile"){
+          data.push(obj);
+        }
+    }
+    this.setState({ dataSource : data });
   }
 
   render() {
@@ -46,7 +40,7 @@ export default class ChatList extends Component {
               <Thumbnail style={{width: 40, height: 40, borderRadius: 40/2}} source={require('../aang.jpg')}></Thumbnail>
             </Left>
             <Body>
-              <Text>{ item }</Text>
+              <Text>{ item.roomID }</Text>
               {/*<Text note>{ item.message }</Text>*/}
             </Body>
           </ListItem>
@@ -56,4 +50,5 @@ export default class ChatList extends Component {
       </List>
     );
   }
+
 }
