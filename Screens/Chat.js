@@ -12,7 +12,7 @@ import { List, ListItem, Body, Text, Left, Thumbnail } from 'native-base';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 
-export default class ChatList extends Component {
+export default class Chat extends Component {
 
 constructor() {
 super()
