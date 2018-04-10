@@ -13,7 +13,7 @@ const TabNav = TabNavigator(
     Chat: { screen: Chat },
   },
   {
-    initialRouteName: 'Chat',
+    initialRouteName: 'Home',
     swipeEnabled: true,
     tabBarPosition: 'bottom',
   }
@@ -21,7 +21,7 @@ const TabNav = TabNavigator(
 
 export default StackNavigator(
   {
-    Home: {
+    HomeView: {
       screen: TabNav,
       navigationOptions: ({ navigation }) => ({
         header: null,
@@ -35,6 +35,6 @@ export default StackNavigator(
     },
   },
   {
-    initialRouteName: 'Home',
+    initialRouteName: 'HomeView',
   }
 );
