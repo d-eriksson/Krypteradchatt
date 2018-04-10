@@ -17,16 +17,15 @@ export default class ChatList extends Component {
 constructor() {
 super()
 this.state = {
-  typing: "",
-  messageData: [],
-  user: 1,
-  roomID: 1,
-}
+    typing: "",
+    messageData: [],
+    user: 1,
+    roomID: 1,
+  }
 }
 
-refreshDataFromServer(){
-
-  const url = 'http://83.227.100.23:8080/messages/1/'
+componentDidMount() {
+  const url = 'http://83.227.100.223:8080/messages/1/'
 
   fetch(url)
   .then((response) => response.json())
@@ -41,18 +40,13 @@ refreshDataFromServer(){
 
 }
 
-componentDidMount() {
-  this.refreshDataFromServer();
-}
-
-
 async sendMessage() {
 
   let sender = this.state.user;
   let msg = this.state.typing;
   let room = this.state.roomID;
 
-  const url = 'http://83.227.100.223:8080/submit/1/'+msg+'/'+sender+'/'
+  const url = 'http://83.227.100.223:8080/submit/'+room+'/'+msg+'/'+sender+'/'
 
     fetch(url)
       .then((response) => response.json())
@@ -63,11 +57,7 @@ async sendMessage() {
     this.setState({
       typing: '',
     });
-
-this.refreshDataFromServer();
 }
-
-
 
 render() {
 return (
@@ -78,7 +68,6 @@ return (
     </View>
 
     <View style={styles.contentContainer}>
-
 
         <List>
           <FlatList
