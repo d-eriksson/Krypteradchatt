@@ -32,9 +32,8 @@ export default class ChatList extends Component {
         });
       });
     });
+    console.log(this.state.dataSource)
   }
-
-
 
   render() {
     return (
@@ -47,7 +46,7 @@ export default class ChatList extends Component {
               <Thumbnail style={{width: 40, height: 40, borderRadius: 40/2}} source={require('../aang.jpg')}></Thumbnail>
             </Left>
             <Body>
-              <Text>{ item.roomID }</Text>
+              <Text>{ item }</Text>
               {/*<Text note>{ item.message }</Text>*/}
             </Body>
           </ListItem>
