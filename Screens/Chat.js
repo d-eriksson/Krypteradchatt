@@ -15,7 +15,7 @@ import { Container, Header, Button, List, ListItem, Body, Text, Left,Right, Icon
 import { Ionicons } from '@expo/vector-icons';
 import Expo from 'expo';
 
-export default class ChatList extends Component {
+export default class Chat extends Component {
 
 constructor() {
 super()
@@ -91,7 +91,7 @@ async sendMessage() {
   let sender = this.state.user;
   let msg = this.state.typing;
 
-  const url = 'http://83.227.100.223:8080/submit/1/'+msg+'/'+sender+'/'
+  const url = 'http://83.227.100.223:8080/submit/'+room+'/'+msg+'/'+sender+'/'
 
     fetch(url)
       .then((response) => response.json())
