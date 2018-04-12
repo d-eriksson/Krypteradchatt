@@ -1,11 +1,4 @@
 {
-  "hostType": "lan",
-  "lanType": "ip",
-  "dev": true,
-  "minify": false,
-<<<<<<< HEAD
-  "urlRandomness": "4h-2pm"
-=======
-  "urlRandomness": "3k-m4q"
->>>>>>> 35f91d8d1b94b69278c9fdb3fae3838fc8668513
+  "hostType": "localhost",
+  "urlRandomness": "nb-66s"
 }

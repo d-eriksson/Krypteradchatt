@@ -1,16 +1,8 @@
 {
   "expoServerPort": 19000,
-<<<<<<< HEAD
-  "packagerPort": 19001,
-  "packagerPid": 27416,
-  "expoServerNgrokUrl": "https://4h-2pm.josefinef.krypteradchatt.exp.direct",
-  "packagerNgrokUrl": "https://packager.4h-2pm.josefinef.krypteradchatt.exp.direct",
-  "ngrokPid": 31092
-=======
-  "packagerPort": 19002,
-  "packagerPid": 16634,
-  "expoServerNgrokUrl": "https://3k-m4q.emmaweberyd.krypteradchatt.exp.direct",
-  "packagerNgrokUrl": "https://packager.3k-m4q.emmaweberyd.krypteradchatt.exp.direct",
-  "ngrokPid": 16652
->>>>>>> 35f91d8d1b94b69278c9fdb3fae3838fc8668513
+  "packagerPort": 19003,
+  "packagerPid": 23162,
+  "expoServerNgrokUrl": "https://nb-66s.emmaweberyd.krypteradchatt.exp.direct",
+  "packagerNgrokUrl": "https://packager.nb-66s.emmaweberyd.krypteradchatt.exp.direct",
+  "ngrokPid": 23180
 }

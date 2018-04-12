@@ -90,6 +90,7 @@ async sendMessage() {
 
   let sender = this.state.user;
   let msg = this.state.typing;
+  let room = this.state.roomID;
 
   const url = 'http://83.227.100.223:8080/submit/'+room+'/'+msg+'/'+sender+'/'
 
