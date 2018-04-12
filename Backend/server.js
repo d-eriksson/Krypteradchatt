@@ -21,7 +21,7 @@ app.get('/', function (req, res){
 })
 
 app.get('/messages/:roomID/', function (req, res){
-	
+
   		var sql = "SELECT * FROM chat_messages WHERE roomID = " + mysql.escape(req.params.roomID);
   		con.query(sql , function (err, result, fields) {
     		if (err) {
@@ -33,7 +33,7 @@ app.get('/messages/:roomID/', function (req, res){
   		});
 })
 app.get('/messages/:roomID/:time/', function (req, res){
-		
+
 		var time = req.params.time;
 		//time = time.replace('T', ' ');
 		//time = time.replace('.000Z', '');
@@ -52,7 +52,7 @@ app.get('/messages/:roomID/:time/', function (req, res){
   		//res.send(sql);
 })
 app.get('/submit/:roomID/:message/:sentby', function (req, res){
-	  	
+
 		var sql = "SELECT connected FROM chatts WHERE roomID = "+ mysql.escape(req.params.roomID);
 		con.query(sql,function(err, result){
 			if(err) throw err;
@@ -69,7 +69,7 @@ app.get('/submit/:roomID/:message/:sentby', function (req, res){
 			  	res.send("");
 			}
 		})
-	  	
+
 })
 app.get('/create/', function(req,res){
 	var sql ="INSERT INTO chatts(connected) VALUES (0)";
@@ -111,8 +111,6 @@ var removeUnconnectedChatrooms = schedule.scheduleJob('59 * * * *', function(){
 		console.log("Clear!");
 	})
 });
-
-
 
 // Launch the server on port 3000
 const server = app.listen(8080, () => {

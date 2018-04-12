@@ -1,5 +1,5 @@
-import { Component } from 'react';
-import { AsyncStorage } from 'react-native';
+import React, { Component } from 'react';
+import { AsyncStorage, Text } from 'react-native';
 
 export default class ConnectChat extends Component {
   constructor() {
@@ -36,21 +36,15 @@ export default class ConnectChat extends Component {
                dataSource: "Error!"
              })
            }
-           console.log(result);
+           this.setState({
+             dataSource: result
+           });
 
         });
     });
   }
 
   render() {
-    if(this.state.dataSource === "Connected"){
-        return (
-          this.state.dataSource
-        );
-    }
-    else{
-      return("Failed to connect to chat.");
-
-    }
+        return <Text>{JSON.stringify(this.state.dataSource)}</Text>;
   }
 }
