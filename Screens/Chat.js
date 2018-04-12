@@ -14,6 +14,8 @@ TouchableOpacity } from 'react-native';
 import { Container, Header, Button, List, ListItem, Body, Text, Left,Right, Icon, Title, Thumbnail } from 'native-base';
 import { Ionicons } from '@expo/vector-icons';
 import Expo from 'expo';
+import CryptoJS from 'crypto-js';
+
 
 export default class Chat extends Component {
 
@@ -27,6 +29,7 @@ this.state = {
   messageData: [],
   user: 1,
   roomID: 1,
+  hash: "fb56a4e39985b2e4c5f1d6693ca95e3616f820786fac761511e598d067deca5d",
   otherUser: "Bob",
 }
 }
@@ -89,10 +92,12 @@ getLastMsg() {
 async sendMessage() {
 
   let sender = this.state.user;
-  let msg = this.state.typing;
+  let msg = CryptoJS.AES.encrypt(this.state.typing, this.state.hash);
   let room = this.state.roomID;
 
-  const url = 'http://83.227.100.223:8080/submit/'+room+'/'+msg+'/'+sender+'/'
+
+  const url = 'http://83.227.100.223:8080/submit/'+room+'/'+msg+'/'+sender+'/';
+
 
     fetch(url)
       .then((response) => response.json())
