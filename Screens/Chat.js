@@ -28,7 +28,7 @@ this.state = {
   typing: "",
   messageData: [],
   user: 1,
-  roomID: 1,
+  roomID: 382,
   hash: "fb56a4e39985b2e4c5f1d6693ca95e3616f820786fac761511e598d067deca5d",
   otherUser: "Bob",
 }
@@ -45,14 +45,11 @@ async componentWillMount() {
 
 
 componentDidMount() {
-  const url = 'http://83.227.100.223:8080/messages/1/2018-04-10T13:28:24.000Z'
+  const url = 'http://83.227.100.223:8080/messages/382/2018-04-10T13:28:24.000Z'
 
   fetch(url)
   .then((response) => response.json())
   .then((responseJson) => {
-
-    var bytes  = CryptoJS.AES.decrypt(responseJson.message.toString(), this.state.hash);
-    responseJson.message = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
 
     this.setState({
       messageData: responseJson
@@ -77,7 +74,7 @@ selectAvatar(sender) {
 
 
 getLastMsg() {
-  const url = 'http://83.227.100.223:8080/messages/1/2018-04-10T13:28:24.000Z'
+  const url = 'http://83.227.100.223:8080/messages/382/'
 
   fetch(url)
   .then((response) => response.json())
@@ -92,10 +89,9 @@ getLastMsg() {
 
 }
 decryptMessage(m){
-
-  var bytes  = CryptoJS.AES.decrypt(m.toString(), this.state.hash);
-  var decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
-  return decryptedData;
+  var decrypted  = CryptoJS.AES.decrypt( m, this.state.hash);
+  decrypted = decrypted.toString(CryptoJS.enc.Utf8);
+  return decrypted;
 }
 
 async sendMessage() {
