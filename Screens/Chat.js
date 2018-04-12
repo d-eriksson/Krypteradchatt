@@ -215,6 +215,7 @@ color: 'white',
   backgroundColor: '#132b30',
   padding:10,
   borderRadius: 10,
+  overflow: 'hidden',
 },
 avatar: {
 width: 50,
