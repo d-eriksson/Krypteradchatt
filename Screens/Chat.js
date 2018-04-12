@@ -70,7 +70,7 @@ selectAvatar(sender) {
 
 
 getLastMsg() {
-  const url = 'http://83.227.100.223:8080/messages/1/2018-04-10T13:28:24.000Z' 
+  const url = 'http://83.227.100.223:8080/messages/1/2018-04-10T13:28:24.000Z'
 
   fetch(url)
   .then((response) => response.json())
