@@ -1,8 +1,16 @@
 {
   "expoServerPort": 19000,
+<<<<<<< HEAD
   "packagerPort": 19003,
   "packagerPid": 23162,
   "expoServerNgrokUrl": "https://nb-66s.emmaweberyd.krypteradchatt.exp.direct",
   "packagerNgrokUrl": "https://packager.nb-66s.emmaweberyd.krypteradchatt.exp.direct",
   "ngrokPid": 23180
+=======
+  "packagerPort": 19002,
+  "packagerPid": 3296,
+  "expoServerNgrokUrl": "https://nz-nsg.messiah.krypteradchatt.exp.direct",
+  "packagerNgrokUrl": "https://packager.nz-nsg.messiah.krypteradchatt.exp.direct",
+  "ngrokPid": 5044
+>>>>>>> Task016
 }
