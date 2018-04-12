@@ -16,6 +16,15 @@ const TabNav = TabNavigator(
     initialRouteName: 'Chat',
     swipeEnabled: true,
     tabBarPosition: 'bottom',
+    tabBarOptions : {
+    style: {
+      backgroundColor: 'black',
+    },
+    indicatorStyle: {
+           borderBottomColor: '#ffffff',
+           borderBottomWidth: 2,
+       }
+  }
   }
 );
 
