@@ -50,6 +50,10 @@ componentDidMount() {
   fetch(url)
   .then((response) => response.json())
   .then((responseJson) => {
+
+    var bytes  = CryptoJS.AES.decrypt(responseJson.message.toString(), this.state.hash);
+    responseJson.message = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+
     this.setState({
       messageData: responseJson
     })
@@ -78,7 +82,6 @@ getLastMsg() {
   fetch(url)
   .then((response) => response.json())
   .then((responseJson) => {
-    console.log.responseJson
       this.setState({
         messageData: responseJson
         })
@@ -87,6 +90,12 @@ getLastMsg() {
     console.log(error)
   })
 
+}
+decryptMessage(m){
+
+  var bytes  = CryptoJS.AES.decrypt(m.toString(), this.state.hash);
+  var decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+  return decryptedData;
 }
 
 async sendMessage() {
@@ -156,7 +165,7 @@ return (
                   <Thumbnail style= {styles.avatar} source={this.selectAvatar(item.sentby)} />
                 </Left>
                 <Body style={styles.text}>
-                  <Text note style={styles.message}>{ item.message }</Text>
+                  <Text note style={styles.message}>{ this.decryptMessage(item.message) }</Text>
                 </Body>
                 <Right style = {styles.idontknow}>
                 <Text note style={styles.timestamp}>14.35</Text>
