@@ -65,17 +65,22 @@ export default class QRScanner extends Component {
     if (!this.state.scannedString) {
       return;
     }
+
     var IsThisOurTypeOfQr = true; // ska bytas ut till något som kollar ifall det är våra qr koder.
     if(IsThisOurTypeOfQr){
-      var roomID = "1";
-      var hash = "ajn123+93u193jju2h123hy1398jsnjngdåsudhå1ou239hw1iu2h3889jssq21";
+      var dividedString = this.state.scannedString.split('___');
+      var roomID = dividedString[0];
+      var chatname = dividedString[1];
+      var hash = dividedString[2];
+      var user ="2";
+      console.log( " Room: " + roomID + " Name: " + chatname + " Hash: "+ hash + " User: " + user);
     }
 
     return (
       <View style={styles.bottomBar}>
         <TouchableOpacity>
           <Text numberOfLines={1} style={styles.text}>
-            <ConnectChat roomID = {roomID} hash= {hash} />
+            <ConnectChat roomID = {roomID} hash= {hash} chatname= {chatname} user = {user}/>
           </Text>
         </TouchableOpacity>
       </View>
