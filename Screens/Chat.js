@@ -119,22 +119,6 @@ return (
 
   <View style={styles.container}>
 
-    <Header style={styles.header}>
-      <Left>
-        <Button transparent>
-          <Icon name='arrow-back' />
-        </Button>
-      </Left>
-      <Body>
-        <Title>{this.state.otherUser}</Title>
-      </Body>
-      <Right>
-        <Button transparent>
-          <Icon name='menu' />
-        </Button>
-      </Right>
-    </Header>
-
        <ScrollView
           ref={ref => this.scrollView = ref}
           onContentSizeChange={(contentWidth, contentHeight)=>{

@@ -38,7 +38,10 @@ const TabNav = TabNavigator(
       Chat: {
         screen: Chat,
         navigationOptions: ({ navigation }) => ({
-          title: `${navigation.state.params.name}`,
+          title: `${navigation.state.params.title}`,
+          headerStyle: {
+            backgroundColor: 'lightseagreen',
+          },
         }),
       },
     },
