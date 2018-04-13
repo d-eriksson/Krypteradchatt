@@ -10,7 +10,6 @@ const TabNav = TabNavigator(
       Profile: { screen: Profile },
       Home: { screen: HomeScreen },
       Scanner: { screen: QRScanner },
-      Chat: { screen: Chat },
     },
     {
       initialRouteName: 'Home',
@@ -39,7 +38,7 @@ const TabNav = TabNavigator(
       Chat: {
         screen: Chat,
         navigationOptions: ({ navigation }) => ({
-          title: 'Chat name',
+          title: `${navigation.state.params.name}`,
         }),
       },
     },

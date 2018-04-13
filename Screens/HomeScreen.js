@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
-import ChatList from '../Components/ChatList'
 import {
   StyleSheet,
-  Text,
   View,
   Button,
+  AsyncStorage,
+  FlatList,
   } from 'react-native';
 import GenerateQR from '../Components/generateQR';
 import * as SHA from 'js-sha256';
-import StackNav from '../App'
+import StackNav from '../App';
+import { List, ListItem, Body, Text, Left, Thumbnail } from 'native-base';
 
 export default class HomeScreen extends Component {
 
@@ -16,49 +17,79 @@ export default class HomeScreen extends Component {
 		super(props);
 		this.state = {
 			roomID: {},
-      hasch: '',
+      hash: '',
       sign: '___',
       chatname: 'Cool Chatt',
-      fullstring: ''
+      fullstring: '',
+      dataSource: []
 		};
 	}
 
-  createChat = () => {
+  async componentDidMount() {
+    const data = [];
+    let keys = await AsyncStorage.getAllKeys();
+    for (let inKey of keys) {
+        let obj = await AsyncStorage.getItem(inKey);
+        obj = JSON.parse(obj);
+        if(inKey != "profile"){
+          data.push(obj);
+        }
+    }
+    this.setState({ dataSource : data });
+  }
 
+  createChat = () => {
+    const {navigate} = this.props.navigation;
     fetch('http://83.227.100.223:8080/create')
     .then((res) => res.json())
     .then((data) => {
       this.setState({
         roomID: data,
-        hasch: SHA.sha256("Hasch"),
-        fullString: data.toString() + this.state.sign + this.state.chatname + this.state.sign + this.state.hasch
+        hash: SHA.sha256("Hasch"),
+        fullString: data.toString() + this.state.sign + this.state.chatname + this.state.sign + this.state.hash
       });
       console.log(this.state.fullString);
-      <GenerateQR value={this.state.fullString}/>})
+      navigate('Chat', {title: data})})
       .catch((err) => alert(err))
+
   }
 
   render() {
-    const {navigate} = this.props.navigation;
     return (
       <View>
-        <ChatList/>
+        <List>
+          <FlatList
+          data={this.state.dataSource}
+          renderItem={({ item }) => (
+            <ListItem
+              onPress={() => {
+                const {navigate} = this.props.navigation;
+                navigate('Chat', {title: item.roomID})
+              }}
+              avatar
+            >
+              <Left>
+                <Thumbnail style={{width: 40, height: 40, borderRadius: 40/2}} source={require('../aang.jpg')}></Thumbnail>
+              </Left>
+              <Body>
+                <Text>{ item.roomID }</Text>
+                <Text note>{ 'det senaste meddelandet' }</Text>
+              </Body>
+            </ListItem>
+          )}
+          keyExtractor={(item, index) => index}
+          />
+        </List>
         <Button
-          style={styles.container}
           title='Create Chatt'
           onPress={() => {
               this.createChat();
-              navigate('Chat')
             }
           }
         />
       </View>
-    );
-  };
-};
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1
+    )
   }
-});
+
+
+};

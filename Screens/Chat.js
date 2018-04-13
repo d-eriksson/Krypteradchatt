@@ -18,20 +18,19 @@ import Expo from 'expo';
 export default class Chat extends Component {
 
 constructor() {
-super()
-this.state = {
-
-  isReady: false,
-
-  typing: "",
-  messageData: [],
-  user: 1,
-  roomID: 1,
-  otherUser: "Bob",
-}
+  super()
+  this.state = {
+    isReady: false,
+    typing: "",
+    messageData: [],
+    user: 1,
+    roomID: "1",
+    otherUser: "Bob",
+  }
 }
 
 async componentWillMount() {
+
   await Expo.Font.loadAsync({
     'Roboto': require('native-base/Fonts/Roboto.ttf'),
     'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
@@ -40,10 +39,15 @@ async componentWillMount() {
   this.setState({isReady:true})
 }
 
-
 componentDidMount() {
-  const url = 'http://83.227.100.223:8080/messages/1/2018-04-10T13:28:24.000Z'
 
+  const {navigate} = this.props.navigation;
+  const {params} = this.props.navigation.state;
+  this.setState({
+    otherUser: this.props.navigation.state.params.title,
+    roomID: this.props.navigation.state.params.title
+  })
+  const url = 'http://83.227.100.223:8080/messages/'+this.props.navigation.state.params.title+'/2018-04-12T13:28:24.000Z'
   fetch(url)
   .then((response) => response.json())
   .then((responseJson) => {
@@ -54,6 +58,7 @@ componentDidMount() {
   .catch((error) => {
     console.log(error)
   })
+
 }
 
 selectAvatar(sender) {
@@ -68,10 +73,9 @@ selectAvatar(sender) {
        }
    }
 
-
 getLastMsg() {
-  const url = 'http://83.227.100.223:8080/messages/1/2018-04-10T13:28:24.000Z'
 
+  const url = 'http://83.227.100.223:8080/messages/'+this.state.roomID+'/2018-04-10T13:28:24.000Z'
   fetch(url)
   .then((response) => response.json())
   .then((responseJson) => {
@@ -100,18 +104,13 @@ async sendMessage() {
         console.log(error)
       })
 
-     this.getLastMsg();
-
-     this.setState({
+    //this.getLastMsg();
+    this.setState({
        typing: '',
-     });
+    });
 }
 
-
-
-
-render()
- {
+render() {
   if (!this.state.isReady) {
       return <Expo.AppLoading />;
     }
