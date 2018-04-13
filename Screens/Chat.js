@@ -104,7 +104,7 @@ async sendMessage() {
         console.log(error)
       })
 
-    //this.getLastMsg();
+    this.getLastMsg();
     this.setState({
        typing: '',
     });
