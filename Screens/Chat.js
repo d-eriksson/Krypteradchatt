@@ -14,6 +14,7 @@ TouchableOpacity } from 'react-native';
 import { Container, Header, Button, List, ListItem, Body, Text, Left,Right, Icon, Title, Thumbnail } from 'native-base';
 import { Ionicons } from '@expo/vector-icons';
 import Expo from 'expo';
+import GenerateQR from '../Components/GenerateQR';
 
 export default class Chat extends Component {
 
@@ -26,6 +27,7 @@ constructor() {
     user: 1,
     roomID: "1",
     otherUser: "Bob",
+    hash: '',
   }
 }
 
@@ -45,7 +47,8 @@ componentDidMount() {
   const {params} = this.props.navigation.state;
   this.setState({
     otherUser: this.props.navigation.state.params.title,
-    roomID: this.props.navigation.state.params.title
+    roomID: this.props.navigation.state.params.title,
+    hash: this.props.navigation.state.params.hash,
   })
   const url = 'http://83.227.100.223:8080/messages/'+this.props.navigation.state.params.title+'/2018-04-12T13:28:24.000Z'
   fetch(url)
@@ -119,11 +122,15 @@ return (
 
   <View style={styles.container}>
 
-       <ScrollView
-          ref={ref => this.scrollView = ref}
-          onContentSizeChange={(contentWidth, contentHeight)=>{
-              this.scrollView.scrollToEnd({animated: true});
-          }}>
+    <ScrollView
+      ref={ref => this.scrollView = ref}
+      onContentSizeChange={(contentWidth, contentHeight)=>{
+        this.scrollView.scrollToEnd({animated: true});
+      }}
+    >
+        <View style={styles.qr}>
+          <GenerateQR value={this.state.hash}/>
+        </View>
 
         <List>
           <FlatList
@@ -137,38 +144,37 @@ return (
                   <Text note style={styles.message}>{ item.message }</Text>
                 </Body>
                 <Right style = {styles.idontknow}>
-                <Text note style={styles.timestamp}>14.35</Text>
-              </Right>
+                  <Text note style={styles.timestamp}>14.35</Text>
+                </Right>
               </ListItem>
             )}
             keyExtractor={(item, index) => index}
           />
         </List>
-            </ScrollView>
+    </ScrollView>
 
-      <KeyboardAvoidingView behavior="padding">
-        <View style={styles.footer}>
+    <KeyboardAvoidingView behavior="padding">
+      <View style={styles.footer}>
 
-            <TextInput
-              value={this.state.typing}
-              onChangeText={text => this.setState({typing: text})}
-              style={styles.input}
-              underlineColorAndroid="transparent"
-              placeholder="Type something secret.."
-            />
+        <TextInput
+          value={this.state.typing}
+          onChangeText={text => this.setState({typing: text})}
+          style={styles.input}
+          underlineColorAndroid="transparent"
+          placeholder="Type something secret.."
+        />
 
-            <TouchableOpacity onPress={this.sendMessage.bind(this)}>
-              <Text style={styles.send}>Send</Text>
-            </TouchableOpacity>
+        <TouchableOpacity onPress={this.sendMessage.bind(this)}>
+          <Text style={styles.send}>Send</Text>
+        </TouchableOpacity>
 
-        </View>
-      </KeyboardAvoidingView>
+      </View>
+    </KeyboardAvoidingView>
 
-    </View>
+  </View>
 
-
-);
-};
+)
+}
 }
 
 const styles = StyleSheet.create({
@@ -232,6 +238,10 @@ footer: {
   },
   idontknow: {
     borderBottomColor: '#102027',
+  },
+  qr: {
+    alignItems: 'center',
+    marginTop: 20
   }
 
 });

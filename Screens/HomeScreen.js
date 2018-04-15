@@ -6,7 +6,6 @@ import {
   AsyncStorage,
   FlatList,
   } from 'react-native';
-import GenerateQR from '../Components/generateQR';
 import * as SHA from 'js-sha256';
 import StackNav from '../App';
 import { List, ListItem, Body, Text, Left, Thumbnail } from 'native-base';
@@ -46,10 +45,10 @@ export default class HomeScreen extends Component {
       this.setState({
         roomID: data,
         hash: SHA.sha256("Hasch"),
-        fullString: data.toString() + this.state.sign + this.state.chatname + this.state.sign + this.state.hash
+        fullString: data.toString() + this.state.sign + this.state.chatname + this.state.sign + SHA.sha256("Hasch")
       });
       console.log(this.state.fullString);
-      navigate('Chat', {title: data})})
+      navigate('Chat', {title: data, hash: SHA.sha256("Hasch")})})
       .catch((err) => alert(err))
 
   }
@@ -64,7 +63,7 @@ export default class HomeScreen extends Component {
             <ListItem
               onPress={() => {
                 const {navigate} = this.props.navigation;
-                navigate('Chat', {title: item.roomID})
+                navigate('Chat', {title: item.roomID, hash: item.hash})
               }}
               avatar
             >
