@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
 import {
-  StyleSheet,
   View,
   Button,
   AsyncStorage,
   FlatList,
   } from 'react-native';
 import * as SHA from 'js-sha256';
-import StackNav from '../App';
 import { List, ListItem, Body, Text, Left, Thumbnail } from 'native-base';
 
 export default class HomeScreen extends Component {
@@ -16,12 +14,15 @@ export default class HomeScreen extends Component {
 		super(props);
 		this.state = {
 			roomID: {},
-      hash: '',
+      hash: 'hej',
       sign: '___',
       chatname: 'Cool Chatt',
       fullstring: '',
-      dataSource: []
+      user: '1',
+      dataSource: [],
+      dataSave: []
 		};
+    this.createChat = this.createChat.bind(this);
 	}
 
   async componentDidMount() {
@@ -42,18 +43,37 @@ export default class HomeScreen extends Component {
     fetch('http://83.227.100.223:8080/create')
     .then((res) => res.json())
     .then((data) => {
-      this.setState({
-        roomID: data,
-        hash: SHA.sha256("Hasch"),
-        fullString: data.toString() + this.state.sign + this.state.chatname + this.state.sign + SHA.sha256("Hasch")
-      });
-      console.log(this.state.fullString);
-      navigate('Chat', {title: data, hash: SHA.sha256("Hasch")})})
-      .catch((err) => alert(err))
-
+          this.setState({
+              roomID: data,
+              hash: SHA.sha256("Hasch"),
+              fullString: data.toString() + this.state.sign + this.state.chatname + this.state.sign + SHA.sha256("Hasch"),
+          })
+          let room = {
+            roomID: this.state.roomID.toString(),
+            hash: this.state.hash,
+            chatname: this.state.chatname,
+            user: this.state.user
+          };
+          
+          AsyncStorage.setItem(this.state.roomID.toString(), JSON.stringify(room), () => {
+             AsyncStorage.getItem(this.state.roomID.toString(), (err, result) => {
+                 if(err)
+                 {
+                   this.setState({
+                     dataSave: "Error!"
+                   })
+                 }
+                 this.setState({
+                   dataSave: result
+                 });
+              });
+          });
+          navigate('Chat', {title: this.state.roomID, hash: this.state.fullString})
+    })
   }
 
   render() {
+
     return (
       <View>
         <List>
@@ -89,4 +109,4 @@ export default class HomeScreen extends Component {
       </View>
     )
   }
-};
+}

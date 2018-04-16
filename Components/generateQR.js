@@ -5,7 +5,8 @@ import {
   View,
   TextInput,
   Button,
-  Image } from 'react-native';
+  Image,
+  Dimensions } from 'react-native';
 import { QRCode } from 'react-native-custom-qr-codes';
 
 {/*Create QR component by using <GenerateQE value="[link goes here] />"*/}
@@ -14,11 +15,11 @@ export default class GenerateQR extends Component {
 
   render() {
     return (
-          <QRCode content={this.props.value} codeStyle='dot' linearGradient={['rgb(0,150,136)','rgb(82, 199, 184)']} gradientDirection={[0,170,0,0]} backgroundColor='rgba(0,0,0,0)'/>
+          <QRCode content={this.props.value} codeStyle='square' size={Dimensions.get('window').width-80} linearGradient={['rgb(0,0,0)','rgb(0, 0, 0)']} gradientDirection={[0,170,0,0]} backgroundColor='rgba(255,255,255,1)'/>
     );
   }
 }
-module.exports = GenerateQR;
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
