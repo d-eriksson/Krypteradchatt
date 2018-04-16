@@ -48,6 +48,8 @@ Output:
 	sentby: 1 or 2 (depending on who sent the message)
 	send_time: "YYYY-MM-DDTHH:MM:SS.000Z"
 }
+## http://83.227.100.223:8080/lastmessage/:roomID
+this will return the last message that was sent in the chatroom 
 
 ## http://83.227.100.223:8080/submit/:roomID/:message/:sentby
 this http-request will connect to a chatroom and submit a message to the database.

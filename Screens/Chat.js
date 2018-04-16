@@ -15,6 +15,7 @@ import { Container, Header, Button, List, ListItem, Body, Text, Left,Right, Icon
 import { Ionicons } from '@expo/vector-icons';
 import Expo from 'expo';
 import GenerateQR from '../Components/GenerateQR';
+import CryptoJS from 'crypto-js';
 
 export default class Chat extends Component {
 
@@ -54,6 +55,7 @@ componentDidMount() {
   fetch(url)
   .then((response) => response.json())
   .then((responseJson) => {
+
     this.setState({
       messageData: responseJson
     })
@@ -82,7 +84,6 @@ getLastMsg() {
   fetch(url)
   .then((response) => response.json())
   .then((responseJson) => {
-    console.log.responseJson
       this.setState({
         messageData: responseJson
         })
@@ -92,14 +93,21 @@ getLastMsg() {
   })
 
 }
+decryptMessage(m){
+  var decrypted  = CryptoJS.AES.decrypt( m, this.state.hash);
+  decrypted = decrypted.toString(CryptoJS.enc.Utf8);
+  return decrypted;
+}
 
 async sendMessage() {
 
   let sender = this.state.user;
-  let msg = this.state.typing;
+  let msg = CryptoJS.AES.encrypt(this.state.typing, this.state.hash);
   let room = this.state.roomID;
 
-  const url = 'http://83.227.100.223:8080/submit/'+room+'/'+msg+'/'+sender+'/'
+
+  const url = 'http://83.227.100.223:8080/submit/'+room+'/'+msg+'/'+sender+'/';
+
 
     fetch(url)
       .then((response) => response.json())
@@ -141,7 +149,7 @@ return (
                   <Thumbnail style= {styles.avatar} source={this.selectAvatar(item.sentby)} />
                 </Left>
                 <Body style={styles.text}>
-                  <Text note style={styles.message}>{ item.message }</Text>
+                  <Text note style={styles.message}>{ this.decryptMessage(item.message) }</Text>
                 </Body>
                 <Right style = {styles.idontknow}>
                   <Text note style={styles.timestamp}>14.35</Text>
