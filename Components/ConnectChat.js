@@ -27,6 +27,8 @@ export default class ConnectChat extends Component {
     let room = {
       roomID: this.props.roomID,
       hash: this.props.hash,
+      chatname: this.props.chatname,
+      user: this.props.user
     };
     AsyncStorage.setItem(this.props.roomID, JSON.stringify(room), () => {
        AsyncStorage.getItem(this.props.roomID, (err, result) => {
