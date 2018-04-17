@@ -10,7 +10,6 @@ export default class ConnectChat extends Component {
   }
 
   componentDidMount() {
-
     const url = 'http://83.227.100.223:8080/connect/' + this.props.roomID;
     fetch(url)
     .then((response) => response.text())
@@ -47,7 +46,7 @@ export default class ConnectChat extends Component {
   }
 
   render () {
-    return <Text>redirecting</Text>; 
+    return <Text>redirecting</Text>;
   }
 
 }

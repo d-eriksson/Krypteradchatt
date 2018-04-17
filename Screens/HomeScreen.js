@@ -4,6 +4,7 @@ import {
   Button,
   AsyncStorage,
   FlatList,
+  Dimensions,
   } from 'react-native';
 import * as SHA from 'js-sha256';
 import { List, ListItem, Body, Text, Left, Thumbnail } from 'native-base';
@@ -20,10 +21,32 @@ export default class HomeScreen extends Component {
       fullstring: '',
       user: '1',
       dataSource: [],
-      dataSave: []
+      dataSave: [],
+      refreshing: false,
 		};
     this.createChat = this.createChat.bind(this);
 	}
+
+  onRefresh = async () => {
+    this.setState({
+      refreshing: true
+    })
+
+    const data = [];
+    let keys = await AsyncStorage.getAllKeys();
+    for (let inKey of keys) {
+        let obj = await AsyncStorage.getItem(inKey);
+        obj = JSON.parse(obj);
+        if(inKey != "profile"){
+          data.push(obj);
+        }
+    }
+    this.setState({
+      dataSource : data,
+      refreshing: false
+    });
+
+  }
 
   async componentDidMount() {
     const data = [];
@@ -36,6 +59,7 @@ export default class HomeScreen extends Component {
         }
     }
     this.setState({ dataSource : data });
+
   }
 
   createChat = () => {
@@ -54,7 +78,7 @@ export default class HomeScreen extends Component {
             chatname: this.state.chatname,
             user: this.state.user
           };
-          
+
           AsyncStorage.setItem(this.state.roomID.toString(), JSON.stringify(room), () => {
              AsyncStorage.getItem(this.state.roomID.toString(), (err, result) => {
                  if(err)
@@ -72,14 +96,29 @@ export default class HomeScreen extends Component {
     })
   }
 
+  renderFooter = () => {
+      return (
+        <Button
+        title='Create Chatt'
+        onPress={() => {
+            this.createChat();
+          }
+        }
+      />
+    )
+  }
+
   render() {
 
     return (
-      <View>
+      <View style={{height: Dimensions.get('window').height-60}}>
         <List>
           <FlatList
-          data={this.state.dataSource}
-          renderItem={({ item }) => (
+            data={this.state.dataSource}
+            ListFooterComponent={this.renderFooter}
+            onRefresh= { this.onRefresh }
+            refreshing= {this.state.refreshing}
+            renderItem={({ item }) => (
             <ListItem
               onPress={() => {
                 const {navigate} = this.props.navigation;
@@ -99,13 +138,6 @@ export default class HomeScreen extends Component {
           keyExtractor={(item, index) => index}
           />
         </List>
-        <Button
-          title='Create Chatt'
-          onPress={() => {
-              this.createChat();
-            }
-          }
-        />
       </View>
     )
   }

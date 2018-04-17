@@ -66,7 +66,7 @@ componentDidMount() {
 
 }
 
-selectAvatar(sender) {
+selectAvatar = (sender) => {
 
   const userIcon = require('../chameleon.png');
   const otherUserIcon = require('../chameleon2.jpg');
@@ -78,7 +78,7 @@ selectAvatar(sender) {
        }
    }
 
-getLastMsg() {
+getLastMsg = () => {
 
   const url = 'http://83.227.100.223:8080/messages/'+this.state.roomID+'/2018-04-10T13:28:24.000Z'
   fetch(url)
@@ -93,13 +93,13 @@ getLastMsg() {
   })
 
 }
-decryptMessage(m){
+decryptMessage = (m) => {
   var decrypted  = CryptoJS.AES.decrypt( m, this.state.hash);
   decrypted = decrypted.toString(CryptoJS.enc.Utf8);
   return decrypted;
 }
 
-async sendMessage() {
+async sendMessage(){
 
   let sender = this.state.user;
   let msg = CryptoJS.AES.encrypt(this.state.typing, this.state.hash);
