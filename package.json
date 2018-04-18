@@ -23,7 +23,8 @@
     "crypto-js": "^3.1.9-1",
     "expo": "^25.0.0",
     "js-sha256": "^0.9.0",
-    "native-base": "^2.4.1",
+    "mysql": "^2.15.0",
+    "native-base": "^2.4.2",
     "react": "16.2.0",
     "react-native": "0.52.0",
     "react-native-asyncstorage": "^1.0.0",
@@ -35,6 +36,8 @@
     "react-native-text-input": "^1.1.0",
     "react-native-training-chat-server": "^2.0.0",
     "react-native-vector-icons": "^4.5.0",
-    "react-navigation": "^1.4.0"
+    "react-navigation": "^1.4.0",
+    "socket.io": "^2.1.0",
+    "socket.io-client": "^2.1.0"
   }
 }

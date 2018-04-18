@@ -17,10 +17,15 @@ import Expo from 'expo';
 import GenerateQR from '../Components/GenerateQR';
 import CryptoJS from 'crypto-js';
 
+window.navigator.userAgent = 'react-native';
+//import io from 'socket.io-client/dist/socket.io.js';
+import SocketIOClient from 'socket.io-client';
+
 export default class Chat extends Component {
 
-constructor() {
-  super()
+constructor(props) {
+  super(props)
+  this.socket = SocketIOClient('http://83.227.100.223:8080');
   this.state = {
     isReady: false,
     typing: "",
@@ -101,12 +106,22 @@ decryptMessage(m){
 
 async sendMessage() {
 
+  
+
   let sender = this.state.user;
-  let msg = CryptoJS.AES.encrypt(this.state.typing, this.state.hash);
+  var msg = CryptoJS.AES.encrypt(this.state.typing, this.state.hash);
+  //var msg = this.state.typing;
   let room = this.state.roomID;
+  var data = {
+    sender : sender,
+    msg: msg.toString(),
+    room: room
+  }
+  this.socket.emit('chat message', data);
 
 
-  const url = 'http://83.227.100.223:8080/submit/'+room+'/'+msg+'/'+sender+'/';
+  /*const url = 'http://83.227.100.223:8080/submit/'+room+'/'+msg+'/'+sender+'/';
+
 
 
     fetch(url)
@@ -116,15 +131,21 @@ async sendMessage() {
       })
 
     this.getLastMsg();
+    */
     this.setState({
        typing: '',
     });
 }
-
+this.socket.on(this.roomID,function(data){
+  this.setState({
+    messageData : messageData.concat(data)
+  })
+})
 render() {
   if (!this.state.isReady) {
       return <Expo.AppLoading />;
     }
+
 
 return (
 
