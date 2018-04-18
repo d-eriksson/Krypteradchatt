@@ -14,22 +14,14 @@ server.listen(8080, () => console.log('Listening on 8080'));
 
 //Create socket.io instance
 var io = require('socket.io')(server);
-
-
 io.on('connection', function(socket){
   console.log('a user connected');
-  
   socket.on('disconnect', function(){
     console.log('user disconnected');
   });
-
-
-
 });
-
 io.on('connection', function(socket){
   socket.on('chat message', function(msg){
-
   	var roomID = msg.room;
   	var message = msg.msg;
   	var sender = msg.sender;
@@ -42,13 +34,18 @@ io.on('connection', function(socket){
     var sql = "SELECT * FROM chat_messages WHERE roomID= " + mysql.escape(roomID) + " ORDER BY send_time DESC LIMIT 1"
     con.query(sql,function(err,result){
         if(err) throw err;
-        res.send(result);
-        io.emit(roomID, result);
+        console.log(result);
+        console.log("Emitting to: " + roomID);
+        socket.emit("newMessage_"+roomID, result);
     })
   });
+  socket.on('start', function(roomID){
+    var sql = "SELECT * FROM chat_messages WHERE roomID = " + mysql.escape(roomID);
+          con.query(sql , function (err, result, fields) {
+            socket.emit(roomID, result);
+          });
+  })
 });
-
-
 var con = mysql.createConnection({
   host: "localhost",
   user: "root",
