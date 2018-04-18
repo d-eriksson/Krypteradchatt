@@ -98,6 +98,7 @@ export default class HomeScreen extends Component {
 
   renderFooter = () => {
       return (
+        <View>
         <Button
         title='Create Chatt'
         onPress={() => {
@@ -105,6 +106,14 @@ export default class HomeScreen extends Component {
           }
         }
       />
+      <Button
+      title='Create Chatt'
+      onPress={() => {
+          this.createChat();
+        }
+      }
+    />
+      </View>
     )
   }
 

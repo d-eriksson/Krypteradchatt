@@ -55,7 +55,6 @@ componentDidMount() {
   fetch(url)
   .then((response) => response.json())
   .then((responseJson) => {
-
     this.setState({
       messageData: responseJson
     })
@@ -125,7 +124,6 @@ render() {
   if (!this.state.isReady) {
       return <Expo.AppLoading />;
     }
-
 return (
 
   <View style={styles.container}>
