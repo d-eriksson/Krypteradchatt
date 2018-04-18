@@ -29,12 +29,26 @@ constructor(props) {
   this.state = {
     isReady: false,
     typing: "",
-    messageData: [],
+    messages: [],
     user: 1,
-    roomID: "1",
-    otherUser: "Bob",
+    roomID: props.navigation.state.params.title,
+    otherUser: props.navigation.state.params.title,
     hash: '',
   }
+
+
+  this.socket.on(this.state.roomID,function(data){
+    this.setState({
+      messages: data
+    })
+  }.bind(this))
+
+  this.socket.on('newMessage_'+this.state.roomID,function(data){
+    this.setState({
+      messages: this.state.messages.concat(data[0])
+    })
+  }.bind(this))
+
 }
 
 async componentWillMount() {
@@ -45,9 +59,14 @@ async componentWillMount() {
     'Ionicons': require('native-base/Fonts/Ionicons.ttf'),
   });
   this.setState({isReady:true})
+
+  console.log(this.state.messages);
 }
 
 componentDidMount() {
+
+    this.socket.emit('start', this.state.roomID);
+
 
   const {navigate} = this.props.navigation;
   const {params} = this.props.navigation.state;
@@ -55,18 +74,6 @@ componentDidMount() {
     otherUser: this.props.navigation.state.params.title,
     roomID: this.props.navigation.state.params.title,
     hash: this.props.navigation.state.params.hash,
-  })
-  const url = 'http://83.227.100.223:8080/messages/'+this.props.navigation.state.params.title+'/2018-04-12T13:28:24.000Z'
-  fetch(url)
-  .then((response) => response.json())
-  .then((responseJson) => {
-
-    this.setState({
-      messageData: responseJson
-    })
-  })
-  .catch((error) => {
-    console.log(error)
   })
 
 }
@@ -83,21 +90,7 @@ selectAvatar(sender) {
        }
    }
 
-getLastMsg() {
 
-  const url = 'http://83.227.100.223:8080/messages/'+this.state.roomID+'/2018-04-10T13:28:24.000Z'
-  fetch(url)
-  .then((response) => response.json())
-  .then((responseJson) => {
-      this.setState({
-        messageData: responseJson
-        })
-  })
-  .catch((error) => {
-    console.log(error)
-  })
-
-}
 decryptMessage(m){
   var decrypted  = CryptoJS.AES.decrypt( m, this.state.hash);
   decrypted = decrypted.toString(CryptoJS.enc.Utf8);
@@ -105,8 +98,6 @@ decryptMessage(m){
 }
 
 async sendMessage() {
-
-  
 
   let sender = this.state.user;
   var msg = CryptoJS.AES.encrypt(this.state.typing, this.state.hash);
@@ -119,28 +110,13 @@ async sendMessage() {
   }
   this.socket.emit('chat message', data);
 
-
-  /*const url = 'http://83.227.100.223:8080/submit/'+room+'/'+msg+'/'+sender+'/';
-
-
-
-    fetch(url)
-      .then((response) => response.json())
-      .catch((error) => {
-        console.log(error)
-      })
-
-    this.getLastMsg();
-    */
     this.setState({
        typing: '',
     });
 }
-this.socket.on(this.roomID,function(data){
-  this.setState({
-    messageData : messageData.concat(data)
-  })
-})
+
+
+
 render() {
   if (!this.state.isReady) {
       return <Expo.AppLoading />;
@@ -163,7 +139,7 @@ return (
 
         <List>
           <FlatList
-            data={this.state.messageData}
+            data={this.state.messages}
             renderItem={({ item }) => (
               <ListItem avatar style={styles.row}>
                 <Left>
