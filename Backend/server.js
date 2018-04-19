@@ -14,12 +14,14 @@ server.listen(8080, () => console.log('Listening on 8080'));
 
 //Create socket.io instance
 var io = require('socket.io')(server);
+
 io.on('connection', function(socket){
   console.log('a user connected');
   socket.on('disconnect', function(){
     console.log('user disconnected');
   });
 });
+
 io.on('connection', function(socket){
   socket.on('chat message', function(msg){
   	var roomID = msg.room;
@@ -44,6 +46,15 @@ io.on('connection', function(socket){
           con.query(sql , function (err, result, fields) {
             socket.emit(roomID, result);
           });
+  })
+  socket.on('connect', function(data){
+    var roomID = data.roomID;
+    var connectName = data.connectName;
+    var sql = "UPDATE chatts SET connected=1, connected_name= "+ mysql.escape(connectName) +" WHERE roomID = " + mysql.escape(roomID);
+    con.query(sql, function(err, result){
+        if(err) throw err;
+        console.log("Connected to chatt");
+    })
   })
 });
 var con = mysql.createConnection({
