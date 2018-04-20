@@ -14,14 +14,10 @@ export default class HomeScreen extends Component {
 	constructor (props){
 		super(props);
 		this.state = {
-			roomID: {},
-      hash: 'hej',
       sign: '___',
       chatname: 'Cool Chatt',
-      fullstring: '',
       user: '1',
       dataSource: [],
-      dataSave: [],
       refreshing: false,
 		};
     this.createChat = this.createChat.bind(this);
@@ -73,7 +69,7 @@ export default class HomeScreen extends Component {
           };
           let fullString = room.roomID + this.state.sign + room.chatname + this.state.sign + room.hash;
 
-          AsyncStorage.setItem(this.state.roomID.toString(), JSON.stringify(room), () => {});
+          AsyncStorage.setItem(room.roomID, JSON.stringify(room), () => {});
           navigate('Chat', {title: room.roomID, hash: fullString})
     })
   }
