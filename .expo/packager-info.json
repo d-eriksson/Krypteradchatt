@@ -1,8 +1,8 @@
 {
   "expoServerPort": 19000,
-  "packagerPort": 19008,
-  "packagerPid": 51819,
-  "expoServerNgrokUrl": "https://kn-pj8.emmaweberyd.krypteradchatt.exp.direct",
-  "packagerNgrokUrl": "https://packager.kn-pj8.emmaweberyd.krypteradchatt.exp.direct",
-  "ngrokPid": 51839
+  "packagerPort": 19010,
+  "packagerPid": 64650,
+  "expoServerNgrokUrl": "https://hx-32s.emmaweberyd.krypteradchatt.exp.direct",
+  "packagerNgrokUrl": "https://packager.hx-32s.emmaweberyd.krypteradchatt.exp.direct",
+  "ngrokPid": 64667
 }

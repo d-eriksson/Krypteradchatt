@@ -74,10 +74,10 @@ export default class QRScanner extends Component {
 
 
  _maybeRenderString = (res) => {
-    console.log('start')
+
     var IsThisOurTypeOfQr = true; // ska bytas ut till något som kollar ifall det är våra qr koder.
     if(IsThisOurTypeOfQr){
-      {/*var dividedString = res.split('___');*/}
+      var dividedString = res.split('___');
       let room = {
         roomID: dividedString[0],
         hash: dividedString[2],
@@ -85,18 +85,9 @@ export default class QRScanner extends Component {
         user: "2",
       };
 
-      const url = 'http://83.227.100.223:8080/connect/' + room.roomID;
-      fetch(url)
-      .then((response) => response.text())
-      .then((responseJson) => {})
-      .catch((error) => {
-        console.log(error)
-      })
-
       AsyncStorage.setItem(room.roomID, JSON.stringify(room), () => {});
-      console.log('end')
       const {navigate} = this.props.navigation;
-      navigate('Chat', {title: room.roomID, hash: room.hash})
+      navigate('Chat', {title: room.roomID, hash: res})
     }
   };
 }

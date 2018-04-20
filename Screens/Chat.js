@@ -9,13 +9,14 @@ TextInput,
 StatusBar,
 ScrollView,
 Platform,
+Dimensions,
 KeyboardAvoidingView,
 TouchableOpacity } from 'react-native';
 import { Container, Header, Button, List, ListItem, Body, Text, Left,Right, Icon, Title, Thumbnail } from 'native-base';
 import { Ionicons } from '@expo/vector-icons';
 import Expo from 'expo';
-import GenerateQR from '../Components/GenerateQR';
 import CryptoJS from 'crypto-js';
+import QRCode from 'react-native-qrcode';
 
 export default class Chat extends Component {
 
@@ -33,7 +34,6 @@ constructor() {
 }
 
 async componentWillMount() {
-
   await Expo.Font.loadAsync({
     'Roboto': require('native-base/Fonts/Roboto.ttf'),
     'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
@@ -135,7 +135,7 @@ return (
       }}
     >
         <View style={styles.qr}>
-          <GenerateQR value={this.state.hash}/>
+          <QRCode value={this.state.hash} size={Dimensions.get('window').width-80}  />
         </View>
 
         <List>
@@ -185,7 +185,7 @@ return (
 
 const styles = StyleSheet.create({
 container: {
-backgroundColor: '#102027',
+backgroundColor: 'white',
 flexDirection : 'column',
 flex : 1
 

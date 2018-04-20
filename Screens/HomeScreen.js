@@ -36,16 +36,14 @@ export default class HomeScreen extends Component {
     let keys = await AsyncStorage.getAllKeys();
     for (let inKey of keys) {
         let obj = await AsyncStorage.getItem(inKey);
-        obj = JSON.parse(obj);
         if(inKey != "profile"){
-          data.push(obj);
+          data.push(JSON.parse(obj));
         }
     }
     this.setState({
       dataSource : data,
       refreshing: false
     });
-
   }
 
   async componentDidMount() {
@@ -53,9 +51,8 @@ export default class HomeScreen extends Component {
     let keys = await AsyncStorage.getAllKeys();
     for (let inKey of keys) {
         let obj = await AsyncStorage.getItem(inKey);
-        obj = JSON.parse(obj);
         if(inKey != "profile"){
-          data.push(obj);
+          data.push(JSON.parse(obj));
         }
     }
     this.setState({ dataSource : data });
@@ -67,32 +64,17 @@ export default class HomeScreen extends Component {
     fetch('http://83.227.100.223:8080/create')
     .then((res) => res.json())
     .then((data) => {
-          this.setState({
-              roomID: data,
-              hash: SHA.sha256("Hasch"),
-              fullString: data.toString() + this.state.sign + this.state.chatname + this.state.sign + SHA.sha256("Hasch"),
-          })
+
           let room = {
-            roomID: this.state.roomID.toString(),
-            hash: this.state.hash,
+            roomID: data.toString(),
+            hash: SHA.sha256("Hasch"),
             chatname: this.state.chatname,
             user: this.state.user
           };
+          let fullString = room.roomID + this.state.sign + room.chatname + this.state.sign + room.hash;
 
-          AsyncStorage.setItem(this.state.roomID.toString(), JSON.stringify(room), () => {
-             AsyncStorage.getItem(this.state.roomID.toString(), (err, result) => {
-                 if(err)
-                 {
-                   this.setState({
-                     dataSave: "Error!"
-                   })
-                 }
-                 this.setState({
-                   dataSave: result
-                 });
-              });
-          });
-          navigate('Chat', {title: this.state.roomID, hash: this.state.fullString})
+          AsyncStorage.setItem(this.state.roomID.toString(), JSON.stringify(room), () => {});
+          navigate('Chat', {title: room.roomID, hash: fullString})
     })
   }
 
@@ -118,7 +100,6 @@ export default class HomeScreen extends Component {
   }
 
   render() {
-
     return (
       <View style={{height: Dimensions.get('window').height-60}}>
         <List>
