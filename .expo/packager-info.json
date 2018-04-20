@@ -1,16 +1,6 @@
 {
-  "expoServerPort": 19000,
-<<<<<<< HEAD
-  "packagerPort": 19001,
-  "packagerPid": 19552,
+  "expoServerPort": null,
   "expoServerNgrokUrl": null,
   "packagerNgrokUrl": null,
   "ngrokPid": null
-=======
-  "packagerPort": 19010,
-  "packagerPid": 64650,
-  "expoServerNgrokUrl": "https://hx-32s.emmaweberyd.krypteradchatt.exp.direct",
-  "packagerNgrokUrl": "https://packager.hx-32s.emmaweberyd.krypteradchatt.exp.direct",
-  "ngrokPid": 64667
->>>>>>> 7e8eb4bd9fddee0f903ae11ddb29863b6e9c5c4e
 }

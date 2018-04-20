@@ -39,11 +39,7 @@
     "react-native-training-chat-server": "^2.0.0",
     "react-native-vector-icons": "^4.5.0",
     "react-navigation": "^1.4.0",
-<<<<<<< HEAD
     "socket.io": "^2.1.0",
     "socket.io-client": "^2.1.0"
-=======
-    "react-qr-svg": "^2.1.0"
->>>>>>> 7e8eb4bd9fddee0f903ae11ddb29863b6e9c5c4e
   }
 }
