@@ -9,13 +9,14 @@ TextInput,
 StatusBar,
 ScrollView,
 Platform,
+Dimensions,
 KeyboardAvoidingView,
 TouchableOpacity } from 'react-native';
 import { Container, Header, Button, List, ListItem, Body, Text, Left,Right, Icon, Title, Thumbnail } from 'native-base';
 import { Ionicons } from '@expo/vector-icons';
 import Expo from 'expo';
-import GenerateQR from '../Components/GenerateQR';
 import CryptoJS from 'crypto-js';
+import QRCode from 'react-native-qrcode';
 
 window.navigator.userAgent = 'react-native';
 //import io from 'socket.io-client/dist/socket.io.js';
@@ -58,7 +59,6 @@ constructor(props) {
 }
 
 async componentWillMount() {
-
   await Expo.Font.loadAsync({
     'Roboto': require('native-base/Fonts/Roboto.ttf'),
     'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
@@ -78,10 +78,9 @@ componentDidMount() {
     hash: this.props.navigation.state.params.hash,
   })
 
-
 }
 
-selectAvatar(sender) {
+selectAvatar = (sender) => {
 
   const userIcon = require('../chameleon.png');
   const otherUserIcon = require('../chameleon2.jpg');
@@ -100,7 +99,7 @@ decryptMessage(m){
   return decrypted;
 }
 
-async sendMessage() {
+async sendMessage(){
 
   let sender = this.state.user;
   var msg = CryptoJS.AES.encrypt(this.state.typing, this.state.hash);
@@ -124,8 +123,6 @@ render() {
   if (!this.state.isReady) {
       return <Expo.AppLoading />;
     }
-
-
 return (
 
   <View style={styles.container}>
@@ -137,7 +134,7 @@ return (
       }}
     >
         <View style={styles.qr}>
-          <GenerateQR value={this.state.hash}/>
+          <QRCode value={this.state.hash} size={Dimensions.get('window').width-80}  />
         </View>
 
         <List>
@@ -187,7 +184,7 @@ return (
 
 const styles = StyleSheet.create({
 container: {
-backgroundColor: '#102027',
+backgroundColor: 'white',
 flexDirection : 'column',
 flex : 1
 

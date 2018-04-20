@@ -32,13 +32,18 @@
     "react-native-custom-qr-codes": "^1.0.2",
     "react-native-elements": "^0.19.0",
     "react-native-keyboard-aware-scroll-view": "^0.5.0",
+    "react-native-qrcode": "^0.2.6",
     "react-native-simple-emoji-picker": "^0.1.0",
     "react-native-storage": "^0.2.2",
     "react-native-text-input": "^1.1.0",
     "react-native-training-chat-server": "^2.0.0",
     "react-native-vector-icons": "^4.5.0",
     "react-navigation": "^1.4.0",
+<<<<<<< HEAD
     "socket.io": "^2.1.0",
     "socket.io-client": "^2.1.0"
+=======
+    "react-qr-svg": "^2.1.0"
+>>>>>>> 7e8eb4bd9fddee0f903ae11ddb29863b6e9c5c4e
   }
 }

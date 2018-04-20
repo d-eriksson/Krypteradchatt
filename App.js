@@ -18,6 +18,7 @@ const TabNav = TabNavigator(
       tabBarOptions : {
       style: {
         backgroundColor: 'black',
+        height: 60,
       },
       indicatorStyle: {
              borderBottomColor: '#ffffff',
