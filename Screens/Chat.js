@@ -30,12 +30,13 @@ constructor(props) {
     isReady: false,
     typing: "",
     messages: [],
-    user: 1,
+    user: 2,
     roomID: props.navigation.state.params.title,
     otherUser: props.navigation.state.params.title,
     hash: '',
   }
 
+  this.socket.emit('start', this.state.roomID);
 
   this.socket.on(this.state.roomID,function(data){
     this.setState({
@@ -44,10 +45,15 @@ constructor(props) {
   }.bind(this))
 
   this.socket.on('newMessage_'+this.state.roomID,function(data){
-    this.setState({
-      messages: this.state.messages.concat(data[0])
-    })
-  }.bind(this))
+    addMessage(data).bind(this)
+  }
+
+     const addMessage = data => {
+      console.log(data);
+      this.setState({messages: [...this.state.messages, data]});
+    };
+
+
 
 }
 
@@ -59,13 +65,9 @@ async componentWillMount() {
     'Ionicons': require('native-base/Fonts/Ionicons.ttf'),
   });
   this.setState({isReady:true})
-
-  console.log(this.state.messages);
 }
 
 componentDidMount() {
-
-    this.socket.emit('start', this.state.roomID);
 
 
   const {navigate} = this.props.navigation;
@@ -75,6 +77,7 @@ componentDidMount() {
     roomID: this.props.navigation.state.params.title,
     hash: this.props.navigation.state.params.hash,
   })
+
 
 }
 

@@ -6,12 +6,6 @@ var http = require('http');
 var server = http.Server(app);
 server.listen(8080, () => console.log('Listening on 8080'));
 
-// Launch the server on port 8080
-/*const server = app.listen(8080, () => {
-  const { address, port } = server.address();
-  console.log(`Listening at http://${address}:${port}`);
-});*/
-
 //Create socket.io instance
 var io = require('socket.io')(server);
 
@@ -23,6 +17,8 @@ io.on('connection', function(socket){
 });
 
 io.on('connection', function(socket){
+
+  //when new message send to server and emit to all listening
   socket.on('chat message', function(msg){
   	var roomID = msg.room;
   	var message = msg.msg;
@@ -41,13 +37,16 @@ io.on('connection', function(socket){
         socket.emit("newMessage_"+roomID, result);
     })
   });
+
+  //in componentDidMount load all msgs
   socket.on('start', function(roomID){
     var sql = "SELECT * FROM chat_messages WHERE roomID = " + mysql.escape(roomID);
           con.query(sql , function (err, result, fields) {
             socket.emit(roomID, result);
           });
-  })
-  socket.on('connect', function(data){
+  });
+
+    socket.on('connect', function(data){
     var roomID = data.roomID;
     var connectName = data.connectName;
     var sql = "UPDATE chatts SET connected=1, connected_name= "+ mysql.escape(connectName) +" WHERE roomID = " + mysql.escape(roomID);
@@ -57,6 +56,7 @@ io.on('connection', function(socket){
     })
   })
 });
+
 var con = mysql.createConnection({
   host: "localhost",
   user: "root",
