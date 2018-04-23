@@ -151,6 +151,14 @@ app.get('/lastmessage/:roomID', function(req,res){
     })
 })
 
+app.get('/GetConnectedName/:roomID', function(req,res){
+    var sql = "SELECT connected_name FROM chatts WHERE roomID =" + mysql.escape(req.params.roomID);
+    con.query(sql, function(err,result){
+        if(err) throw err;
+        res.send(result);
+    })
+})
+
 app.get('/listchatts/',function(req,res){
     var sql = "SELECT * FROM chatts";
     con.query(sql, function(err,result){

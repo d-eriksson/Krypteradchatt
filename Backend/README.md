@@ -11,20 +11,29 @@ none
 Output:
 LAST_INSERT_ID():	X
 
-## http://83.227.100.223:8080/connect/:roomID
-this http-request will connect to a chatroom and alter the connected state from 0 to 1.
+## http://83.227.100.223:8080/connect/:roomID/:connectedName
+this http-request will connect to a chatroom and alter the connected state from 0 to 1 and add the name of the client who scanned the qr code.
 
 Input:
-:roomID - the ID of the room you wish to connect to 
+:roomID - the ID of the room you wish to connect to
 
 Output:
 "Connected"
+
+## http://83.227.100.223:8080/GetConnectedName/:roomID
+this http-request will get the name of the client who connected to the room.
+
+Input:
+:roomID - the ID of the room you wish to connect to
+
+Output:
+[{"connected_name": NAME}]
 
 ## http://83.227.100.223:8080/messages/:roomID/
 this http-request will connect to a chatroom and return all the messages that has ever been written in that room.
 
 Input:
-:roomID - the ID of the room you wish to connect to 
+:roomID - the ID of the room you wish to connect to
 
 Output:
 0:{
@@ -49,7 +58,7 @@ Output:
 	send_time: "YYYY-MM-DDTHH:MM:SS.000Z"
 }
 ## http://83.227.100.223:8080/lastmessage/:roomID
-this will return the last message that was sent in the chatroom 
+this will return the last message that was sent in the chatroom
 
 ## http://83.227.100.223:8080/submit/:roomID/:message/:sentby
 this http-request will connect to a chatroom and submit a message to the database.
@@ -63,7 +72,7 @@ Output:
 None
 
 ## http://83.227.100.223:8080/clear/
-this clears all chats that are not connected and was created for longer than 30 minutes ago this runs every hour at minute 59. 
+this clears all chats that are not connected and was created for longer than 30 minutes ago this runs every hour at minute 59.
 
 ## http://83.227.100.223:8080/listchatts/
-this lists all the chatts that are available, 
+this lists all the chatts that are available,
