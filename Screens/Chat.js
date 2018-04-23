@@ -17,10 +17,10 @@ import { Ionicons } from '@expo/vector-icons';
 import Expo from 'expo';
 import CryptoJS from 'crypto-js';
 import QRCode from 'react-native-qrcode';
+import SocketIOClient from 'socket.io-client';
 
 window.navigator.userAgent = 'react-native';
-//import io from 'socket.io-client/dist/socket.io.js';
-import SocketIOClient from 'socket.io-client';
+
 
 export default class Chat extends Component {
 
@@ -125,7 +125,10 @@ changeTimeFormat(str)
   var timefinal = str2[0];
 
   return timefinal;
+}
 
+reverseData(data){
+  return data.reverse();
 }
 
 
@@ -135,23 +138,13 @@ render() {
     }
 return (
 
-  <View style={styles.container}>
+<KeyboardAvoidingView behavior="padding" style={styles.container}>
 
 
-    <ScrollView
-      ref={ref => this.scrollView = ref}
-      onContentSizeChange={(contentWidth, contentHeight)=>{
-        this.scrollView.scrollToEnd({animated: true});
-      }}
-    >
-        <View style={styles.qr}>
-          <QRCode value={this.state.hash} size={Dimensions.get('window').width-80}  />
-        </View>
-
-        <List>
           <FlatList
-            data={this.state.messages}
-            renderItem={({ item }) => (
+            data={this.reverseData(this.state.messages)}
+              renderItem={({ item }) => (
+
               <ListItem avatar style={styles.row}>
                 <Left>
                   <Thumbnail style= {styles.avatar} source={this.selectAvatar(item.sentby)} />
@@ -166,31 +159,29 @@ return (
               </ListItem>
             )}
             keyExtractor={(item, index) => index}
+            inverted
           />
-        </List>
-    </ScrollView>
 
 
-      <View style={styles.footer}>
 
-        <TextInput
-          value={this.state.typing}
-          onChangeText={text => this.setState({typing: text})}
-          style={styles.input}
-          underlineColorAndroid="transparent"
-          placeholder="Type something secret.."
-        />
+        <View style={styles.footer}>
+          <TextInput
+            inverted
+            value={this.state.typing}
+            onChangeText={text => this.setState({typing: text})}
+            style={styles.input}
+            underlineColorAndroid="transparent"
+            placeholder="Type something secret.."
+          />
 
-        <TouchableOpacity onPress={this.sendMessage.bind(this)}>
-          <Text style={styles.send}>Send</Text>
-        </TouchableOpacity>
+
+          <TouchableOpacity onPress={this.sendMessage.bind(this)}>
+            <Text style={styles.send}>Send</Text>
+          </TouchableOpacity>
 
       </View>
 
-
-
-
-  </View>
+  </KeyboardAvoidingView>
 
 )
 }
@@ -203,13 +194,6 @@ flexDirection : 'column',
 flex : 1
 
 },
-header: {
-    marginTop: 10,
-    backgroundColor: 'lightseagreen',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    padding: 10,
-  },
 row: {
 margin: 7,
 borderBottomColor:'white',
@@ -239,9 +223,6 @@ footer: {
     paddingHorizontal: 20,
     paddingVertical: 10,
     fontSize: 18,
-    flex: 1,
-  },
-  contentContainer: {
     flex: 1,
   },
   send: {
