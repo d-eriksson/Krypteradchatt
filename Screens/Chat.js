@@ -27,9 +27,10 @@ constructor() {
     typing: "",
     messageData: [],
     user: 1,
-    roomID: "1",
+    roomID: '',
     otherUser: "Bob",
     hash: '',
+    title: '',
   }
 }
 
@@ -47,10 +48,11 @@ componentDidMount() {
   const {navigate} = this.props.navigation;
   const {params} = this.props.navigation.state;
   this.setState({
-    otherUser: this.props.navigation.state.params.title,
+    title: this.props.navigation.state.params.name,
     roomID: this.props.navigation.state.params.title,
     hash: this.props.navigation.state.params.hash,
   })
+
   const url = 'http://83.227.100.223:8080/messages/'+this.props.navigation.state.params.title+'/2018-04-12T13:28:24.000Z'
   fetch(url)
   .then((response) => response.json())
@@ -62,7 +64,6 @@ componentDidMount() {
   .catch((error) => {
     console.log(error)
   })
-
 }
 
 selectAvatar = (sender) => {
@@ -90,8 +91,8 @@ getLastMsg = () => {
   .catch((error) => {
     console.log(error)
   })
-
 }
+
 decryptMessage = (m) => {
   var decrypted  = CryptoJS.AES.decrypt( m, this.state.hash);
   decrypted = decrypted.toString(CryptoJS.enc.Utf8);
@@ -104,9 +105,7 @@ async sendMessage(){
   let msg = CryptoJS.AES.encrypt(this.state.typing, this.state.hash);
   let room = this.state.roomID;
 
-
   const url = 'http://83.227.100.223:8080/submit/'+room+'/'+msg+'/'+sender+'/';
-
 
     fetch(url)
       .then((response) => response.json())
@@ -123,7 +122,20 @@ async sendMessage(){
 render() {
   if (!this.state.isReady) {
       return <Expo.AppLoading />;
-    }
+  }
+
+{/*  if(this.state.title === 'New Chat') {
+    const url = 'http://83.227.100.223:8080/GetConnectedName/'+this.state.roomID;
+    fetch(url)
+    .then((responseJson) => {
+      console.log(JSON.stringify(responseJson))
+      //AsyncStorage.setItem(this.state.roomID, {chatname: JSON.stringify(responseJson)}, () => {});
+    })
+    .catch((error) => {
+      console.log(error)
+    })
+  }
+*/}
 return (
 
   <View style={styles.container}>
@@ -135,7 +147,7 @@ return (
       }}
     >
         <View style={styles.qr}>
-          <QRCode value={this.state.hash} size={Dimensions.get('window').width-80}  />
+          <QRCode value={this.state.hash} size={Dimensions.get('window').width-80}/>
         </View>
 
         <List>

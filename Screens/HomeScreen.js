@@ -70,7 +70,7 @@ export default class HomeScreen extends Component {
           let fullString = room.roomID + this.state.sign + room.chatname + this.state.sign + room.hash;
 
           AsyncStorage.setItem(room.roomID, JSON.stringify(room), () => {});
-          navigate('Chat', {title: room.roomID, hash: fullString})
+          navigate('Chat', {title: room.roomID, hash: fullString, name: 'New Chat'})
     })
   }
 

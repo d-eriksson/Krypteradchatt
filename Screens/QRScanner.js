@@ -82,12 +82,17 @@ export default class QRScanner extends Component {
         roomID: dividedString[0],
         hash: dividedString[2],
         chatname: dividedString[1],
-        user: "2",
+        user: '2',
       };
+      AsyncStorage.getItem('profile').then((res) => {
+        user = JSON.parse(res);
+        const url = 'http://83.227.100.223:8080/connect/'+room.roomID+'/'+user.name+'/';
+        fetch(url);
+      })
 
       AsyncStorage.setItem(room.roomID, JSON.stringify(room), () => {});
       const {navigate} = this.props.navigation;
-      navigate('Chat', {title: room.roomID, hash: res})
+      navigate('Chat', {title: room.roomID, hash: res, name: room.chatname})
     }
   };
 }

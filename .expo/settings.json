@@ -1,4 +1,4 @@
 {
-  "hostType": "tunnel",
+  "hostType": "lan",
   "urlRandomness": "hx-32s"
 }
