@@ -35,6 +35,7 @@ io.on('connection', function(socket){
         console.log(result);
         console.log("Emitting to: " + roomID);
         socket.emit("newMessage_"+roomID, result);
+        socket.broadcast.emit("newMessage_"+roomID, result);
     })
   });
 

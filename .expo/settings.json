@@ -1,9 +1,3 @@
 {
-<<<<<<< HEAD
-  "hostType": "lan",
-  "urlRandomness": "ac-pc4"
-=======
-  "hostType": "tunnel",
-  "urlRandomness": "hx-32s"
->>>>>>> 7e8eb4bd9fddee0f903ae11ddb29863b6e9c5c4e
+  "hostType": "tunnel"
 }

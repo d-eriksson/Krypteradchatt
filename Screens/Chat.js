@@ -31,7 +31,7 @@ constructor(props) {
     isReady: false,
     typing: "",
     messages: [],
-    user: 2,
+    user: 1,
     roomID: props.navigation.state.params.title,
     otherUser: props.navigation.state.params.title,
     hash: '',
@@ -46,15 +46,9 @@ constructor(props) {
   }.bind(this))
 
   this.socket.on('newMessage_'+this.state.roomID,function(data){
-    addMessage(data).bind(this)
-  }
-
-     const addMessage = data => {
-      console.log(data);
-      this.setState({messages: [...this.state.messages, data]});
-    };
-
-
+  console.log(data)
+  this.setState({messages: this.state.messages.concat(data)});
+}.bind(this))
 
 }
 
@@ -94,16 +88,23 @@ selectAvatar = (sender) => {
 
 
 decryptMessage(m){
-  var decrypted  = CryptoJS.AES.decrypt( m, this.state.hash);
-  decrypted = decrypted.toString(CryptoJS.enc.Utf8);
-  return decrypted;
+  console.log(m);
+  console.log(typeof m);
+  console.log(this.state.hash);
+  try {
+    var decrypted  = CryptoJS.AES.decrypt( m.toString(), this.state.hash);
+    decrypted = decrypted.toString(CryptoJS.enc.Utf8);
+    return decrypted;
+  } catch (e) {
+    return "Couldn't decrypt msg :("
+  }
+
 }
 
 async sendMessage(){
 
   let sender = this.state.user;
   var msg = CryptoJS.AES.encrypt(this.state.typing, this.state.hash);
-  //var msg = this.state.typing;
   let room = this.state.roomID;
   var data = {
     sender : sender,
@@ -117,6 +118,15 @@ async sendMessage(){
     });
 }
 
+changeTimeFormat(str)
+{
+  var time = str.split("T");
+  var str2 = time[1].split(".");
+  var timefinal = str2[0];
+
+  return timefinal;
+
+}
 
 
 render() {
@@ -126,6 +136,7 @@ render() {
 return (
 
   <View style={styles.container}>
+
 
     <ScrollView
       ref={ref => this.scrollView = ref}
@@ -146,10 +157,11 @@ return (
                   <Thumbnail style= {styles.avatar} source={this.selectAvatar(item.sentby)} />
                 </Left>
                 <Body style={styles.text}>
-                  <Text note style={styles.message}>{ this.decryptMessage(item.message) }</Text>
+                  <Text note style={styles.message}>{this.decryptMessage(item.message) }</Text>
                 </Body>
-                <Right style = {styles.idontknow}>
-                  <Text note style={styles.timestamp}>14.35</Text>
+                <Right style = {styles.timecontainer}>
+
+                  <Text note style={styles.timestamp}>{this.changeTimeFormat(item.send_time)}</Text>
                 </Right>
               </ListItem>
             )}
@@ -158,7 +170,7 @@ return (
         </List>
     </ScrollView>
 
-    <KeyboardAvoidingView behavior="padding">
+
       <View style={styles.footer}>
 
         <TextInput
@@ -174,7 +186,9 @@ return (
         </TouchableOpacity>
 
       </View>
-    </KeyboardAvoidingView>
+
+
+
 
   </View>
 
@@ -198,15 +212,16 @@ header: {
   },
 row: {
 margin: 7,
-borderBottomColor:'#102027',
-backgroundColor: '#102027',
+borderBottomColor:'white',
+backgroundColor: 'white',
 },
 text:{
-  borderBottomColor: '#102027',
+  borderBottomColor: 'white',
 },
 message: {
 color: 'white',
   backgroundColor: '#132b30',
+  borderBottomColor: 'white',
   padding:10,
   borderRadius: 10,
   overflow: 'hidden',
@@ -239,10 +254,10 @@ footer: {
   timestamp: {
     color: 'lightseagreen',
     borderBottomWidth: 0,
-    borderBottomColor: '#102027',
+    borderBottomColor: 'white',
   },
-  idontknow: {
-    borderBottomColor: '#102027',
+  timecontainer: {
+    borderBottomColor: 'white',
   },
   qr: {
     alignItems: 'center',
