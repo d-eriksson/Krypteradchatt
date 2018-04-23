@@ -46,7 +46,7 @@ constructor(props) {
   }.bind(this))
 
   this.socket.on('newMessage_'+this.state.roomID,function(data){
-  console.log(data)
+  console.log(data);
   this.setState({messages: this.state.messages.concat(data)});
 }.bind(this))
 
