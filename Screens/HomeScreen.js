@@ -5,6 +5,7 @@ import {
   AsyncStorage,
   FlatList,
   Dimensions,
+  TouchableOpacity,
   } from 'react-native';
 import * as SHA from 'js-sha256';
 import { List, ListItem, Body, Text, Left, Thumbnail } from 'native-base';
@@ -76,22 +77,26 @@ export default class HomeScreen extends Component {
 
   renderFooter = () => {
       return (
-        <View>
-        <Button
-        title='Create Chatt'
-        onPress={() => {
-            this.createChat();
-          }
-        }
-      />
-      <Button
-      title='Create Chatt'
-      onPress={() => {
-          this.createChat();
-        }
-      }
-    />
-      </View>
+
+          <TouchableOpacity
+
+            style={{
+                borderWidth:1,
+                borderColor:'rgba(0,0,0,0.2)',
+                alignItems:'center',
+                justifyContent:'center',
+                width:60,
+                height:60,
+                borderRadius:60,
+                backgroundColor: 'lightblue',
+              }}
+              onPress={() => {
+                  this.createChat();
+                }
+              }
+              >
+              <Text>+</Text>
+              </TouchableOpacity>
     )
   }
 
