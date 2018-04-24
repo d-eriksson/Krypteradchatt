@@ -6,6 +6,7 @@ import {
   FlatList,
   Dimensions,
   TouchableOpacity,
+  ScrollView,
   } from 'react-native';
 import * as SHA from 'js-sha256';
 import { List, ListItem, Body, Text, Left, Thumbnail } from 'native-base';
@@ -77,7 +78,11 @@ export default class HomeScreen extends Component {
 
   renderFooter = () => {
       return (
-
+        <View style={{
+            flex: 1,
+            alignItems: 'flex-end',
+            justifyContent: 'space-around',
+        }}>
           <TouchableOpacity
 
             style={{
@@ -88,7 +93,7 @@ export default class HomeScreen extends Component {
                 width:60,
                 height:60,
                 borderRadius:60,
-                backgroundColor: 'lightblue',
+                backgroundColor: 'skyblue',
               }}
               onPress={() => {
                   this.createChat();
@@ -97,6 +102,7 @@ export default class HomeScreen extends Component {
               >
               <Text>+</Text>
               </TouchableOpacity>
+            </View>
     )
   }
 
