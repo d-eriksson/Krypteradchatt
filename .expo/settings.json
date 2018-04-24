@@ -1,4 +1,9 @@
 {
-  "hostType": "lan",
-  "urlRandomness": "hx-32s"
+  "hostType": "tunnel",
+  "lanType": "ip",
+  "dev": true,
+  "strict": false,
+  "minify": false,
+  "urlType": "exp",
+  "urlRandomness": "y8-ump"
 }
