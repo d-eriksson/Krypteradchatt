@@ -10,6 +10,8 @@ import {
   } from 'react-native';
 import * as SHA from 'js-sha256';
 import { List, ListItem, Body, Text, Left, Thumbnail } from 'native-base';
+import StatusBarComponent from '../Components/StatusBarComponent';
+
 
 export default class HomeScreen extends Component {
 
@@ -108,6 +110,11 @@ export default class HomeScreen extends Component {
 
   render() {
     return (
+
+      <View>
+          <StatusBarComponent style={{backgroundColor:'#132b30'}}/>
+
+
       <View style={{height: Dimensions.get('window').height-60}}>
         <List>
           <FlatList
@@ -136,6 +143,7 @@ export default class HomeScreen extends Component {
           />
         </List>
       </View>
+    </View>  
     )
   }
 }

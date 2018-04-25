@@ -1,8 +1,8 @@
 {
-  "expoServerPort": 19002,
-  "packagerPort": 19003,
-  "packagerPid": 18120,
-  "expoServerNgrokUrl": "https://y8-ump.daviderixon.krypteradchatt.exp.direct",
-  "packagerNgrokUrl": "https://packager.y8-ump.daviderixon.krypteradchatt.exp.direct",
-  "ngrokPid": 23298
+  "expoServerPort": 19000,
+  "packagerPort": 19001,
+  "packagerPid": 5468,
+  "expoServerNgrokUrl": null,
+  "packagerNgrokUrl": null,
+  "ngrokPid": null
 }

@@ -195,38 +195,40 @@ render() {
 
 return (
 
-<View style={styles.container}>
+        <View style={styles.container}>
 
-          { this.renderQR() }
+                  { this.renderQR() }
 
-          <FlatList
-            data={(this.state.messages)}
-              renderItem={({ item }) => (
-                this.renderFlatlist(item)
-            )}
-            keyExtractor={(item, index) => index}
-            inverted
-          />
-
-
-        <View style={styles.footer}>
-          <TextInput
-            inverted
-            value={this.state.typing}
-            onChangeText={text => this.setState({typing: text})}
-            style={styles.input}
-            underlineColorAndroid="transparent"
-            placeholder="Type something secret.."
-          />
+                  <FlatList
+                    data={(this.state.messages)}
+                      renderItem={({ item }) => (
+                        this.renderFlatlist(item)
+                    )}
+                    keyExtractor={(item, index) => index}
+                    inverted
+                  />
 
 
-          <TouchableOpacity onPress={this.sendMessage.bind(this)}>
-            <Text style={styles.send}>Send</Text>
-          </TouchableOpacity>
+                <View style={styles.footer}>
+                  <TextInput
+                    inverted
+                    value={this.state.typing}
+                    onChangeText={text => this.setState({typing: text})}
+                    style={styles.input}
+                    underlineColorAndroid="transparent"
+                    placeholder="Type something secret.."
+                  />
 
-      </View>
 
-  </View>
+                  <TouchableOpacity onPress={this.sendMessage.bind(this)}>
+                    <Text style={styles.send}>Send</Text>
+                  </TouchableOpacity>
+
+              </View>
+
+          </View>
+
+
 
 )
 }

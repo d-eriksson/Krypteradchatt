@@ -9,7 +9,7 @@ import {
   AsyncStorage,
   TextInput
   } from 'react-native';
-
+import StatusBarComponent from '../Components/StatusBarComponent';
 export default class Profile extends Component {
 
   constructor(props){
@@ -43,6 +43,9 @@ export default class Profile extends Component {
 
   render() {
     return (
+
+    //  <View>
+      //    <StatusBarComponent style={{backgroundColor:'#132b30'}}/>
 
 			<View style={styles.container}>
 				<View style={styles.profileMenu}>
@@ -83,6 +86,7 @@ export default class Profile extends Component {
 				</View>
 
 			</View>
+  //  </View>
     );
   }
 
