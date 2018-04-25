@@ -10,17 +10,16 @@ StatusBar,
 ScrollView,
 Platform,
 Dimensions,
-KeyboardAvoidingView,
-TouchableOpacity } from 'react-native';
+TouchableOpacity, } from 'react-native';
 import { Container, Header, Button, List, ListItem, Body, Text, Left,Right, Icon, Title, Thumbnail } from 'native-base';
 import { Ionicons } from '@expo/vector-icons';
 import Expo from 'expo';
 import CryptoJS from 'crypto-js';
 import QRCode from 'react-native-qrcode';
 import SocketIOClient from 'socket.io-client';
+import KeyboardSpacer from 'react-native-keyboard-spacer';
 
 window.navigator.userAgent = 'react-native';
-
 
 export default class Chat extends Component {
 
@@ -36,6 +35,7 @@ constructor(props) {
     otherUser: props.navigation.state.params.title,
     hash: '',
     title: '',
+    activatedChat: false,
   }
 
   this.socket.emit('start', this.state.roomID);
@@ -118,6 +118,16 @@ async sendMessage() {
   });
 }
 
+renderQR(){
+   if(this.state.activatedChat == false){
+     return(   <View style={styles.qr}>
+               <QRCode value={this.state.hash} size={Dimensions.get('window').width-80}/>
+               </View>
+             )
+   }
+   else return null;
+}
+
 changeTimeFormat(str)
 {
   var time = str.split("T");
@@ -137,47 +147,29 @@ render() {
       return <Expo.AppLoading />;
   }
 
-{/*  if(this.state.title === 'New Chat') {
-    const url = 'http://83.227.100.223:8080/GetConnectedName/'+this.state.roomID;
-    fetch(url)
-    .then((responseJson) => {
-      console.log(JSON.stringify(responseJson))
-      //AsyncStorage.setItem(this.state.roomID, {chatname: JSON.stringify(responseJson)}, () => {});
-    })
-    .catch((error) => {
-      console.log(error)
-    })
-            <View style={styles.qr}>
-          <QRCode value={this.state.hash} size={Dimensions.get('window').width-80}/>
-        </View>
-  }
-*/}
-return (
+  return (
+    <View style={styles.container}>
+      {this.renderQR()}
+      <FlatList
+        data={this.reverseData(this.state.messages)}
+          renderItem={({ item }) => (
 
-<KeyboardAvoidingView behavior="padding" style={styles.container}>
+          <ListItem avatar style={styles.row}>
+            <Left>
+              <Thumbnail style= {styles.avatar} source={this.selectAvatar(item.sentby)} />
+            </Left>
+            <Body style={styles.text}>
+              <Text note style={styles.message}>{this.decryptMessage(item.message) }</Text>
+            </Body>
+            <Right style = {styles.timecontainer}>
 
-          <FlatList
-            data={this.reverseData(this.state.messages)}
-              renderItem={({ item }) => (
-
-              <ListItem avatar style={styles.row}>
-                <Left>
-                  <Thumbnail style= {styles.avatar} source={this.selectAvatar(item.sentby)} />
-                </Left>
-                <Body style={styles.text}>
-                  <Text note style={styles.message}>{this.decryptMessage(item.message) }</Text>
-                </Body>
-                <Right style = {styles.timecontainer}>
-
-                  <Text note style={styles.timestamp}>{this.changeTimeFormat(item.send_time)}</Text>
-                </Right>
-              </ListItem>
-            )}
-            keyExtractor={(item, index) => index}
-            inverted
-          />
-
-
+              <Text note style={styles.timestamp}>{this.changeTimeFormat(item.send_time)}</Text>
+            </Right>
+          </ListItem>
+        )}
+        keyExtractor={(item, index) => index}
+        inverted
+      />
 
         <View style={styles.footer}>
           <TextInput
@@ -189,14 +181,19 @@ return (
             placeholder="Type something secret.."
           />
 
-
-          <TouchableOpacity onPress={this.sendMessage.bind(this)}>
-            <Text style={styles.send}>Send</Text>
+          <TouchableOpacity
+            onPress={this.sendMessage.bind(this)}
+            style={{justifyContent: 'center', paddingRight: 10}}
+          >
+            <Icon
+              reverse
+              name='send'
+              color='#517fa4'
+            />
           </TouchableOpacity>
-
       </View>
-
-  </KeyboardAvoidingView>
+      <KeyboardSpacer/>
+    </View>
 
 )
 }
@@ -232,6 +229,7 @@ height: 50,
 footer: {
     flexDirection: 'row',
     backgroundColor: '#eee',
+    height: 50,
 
   },
   input: {
