@@ -10,7 +10,8 @@ StatusBar,
 ScrollView,
 Platform,
 Dimensions,
-TouchableOpacity, } from 'react-native';
+TouchableOpacity,
+KeyboardAvoidingView} from 'react-native';
 import { Container, Header, Button, List, ListItem, Body, Text, Left,Right, Icon, Title, Thumbnail } from 'native-base';
 import { Ionicons } from '@expo/vector-icons';
 import Expo from 'expo';
@@ -118,7 +119,7 @@ async sendMessage() {
   });
 }
 
-renderQR(){
+renderQR = () => {
    if(this.state.activatedChat == false){
      return(   <View style={styles.qr}>
                <QRCode value={this.state.hash} size={Dimensions.get('window').width-80}/>
@@ -141,16 +142,16 @@ reverseData(data){
   return data.reverse();
 }
 
-
 render() {
   if (!this.state.isReady) {
       return <Expo.AppLoading />;
   }
 
   return (
-    <View style={styles.container}>
-      {this.renderQR()}
+    <KeyboardAvoidingView style={styles.container} behavior='padding' keyboardVerticalOffset={80} >
+      {/*this.renderQR()*/}
       <FlatList
+        ListFooterComponent={this.renderQR}
         data={this.reverseData(this.state.messages)}
           renderItem={({ item }) => (
 
@@ -170,7 +171,6 @@ render() {
         keyExtractor={(item, index) => index}
         inverted
       />
-
         <View style={styles.footer}>
           <TextInput
             inverted
@@ -192,9 +192,7 @@ render() {
             />
           </TouchableOpacity>
       </View>
-      <KeyboardSpacer/>
-    </View>
-
+    </KeyboardAvoidingView>
 )
 }
 }
