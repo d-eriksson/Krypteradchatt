@@ -36,6 +36,7 @@ constructor(props) {
     otherUser: props.navigation.state.params.title,
     hash: '',
     title: '',
+    activatedChat: false,
   }
 
   this.socket.emit('start', this.state.roomID);
@@ -131,6 +132,16 @@ reverseData(data){
   return data.reverse();
 }
 
+renderQR(){
+   if(this.state.activatedChat == false){
+     return(   <View style={styles.qr}>
+               <QRCode value={this.state.hash} size={Dimensions.get('window').width-80}/>
+               </View>
+             )
+   }
+   else return null;
+}
+
 
 render() {
   if (!this.state.isReady) {
@@ -155,6 +166,8 @@ render() {
 return (
 
 <KeyboardAvoidingView behavior="padding" style={styles.container}>
+
+          { this.renderQR() }
 
           <FlatList
             data={this.reverseData(this.state.messages)}
