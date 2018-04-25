@@ -9,13 +9,18 @@ import {
   AsyncStorage,
   TextInput
   } from 'react-native';
-
+import TintedImage from '../Components/TintedImage';
+import { ColorPicker, toHsv } from 'react-native-color-picker'
+ 
 export default class Profile extends Component {
 
   constructor(props){
   	  super(props)
 	  this.state={
-	  	  name:'', favColor:''
+	  	  name:'', 
+	  	  favColor:'#00ff00',
+	  	  layout: true,
+	  	  color: toHsv('green') 
 	  }
   }
 
@@ -28,6 +33,11 @@ export default class Profile extends Component {
 	}
 	AsyncStorage.setItem('profile',
 	JSON.stringify(profile));
+  }
+  changeLayout = () => {
+  	this.setState({
+  		layout: !(this.state.layout)
+  	})
   }
 
   displayData = async() => {
@@ -42,11 +52,14 @@ export default class Profile extends Component {
   }
 
   render() {
+  	if(this.state.layout){
     return (
-
 			<View style={styles.container}>
 				<View style={styles.profileMenu}>
-
+					<TintedImage color={this.state.color} backgroundColor='#ffffff' size={120} />
+					<TouchableOpacity style={styles.Button} onPress={this.changeLayout}>
+							<Text> Edit Chameleon </Text>
+					</TouchableOpacity>
 					<View style={styles.inputHolder}>
 						<TextInput
 						style={styles.input}
@@ -84,6 +97,26 @@ export default class Profile extends Component {
 
 			</View>
     );
+  	}
+  	else{
+  		return(
+			<View style={styles.container}>
+					<TintedImage color={this.state.color} backgroundColor='#ffffff' size={256} />
+					<TouchableOpacity style={styles.Button} onPress={this.changeLayout}>
+							<Text> Edit Chameleon </Text>
+					</TouchableOpacity>
+					<View style={{padding: 15, backgroundColor: '#ffffff',height:250,bottom:0, position: 'absolute', width:420}}>
+					    <ColorPicker
+					      color={this.state.color}
+					      onColorChange={color => this.setState({ color })}
+					      onColorSelected={color => this.setState({ color })}
+					      style={{flex:1, height:200}}
+					      hideSliders={false}
+					    />
+					</View>
+			</View>
+  		);
+  	}
   }
 
 
@@ -93,7 +126,8 @@ const styles = StyleSheet.create({
 	container: {
 		backgroundColor: '#cecece',
 		flexDirection : 'column',
-		flex : 1
+		flex : 1,
+		alignItems: 'center'
 	},
 	scannerButtonHolder: {
 		backgroundColor: '#ffffff',
