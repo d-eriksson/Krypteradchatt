@@ -119,7 +119,7 @@ async sendMessage() {
   });
 }
 
-renderQR = () => {
+renderQR(){
    if(this.state.activatedChat == false){
      return(   <View style={styles.qr}>
                <QRCode value={this.state.hash} size={Dimensions.get('window').width-80}/>
@@ -149,9 +149,8 @@ render() {
 
   return (
     <KeyboardAvoidingView style={styles.container} behavior='padding' keyboardVerticalOffset={80} >
-      {/*this.renderQR()*/}
+      {this.renderQR()}{/*code works w/o this line, will work later when QR dissapears when chat connects*/}
       <FlatList
-        ListFooterComponent={this.renderQR}
         data={this.reverseData(this.state.messages)}
           renderItem={({ item }) => (
 
