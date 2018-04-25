@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
 
   },
   overlay: {
-    opacity: 0.5,
+    opacity: 0.25,
     backgroundColor: '#00000000',
     position: 'absolute',
     top: 0,

@@ -100,17 +100,17 @@ export default class Profile extends Component {
   	}
   	else{
   		return(
-			<View style={styles.container}>
+			<View style={styles.containerColor}>
 					<TintedImage color={this.state.color} backgroundColor='#ffffff' size={256} />
 					<TouchableOpacity style={styles.Button} onPress={this.changeLayout}>
 							<Text> Edit Chameleon </Text>
 					</TouchableOpacity>
-					<View style={{padding: 15, backgroundColor: '#ffffff',height:250,bottom:0, position: 'absolute', width:420}}>
+					<View style={{padding: 15, backgroundColor: '#ffffff',height:300,bottom:0, position: 'absolute', width:420}}>
 					    <ColorPicker
 					      color={this.state.color}
 					      onColorChange={color => this.setState({ color })}
 					      onColorSelected={color => this.setState({ color })}
-					      style={{flex:1, height:200}}
+					      style={{flex:1, height:300}}
 					      hideSliders={false}
 					    />
 					</View>
@@ -124,6 +124,11 @@ export default class Profile extends Component {
 
 const styles = StyleSheet.create({
 	container: {
+		backgroundColor: '#cecece',
+		flexDirection : 'column',
+		flex : 1,
+	},
+	containerColor: {
 		backgroundColor: '#cecece',
 		flexDirection : 'column',
 		flex : 1,
