@@ -76,20 +76,15 @@ export default class HomeScreen extends Component {
     })
   }
 
-  renderFooter = () => {
+  renderButton(){
       return (
-        <View style={{
-            flex: 1,
-            alignItems: 'flex-end',
-            justifyContent: 'space-around',
-        }}>
           <TouchableOpacity
-
             style={{
-                borderWidth:1,
-                borderColor:'rgba(0,0,0,0.2)',
                 alignItems:'center',
                 justifyContent:'center',
+                position: 'absolute',
+                bottom: 30,
+                right: 30,
                 width:60,
                 height:60,
                 borderRadius:60,
@@ -101,8 +96,7 @@ export default class HomeScreen extends Component {
               }
               >
               <Text>+</Text>
-              </TouchableOpacity>
-            </View>
+          </TouchableOpacity>
     )
   }
 
@@ -112,7 +106,6 @@ export default class HomeScreen extends Component {
         <List>
           <FlatList
             data={this.state.dataSource}
-            ListFooterComponent={this.renderFooter}
             onRefresh= { this.onRefresh }
             refreshing= {this.state.refreshing}
             renderItem={({ item }) => (
@@ -135,6 +128,7 @@ export default class HomeScreen extends Component {
           keyExtractor={(item, index) => index}
           />
         </List>
+        {this.renderButton()}
       </View>
     )
   }
