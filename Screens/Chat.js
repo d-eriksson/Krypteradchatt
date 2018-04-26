@@ -36,19 +36,21 @@ constructor(props) {
     otherUser: props.navigation.state.params.title,
     hash: '',
     title: '',
+    activatedChat: true,
   }
 
   this.socket.emit('start', this.state.roomID);
 
   this.socket.on(this.state.roomID,function(data){
+    var datarev = data.reverse();
     this.setState({
-      messages: data
+      messages: datarev
     })
   }.bind(this))
 
   this.socket.on('newMessage_'+this.state.roomID,function(data){
   console.log(data);
-  this.setState({messages: this.state.messages.concat(data)});
+  this.setState({messages: data.concat(this.state.messages)});
 }.bind(this))
 
 }
@@ -86,11 +88,43 @@ selectAvatar = (sender) => {
        }
    }
 
-decryptMessage = (m) =>{
 
-  console.log(m);
-  console.log(typeof m);
-  console.log(this.state.hash);
+renderFlatlist(item){
+
+    if(item.sentby == this.state.user){
+        return (
+                      <ListItem avatar style={styles.row}>
+                        <Left>
+                          <Text note style={styles.timestamp}>{this.changeTimeFormat(item.send_time)}</Text>
+                        </Left>
+                        <Body style={styles.text}>
+                          <Text note  style={styles.message2}>{this.decryptMessage(item.message) }</Text>
+                        </Body>
+                        <Right style = {styles.timecontainer}>
+                          <Thumbnail style= {styles.avatar} source={this.selectAvatar(item.sentby)} />
+                        </Right>
+                      </ListItem>
+                    )
+    }
+    else{
+      return (
+                    <ListItem avatar style={styles.row}>
+                      <Left>
+                        <Thumbnail style= {styles.avatar} source={this.selectAvatar(item.sentby)} />
+                      </Left>
+                      <Body style={styles.text}>
+                        <Text note  style={styles.message1}>{this.decryptMessage(item.message) }</Text>
+                      </Body>
+                      <Right style = {styles.timecontainer}>
+
+                        <Text note style={styles.timestamp}>{this.changeTimeFormat(item.send_time)}</Text>
+                      </Right>
+                    </ListItem>
+      )
+    }
+}
+
+decryptMessage = (m) =>{
   try {
     var decrypted  = CryptoJS.AES.decrypt( m , this.state.hash);
     decrypted = decrypted.toString(CryptoJS.enc.Utf8);
@@ -122,15 +156,21 @@ changeTimeFormat(str)
 {
   var time = str.split("T");
   var str2 = time[1].split(".");
-  var timefinal = str2[0];
-
-  return timefinal;
+  var time2 = str2[0];
+  var timefinal = time2.split(":");
+  var finalstring = timefinal[0]+':'+timefinal[1];
+  return finalstring;
 }
 
-reverseData(data){
-  return data.reverse();
+renderQR(){
+   if(this.state.activatedChat == false){
+     return(   <View style={styles.qr}>
+               <QRCode value={this.state.hash} size={Dimensions.get('window').width-80}/>
+               </View>
+             )
+   }
+   else return null;
 }
-
 
 render() {
   if (!this.state.isReady) {
@@ -147,56 +187,48 @@ render() {
     .catch((error) => {
       console.log(error)
     })
-            <View style={styles.qr}>
-          <QRCode value={this.state.hash} size={Dimensions.get('window').width-80}/>
-        </View>
+
   }
 */}
+
+
+
 return (
 
-<KeyboardAvoidingView behavior="padding" style={styles.container}>
+        <View style={styles.container}>
 
-          <FlatList
-            data={this.reverseData(this.state.messages)}
-              renderItem={({ item }) => (
+                  { this.renderQR() }
 
-              <ListItem avatar style={styles.row}>
-                <Left>
-                  <Thumbnail style= {styles.avatar} source={this.selectAvatar(item.sentby)} />
-                </Left>
-                <Body style={styles.text}>
-                  <Text note style={styles.message}>{this.decryptMessage(item.message) }</Text>
-                </Body>
-                <Right style = {styles.timecontainer}>
-
-                  <Text note style={styles.timestamp}>{this.changeTimeFormat(item.send_time)}</Text>
-                </Right>
-              </ListItem>
-            )}
-            keyExtractor={(item, index) => index}
-            inverted
-          />
+                  <FlatList
+                    data={(this.state.messages)}
+                      renderItem={({ item }) => (
+                        this.renderFlatlist(item)
+                    )}
+                    keyExtractor={(item, index) => index}
+                    inverted
+                  />
 
 
+                <View style={styles.footer}>
+                  <TextInput
+                    inverted
+                    value={this.state.typing}
+                    onChangeText={text => this.setState({typing: text})}
+                    style={styles.input}
+                    underlineColorAndroid="transparent"
+                    placeholder="Type something secret.."
+                  />
 
-        <View style={styles.footer}>
-          <TextInput
-            inverted
-            value={this.state.typing}
-            onChangeText={text => this.setState({typing: text})}
-            style={styles.input}
-            underlineColorAndroid="transparent"
-            placeholder="Type something secret.."
-          />
+
+                  <TouchableOpacity onPress={this.sendMessage.bind(this)}>
+                    <Text style={styles.send}>Send</Text>
+                  </TouchableOpacity>
+
+              </View>
+
+          </View>
 
 
-          <TouchableOpacity onPress={this.sendMessage.bind(this)}>
-            <Text style={styles.send}>Send</Text>
-          </TouchableOpacity>
-
-      </View>
-
-  </KeyboardAvoidingView>
 
 )
 }
@@ -217,7 +249,15 @@ backgroundColor: 'white',
 text:{
   borderBottomColor: 'white',
 },
-message: {
+message1: {
+color: 'black',
+  backgroundColor: '#efefef',
+  borderBottomColor: 'white',
+  padding:10,
+  borderRadius: 10,
+  overflow: 'hidden',
+},
+message2: {
 color: 'white',
   backgroundColor: '#132b30',
   borderBottomColor: 'white',

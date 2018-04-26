@@ -14,10 +14,9 @@ import * as SHA from 'js-sha256';
 import { List, ListItem, Body, Text, Left, Thumbnail, Header, Input, Item, Container, Button, Icon, Root } from 'native-base';
 import {Font, AppLoading} from 'expo';
 import {ionicons} from '@expo/vector-icons';
+import StatusBarComponent from '../Components/StatusBarComponent';
 
 class HomeScreen extends Component {
-
-
 
   async componentWillMount() {
     await Font.loadAsync({
@@ -143,6 +142,10 @@ renderHeader = () => {
     }
     return (
 
+      <View>
+          <StatusBarComponent style={{backgroundColor:'#132b30'}}/>
+
+
       <View style={{height: Dimensions.get('window').height-60}}>
         <List>
           <FlatList
@@ -172,7 +175,7 @@ renderHeader = () => {
         </List>
         {this.renderButton()}
       </View>
-
+    </View>
     )
   }
 }
