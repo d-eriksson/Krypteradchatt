@@ -4,9 +4,14 @@ import {
   AsyncStorage,
   FlatList,
   Dimensions,
+<<<<<<< HEAD
   Image,
   Platform,
   StatusBar
+=======
+  TouchableOpacity,
+  ScrollView,
+>>>>>>> 631396daeceddccf26b364c3ed2523f5198f6353
   } from 'react-native';
 import * as SHA from 'js-sha256';
 import { List, ListItem, Body, Text, Left, Thumbnail, Header, Input, Item, Container, Button, Icon, Root } from 'native-base';
@@ -92,22 +97,31 @@ class HomeScreen extends Component {
 
   renderFooter = () => {
       return (
-        <View>
-        <Button
-        title='Create Chatt'
-        onPress={() => {
-            this.createChat();
-          }
-        }
-      />
-      <Button
-      title='Create Chatt'
-      onPress={() => {
-          this.createChat();
-        }
-      }
-    />
-      </View>
+        <View style={{
+            flex: 1,
+            alignItems: 'flex-end',
+            justifyContent: 'space-around',
+        }}>
+          <TouchableOpacity
+
+            style={{
+                borderWidth:1,
+                borderColor:'rgba(0,0,0,0.2)',
+                alignItems:'center',
+                justifyContent:'center',
+                width:60,
+                height:60,
+                borderRadius:60,
+                backgroundColor: 'skyblue',
+              }}
+              onPress={() => {
+                  this.createChat();
+                }
+              }
+              >
+              <Text>+</Text>
+              </TouchableOpacity>
+            </View>
     )
   }
 
