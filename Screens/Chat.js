@@ -177,22 +177,6 @@ render() {
       return <Expo.AppLoading />;
   }
 
-{/*  if(this.state.title === 'New Chat') {
-    const url = 'http://83.227.100.223:8080/GetConnectedName/'+this.state.roomID;
-    fetch(url)
-    .then((responseJson) => {
-      console.log(JSON.stringify(responseJson))
-      //AsyncStorage.setItem(this.state.roomID, {chatname: JSON.stringify(responseJson)}, () => {});
-    })
-    .catch((error) => {
-      console.log(error)
-    })
-
-  }
-*/}
-
-
-
 return (
 
         <View style={styles.container}>
@@ -207,7 +191,6 @@ return (
                     keyExtractor={(item, index) => index}
                     inverted
                   />
-
 
                 <View style={styles.footer}>
                   <TextInput
@@ -227,8 +210,6 @@ return (
               </View>
 
           </View>
-
-
 
 )
 }
