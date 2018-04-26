@@ -1,15 +1,30 @@
 import React, { Component } from 'react';
 import {
   View,
-  Button,
   AsyncStorage,
   FlatList,
   Dimensions,
+  Image,
+  Platform,
+  StatusBar
   } from 'react-native';
 import * as SHA from 'js-sha256';
-import { List, ListItem, Body, Text, Left, Thumbnail } from 'native-base';
+import { List, ListItem, Body, Text, Left, Thumbnail, Header, Input, Item, Container, Button, Icon, Root } from 'native-base';
+import {Font, AppLoading} from 'expo';
+import {ionicons} from '@expo/vector-icons';
 
-export default class HomeScreen extends Component {
+class HomeScreen extends Component {
+
+
+
+  async componentWillMount() {
+    await Font.loadAsync({
+      Roboto: require("native-base/Fonts/Roboto.ttf"),
+      Ionicons: require("native-base/Fonts/Ionicons.ttf"),
+      Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf")
+    });
+    this.setState({ loading: false });
+  }
 
 	constructor (props){
 		super(props);
@@ -19,6 +34,7 @@ export default class HomeScreen extends Component {
       user: '1',
       dataSource: [],
       refreshing: false,
+      loading: true
 		};
     this.createChat = this.createChat.bind(this);
 	}
@@ -95,8 +111,33 @@ export default class HomeScreen extends Component {
     )
   }
 
+renderHeader = () => {
+  return (
+<Header searchBar rounded>
+    <Item>
+      <Icon name="search" />
+          <Input
+          placeholder="Sök..."
+          />
+      <Icon name="ios-people" />
+    </Item>
+
+    <Button transparent>
+      <Text>Sök...</Text>
+    </Button>
+</Header>
+
+)
+};
+
   render() {
+    if (this.state.loading) {
+      return (
+        <AppLoading />
+      );
+    }
     return (
+
       <View style={{height: Dimensions.get('window').height-60}}>
         <List>
           <FlatList
@@ -121,10 +162,14 @@ export default class HomeScreen extends Component {
               </Body>
             </ListItem>
           )}
-          keyExtractor={(item, index) => index}
+          keyExtractor={(item,index) => item.roomID}
+          ListHeaderComponent={this.renderHeader}
           />
         </List>
       </View>
+
     )
   }
 }
+
+export default HomeScreen;
