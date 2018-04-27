@@ -19,9 +19,9 @@ import Expo from 'expo';
 import CryptoJS from 'crypto-js';
 import QRCode from 'react-native-qrcode';
 import SocketIOClient from 'socket.io-client';
+import KeyboardSpacer from 'react-native-keyboard-spacer';
 
 window.navigator.userAgent = 'react-native';
-
 
 export default class Chat extends Component {
 
@@ -63,7 +63,7 @@ constructor(props) {
 
 
   this.socket.on('newMessage_'+this.state.roomID,function(data){
-  this.setState({messages: data.concat(this.state.messages)});
+  this.setState({messages: this.state.messages.concat(data)});
 }.bind(this))
 
 }
@@ -167,6 +167,16 @@ async sendMessage() {
   });
 }
 
+renderQR(){
+   if(this.state.activatedChat == false){
+     return(   <View style={styles.qr}>
+               <QRCode value={this.state.hash} size={Dimensions.get('window').width-80}/>
+               </View>
+             )
+   }
+   else return null;
+}
+
 changeTimeFormat(str)
 {
   var time = str.split("T");
@@ -201,46 +211,44 @@ reverseData(data){
   return data.reverse();
 }
 
-
 render() {
   if (!this.state.isReady) {
       return <Expo.AppLoading />;
   }
 
-return (
-
-        <View style={styles.container}>
-
-          { this.renderQR() }
-
-          <FlatList
-            data={this.reverseData(this.state.messages)}
-              renderItem={({ item }) => (
-                  this.renderFlatlist(item)
-              )}
-              keyExtractor={(item, index) => index}
-              inverted
+  return (
+    <KeyboardAvoidingView style={styles.container} behavior='padding' keyboardVerticalOffset={80} >
+      {/*this.renderQR()*/}{/*code works w/o this line, will work later when QR dissapears when chat connects*/}
+      <FlatList
+        data={this.reverseData(this.state.messages)}
+          renderItem={({ item }) => (
+            this.renderFlatlist(item)
+          )}
+        keyExtractor={(item, index) => index}
+        inverted
+      />
+        <View style={styles.footer}>
+          <TextInput
+            inverted
+            value={this.state.typing}
+            onChangeText={text => this.setState({typing: text})}
+            style={styles.input}
+            underlineColorAndroid="transparent"
+            placeholder="Type something secret.."
           />
 
-                <View style={styles.footer}>
-                  <TextInput
-                    inverted
-                    value={this.state.typing}
-                    onChangeText={text => this.setState({typing: text})}
-                    style={styles.input}
-                    underlineColorAndroid="transparent"
-                    placeholder="Type something secret.."
-                  />
-
-
-                  <TouchableOpacity onPress={this.sendMessage.bind(this)}>
-                    <Text style={styles.send}>Send</Text>
-                  </TouchableOpacity>
-
-              </View>
-
-          </View>
-
+          <TouchableOpacity
+            onPress={this.sendMessage.bind(this)}
+            style={{justifyContent: 'center', paddingRight: 10}}
+          >
+            <Icon
+              reverse
+              name='send'
+              color='#517fa4'
+            />
+          </TouchableOpacity>
+      </View>
+    </KeyboardAvoidingView>
 )
 }
 }
@@ -284,6 +292,7 @@ avatar: {
 footer: {
     flexDirection: 'row',
     backgroundColor: '#eee',
+    height: 50,
 
   },
   input: {
