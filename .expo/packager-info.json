@@ -1,17 +1,8 @@
 {
   "expoServerPort": 19000,
-<<<<<<< HEAD
   "packagerPort": 19001,
   "packagerPid": 5468,
   "expoServerNgrokUrl": null,
   "packagerNgrokUrl": null,
   "ngrokPid": null
 }
-=======
-  "packagerPort": 19015,
-  "packagerPid": 89713,
-  "expoServerNgrokUrl": "https://r7-4ud.emmaweberyd.krypteradchatt.exp.direct",
-  "packagerNgrokUrl": "https://packager.r7-4ud.emmaweberyd.krypteradchatt.exp.direct",
-  "ngrokPid": 89730
-}
->>>>>>> task042
