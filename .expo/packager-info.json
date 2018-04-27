@@ -1,8 +1,8 @@
 {
   "expoServerPort": 19000,
-  "packagerPort": 19002,
-  "packagerPid": 21567,
-  "expoServerNgrokUrl": "https://bv-vdy.daviderixon.krypteradchatt.exp.direct",
-  "packagerNgrokUrl": "https://packager.bv-vdy.daviderixon.krypteradchatt.exp.direct",
-  "ngrokPid": 21615
+  "packagerPort": 19016,
+  "packagerPid": 90678,
+  "expoServerNgrokUrl": "https://bv-vdy.emmaweberyd.krypteradchatt.exp.direct",
+  "packagerNgrokUrl": "https://packager.bv-vdy.emmaweberyd.krypteradchatt.exp.direct",
+  "ngrokPid": 89730
 }

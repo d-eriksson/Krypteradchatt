@@ -55,14 +55,13 @@ constructor(props) {
       chatname: data,
       user: this.state.user
     };
-    console.log(room);
+    this.props.navigation.setParams({name: data})
     AsyncStorage.setItem(this.state.roomID, JSON.stringify(room), () => {});
   }.bind(this))
 
 
 
   this.socket.on('newMessage_'+this.state.roomID,function(data){
-    console.log(data);
     this.setState({messages: this.state.messages.concat(data)});
   }.bind(this))
 
@@ -82,6 +81,7 @@ componentDidMount() {
 
   const {navigate} = this.props.navigation;
   const {params} = this.props.navigation.state;
+  console.log(this.props.navigation)
   this.setState({
     title: this.props.navigation.state.params.name,
     roomID: this.props.navigation.state.params.roomID,
@@ -160,8 +160,6 @@ render() {
       return <Expo.AppLoading />;
   }
 
-  console.log(this.state.hash);
-
 return (
 
 <KeyboardAvoidingView behavior="padding" style={styles.container}>
@@ -189,8 +187,6 @@ return (
             inverted
           />
 
-
-
         <View style={styles.footer}>
           <TextInput
             inverted
@@ -200,7 +196,6 @@ return (
             underlineColorAndroid="transparent"
             placeholder="Type something secret.."
           />
-
 
           <TouchableOpacity onPress={this.sendMessage.bind(this)}>
             <Text style={styles.send}>Send</Text>

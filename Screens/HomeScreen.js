@@ -53,7 +53,7 @@ export default class HomeScreen extends Component {
           data.push(JSON.parse(obj));
         }
     }
-    
+
     const profile = await AsyncStorage.getItem('profile');
     let d = JSON.parse(profile);
     this.setState({ dataSource : data, chatname: d.name });
