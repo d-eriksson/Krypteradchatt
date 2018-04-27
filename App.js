@@ -16,14 +16,15 @@ const TabNav = TabNavigator(
       swipeEnabled: true,
       tabBarPosition: 'bottom',
       tabBarOptions : {
-      style: {
-        backgroundColor: 'black',
-        height: 60,
-      },
-      indicatorStyle: {
-             borderBottomColor: '#ffffff',
-             borderBottomWidth: 2,
-         }
+        activeTintColor: 'lightseagreen',
+        style: {
+          backgroundColor: 'black',
+          height: 60,
+        },
+        indicatorStyle: {
+          borderBottomColor: 'lightseagreen',
+          borderBottomWidth: 2,
+        }
     }
     }
   );

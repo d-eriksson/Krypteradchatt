@@ -16,7 +16,7 @@ import {Font, AppLoading} from 'expo';
 import {ionicons} from '@expo/vector-icons';
 import StatusBarComponent from '../Components/StatusBarComponent';
 
-class HomeScreen extends Component {
+export default class HomeScreen extends Component {
 
   async componentWillMount() {
     await Font.loadAsync({
@@ -105,21 +105,25 @@ class HomeScreen extends Component {
                 width:60,
                 height:60,
                 borderRadius:60,
-                backgroundColor: 'skyblue',
+                backgroundColor: 'lightseagreen',
               }}
               onPress={() => {
                   this.createChat();
                 }
               }
               >
-              <Text>+</Text>
+              <Text style={{color: '#132b30'}}>+</Text>
           </TouchableOpacity>
     )
   }
 
 renderHeader = () => {
   return (
-<Header searchBar rounded>
+<Header
+  searchBar
+  rounded
+  style={{backgroundColor: 'lightseagreen'}}
+  >
     <Item>
       <Icon name="search" />
           <Input
@@ -147,8 +151,7 @@ renderHeader = () => {
       <View>
           <StatusBarComponent style={{backgroundColor:'#132b30'}}/>
 
-
-      <View style={{height: Dimensions.get('window').height-60}}>
+      <View style={{height: Dimensions.get('window').height-80}}>
         <List>
           <FlatList
             data={this.state.dataSource}
@@ -183,5 +186,3 @@ renderHeader = () => {
     )
   }
 }
-
-export default HomeScreen;

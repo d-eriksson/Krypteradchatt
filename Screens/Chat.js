@@ -241,8 +241,6 @@ return (
 
           </View>
 
-
-
 )
 }
 }
@@ -279,8 +277,9 @@ color: 'white',
   overflow: 'hidden',
 },
 avatar: {
-width: 50,
-height: 50,
+  width: 50,
+  height: 50,
+  borderRadius: 50/2
 },
 footer: {
     flexDirection: 'row',

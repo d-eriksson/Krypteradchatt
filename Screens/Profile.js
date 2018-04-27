@@ -47,14 +47,13 @@ export default class Profile extends Component {
     //  <View>
       //    <StatusBarComponent style={{backgroundColor:'#132b30'}}/>
 
-			<View style={styles.container}>
 				<View style={styles.profileMenu}>
 
 					<View style={styles.inputHolder}>
 						<TextInput
 						style={styles.input}
 						placeholder="Chameleon Name"
-						placeholderTextColor="rgba(255,255,255,0.7)"
+						placeholderTextColor="black"
 						onChangeText={name => this.setState({name})}
 						/>
 					</View>
@@ -64,7 +63,7 @@ export default class Profile extends Component {
 						<TextInput
 						style={styles.input}
 						placeholder="Favourite Color"
-						placeholderTextColor="rgba(255,255,255,0.7)"
+						placeholderTextColor="black"
 						onChangeText={favColor => this.setState({favColor})}
 						/>
 					</View>
@@ -85,7 +84,6 @@ export default class Profile extends Component {
 
 				</View>
 
-			</View>
   //  </View>
     );
   }
@@ -94,34 +92,19 @@ export default class Profile extends Component {
 }
 
 const styles = StyleSheet.create({
-	container: {
-		backgroundColor: '#cecece',
-		flexDirection : 'column',
-		flex : 1
-	},
-	scannerButtonHolder: {
-		backgroundColor: '#ffffff',
-		alignItems: 'center',
-		justifyContent: 'center',
-		flex: 1
-	},
 	profileMenu:  {
-		backgroundColor: '#F17F42',
+		backgroundColor: 'white',
 		justifyContent: 'space-around',
 		alignItems: 'stretch',
 		flex: 4
 
-	},
-	scanButton: {
-		width: 100,
-		height: 100
 	},
 	inputHolder: {
 		alignItems: 'stretch',
 		justifyContent: 'center'
 	},
 	Button: {
-		backgroundColor: '#34495e',
+		backgroundColor: 'lightseagreen',
 		justifyContent: 'center',
 		alignItems: 'center',
 		width: 100,
@@ -133,7 +116,7 @@ const styles = StyleSheet.create({
 
 	},
 	input: {
-		backgroundColor: 'rgba(255,255,255,0.2)',
+		backgroundColor: 'lightseagreen',
 		padding: 20
 	}
 
