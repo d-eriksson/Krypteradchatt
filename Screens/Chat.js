@@ -37,7 +37,7 @@ constructor(props) {
     otherUser: props.navigation.state.params.name,
     hash: '',
     title: '',
-    activatedChat: false,
+    activated: props.navigation.state.params.activated,
   }
 
   this.socket.emit('start', this.state.roomID);
@@ -54,10 +54,12 @@ constructor(props) {
       roomID: this.state.roomID,
       hash: this.state.hash,
       chatname: data,
-      user: this.state.user
+      user: this.state.user,
+      activated: true
     };
     this.props.navigation.setParams({name: data})
     AsyncStorage.setItem(this.state.roomID, JSON.stringify(room), () => {});
+    this.setState({activated: true})
   }.bind(this))
 
 
@@ -82,12 +84,12 @@ componentDidMount() {
 
   const {navigate} = this.props.navigation;
   const {params} = this.props.navigation.state;
-  console.log(this.props.navigation)
   this.setState({
     title: this.props.navigation.state.params.name,
     roomID: this.props.navigation.state.params.roomID,
     hash: this.props.navigation.state.params.hash,
-    fullString: this.props.navigation.state.params.fullString
+    fullString: this.props.navigation.state.params.fullString,
+    activated: this.props.navigation.state.params.activated
   })
 }
 
@@ -167,16 +169,6 @@ async sendMessage() {
   });
 }
 
-renderQR(){
-   if(this.state.activatedChat == false){
-     return(   <View style={styles.qr}>
-               <QRCode value={this.state.hash} size={Dimensions.get('window').width-80}/>
-               </View>
-             )
-   }
-   else return null;
-}
-
 changeTimeFormat(str)
 {
   var time = str.split("T");
@@ -188,17 +180,7 @@ changeTimeFormat(str)
 }
 
 renderQR(){
-   if(this.state.activatedChat == false){
-     return(   <View style={styles.qr}>
-               <QRCode value={this.state.hash} size={Dimensions.get('window').width-80}/>
-               </View>
-             )
-   }
-   else return null;
-}
-
-renderQR(){
-   if(this.state.activatedChat == false){
+   if(this.state.activated == false){
      return(   <View style={styles.qr}>
                <QRCode value={this.state.fullString} size={Dimensions.get('window').width-80}/>
                </View>

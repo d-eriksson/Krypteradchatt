@@ -63,6 +63,7 @@ export default class QRScanner extends Component {
                       isRead: true
                     });
                     this._maybeRenderString(result.data)
+                    console.log(result.data)
                   }
                 }}
                 style={{
@@ -76,7 +77,6 @@ export default class QRScanner extends Component {
     );
   }
 
-
  _maybeRenderString = async (res) => {
 
     var IsThisOurTypeOfQr = true; // ska bytas ut till något som kollar ifall det är våra qr koder.
@@ -87,6 +87,7 @@ export default class QRScanner extends Component {
         hash: dividedString[2],
         chatname: dividedString[1],
         user: '2',
+        activated: true
       };
         const profile = await AsyncStorage.getItem('profile');
         let d = JSON.parse(profile);
@@ -96,14 +97,13 @@ export default class QRScanner extends Component {
           name: name,
           room: roomID
         }
-        console.log("Emit!");
+        //console.log(res);
         this.socket.emit('connectUser', data);
-      
 
       AsyncStorage.setItem(room.roomID, JSON.stringify(room), () => {});
       console.log(room);
       const {navigate} = this.props.navigation;
-      navigate('Chat', {roomID: room.roomID, hash: room.hash, fullString: res, name: room.chatname});
+      navigate('Chat', {roomID: room.roomID, hash: room.hash, fullString: res, name: room.chatname, activated: room.activated});
     }
   };
 }

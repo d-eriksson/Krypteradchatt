@@ -84,12 +84,13 @@ export default class HomeScreen extends Component {
             roomID: data.toString(),
             hash: SHA.sha256("Hasch"),
             chatname: this.state.chatname,
-            user: this.state.user
+            user: this.state.user,
+            activated: false
           };
           let fullString = room.roomID + this.state.sign + room.chatname + this.state.sign + room.hash;
-
+          console.log(fullString);
           AsyncStorage.setItem(room.roomID, JSON.stringify(room), () => {});
-          navigate('Chat', {roomID: room.roomID, hash: room.hash, fullString: fullString, name: 'New Chat'})
+          navigate('Chat', {roomID: room.roomID, hash: room.hash, fullString: fullString, name: 'New Chat', activated: room.activated})
     })
   }
 
@@ -164,7 +165,7 @@ renderHeader = () => {
                 console.log(item);
                 let fullString = item.roomID + this.state.sign + item.name + this.state.sign + item.hash;
                 const {navigate} = this.props.navigation;
-                navigate('Chat', {roomID: item.roomID, hash: item.hash,fullString:fullString, name: item.chatname})
+                navigate('Chat', {roomID: item.roomID, hash: item.hash,fullString:fullString, name: item.chatname, activated: item.activated})
               }}
               avatar
             >
