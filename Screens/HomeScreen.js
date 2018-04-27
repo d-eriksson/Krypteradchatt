@@ -149,7 +149,7 @@ renderHeader = () => {
       <View>
           <StatusBarComponent style={{backgroundColor:'#132b30'}}/>
 
-      <View style={{height: Dimensions.get('window').height-60}}>
+      <View style={{height: Dimensions.get('window').height-80}}>
         <List>
           <FlatList
             data={this.state.dataSource}
