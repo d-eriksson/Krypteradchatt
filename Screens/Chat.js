@@ -197,6 +197,10 @@ renderQR(){
    else return null;
 }
 
+reverseData(data){
+  return data.reverse();
+}
+
 
 render() {
   if (!this.state.isReady) {
