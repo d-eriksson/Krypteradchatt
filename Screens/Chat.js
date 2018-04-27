@@ -154,19 +154,21 @@ decryptMessage = (m) =>{
 
 async sendMessage() {
 
-  let sender = this.state.user;
-  var msg = CryptoJS.AES.encrypt(this.state.typing, this.state.hash);
-  let room = this.state.roomID;
-  var data = {
-    sender : sender,
-    msg: msg.toString(),
-    room: room
-  }
-  this.socket.emit('chat message', data);
+  if (this.state.typing.length > 0) {
+    let sender = this.state.user;
+    var msg = CryptoJS.AES.encrypt(this.state.typing, this.state.hash);
+    let room = this.state.roomID;
+    var data = {
+      sender : sender,
+      msg: msg.toString(),
+      room: room
+    }
+    this.socket.emit('chat message', data);
 
-  this.setState({
-       typing: ''
-  });
+    this.setState({
+         typing: ''
+    });
+  } 
 }
 
 changeTimeFormat(str)
@@ -193,6 +195,25 @@ reverseData(data){
   return data.reverse();
 }
 
+renderTextBox(){
+  if(this.state.activated){
+    return(
+    <TextInput
+      inverted
+      value={this.state.typing}
+      onChangeText={text => this.setState({typing: text})}
+      style={styles.input}
+      underlineColorAndroid="transparent"
+      placeholder="Type something secret.."
+    />
+  )
+} else {
+  return(
+  <Text style={styles.input}>Let friend scan QR to activate chat</Text>
+  )
+}
+}
+
 render() {
   if (!this.state.isReady) {
       return <Expo.AppLoading />;
@@ -210,15 +231,7 @@ render() {
         inverted
       />
         <View style={styles.footer}>
-          <TextInput
-            inverted
-            value={this.state.typing}
-            onChangeText={text => this.setState({typing: text})}
-            style={styles.input}
-            underlineColorAndroid="transparent"
-            placeholder="Type something secret.."
-          />
-
+          {this.renderTextBox()}
           <TouchableOpacity
             onPress={this.sendMessage.bind(this)}
             style={{justifyContent: 'center', paddingRight: 10}}
