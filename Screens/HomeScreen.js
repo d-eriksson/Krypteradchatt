@@ -31,7 +31,7 @@ class HomeScreen extends Component {
 		super(props);
 		this.state = {
       sign: '___',
-      chatname: 'Cool Chatt',
+      chatname: 'Unnamed Chameleon',
       user: '1',
       dataSource: [],
       refreshing: false,
@@ -68,8 +68,10 @@ class HomeScreen extends Component {
           data.push(JSON.parse(obj));
         }
     }
-    this.setState({ dataSource : data });
 
+    const profile = await AsyncStorage.getItem('profile');
+    let d = JSON.parse(profile);
+    this.setState({ dataSource : data, chatname: d.name });
   }
 
   createChat = () => {
@@ -87,7 +89,7 @@ class HomeScreen extends Component {
           let fullString = room.roomID + this.state.sign + room.chatname + this.state.sign + room.hash;
 
           AsyncStorage.setItem(room.roomID, JSON.stringify(room), () => {});
-          navigate('Chat', {title: room.roomID, hash: fullString, name: 'New Chat'})
+          navigate('Chat', {roomID: room.roomID, hash: room.hash, fullString: fullString, name: 'New Chat'})
     })
   }
 
@@ -155,8 +157,10 @@ renderHeader = () => {
             renderItem={({ item }) => (
             <ListItem
               onPress={() => {
+                console.log(item);
+                let fullString = item.roomID + this.state.sign + item.name + this.state.sign + item.hash;
                 const {navigate} = this.props.navigation;
-                navigate('Chat', {title: item.roomID, hash: item.hash})
+                navigate('Chat', {roomID: item.roomID, hash: item.hash,fullString:fullString, name: item.chatname})
               }}
               avatar
             >
@@ -164,7 +168,7 @@ renderHeader = () => {
                 <Thumbnail style={{width: 40, height: 40, borderRadius: 40/2}} source={require('../aang.jpg')}></Thumbnail>
               </Left>
               <Body>
-                <Text>{ item.roomID }</Text>
+                <Text>{ item.chatname }</Text>
                 <Text note>{ 'det senaste meddelandet' }</Text>
               </Body>
             </ListItem>

@@ -47,15 +47,16 @@ io.on('connection', function(socket){
           });
   });
 
-    socket.on('connect', function(data){
-    var roomID = data.roomID;
-    var connectName = data.connectName;
-    var sql = "UPDATE chatts SET connected=1, connected_name= "+ mysql.escape(connectName) +" WHERE roomID = " + mysql.escape(roomID);
-    con.query(sql, function(err, result){
-        if(err) throw err;
-        console.log("Connected to chatt");
+    socket.on('connectUser', function(data){
+      var roomID = data.room;
+      var connectName = data.name;
+      var sql = "UPDATE chatts SET connected=1, connected_name= "+ mysql.escape(connectName) +" WHERE roomID = " + mysql.escape(roomID);
+      con.query(sql, function(err, result){
+          if(err) throw err;
+          console.log(connectName);
+          socket.broadcast.emit("connect_"+roomID, connectName);
+      })
     })
-  })
 });
 
 var con = mysql.createConnection({

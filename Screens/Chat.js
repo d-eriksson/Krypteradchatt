@@ -11,7 +11,8 @@ ScrollView,
 Platform,
 Dimensions,
 KeyboardAvoidingView,
-TouchableOpacity } from 'react-native';
+TouchableOpacity,
+AsyncStorage } from 'react-native';
 import { Container, Header, Button, List, ListItem, Body, Text, Left,Right, Icon, Title, Thumbnail } from 'native-base';
 import { Ionicons } from '@expo/vector-icons';
 import Expo from 'expo';
@@ -32,11 +33,11 @@ constructor(props) {
     typing: "",
     messages: [],
     user: 1,
-    roomID: props.navigation.state.params.title,
-    otherUser: props.navigation.state.params.title,
+    roomID: props.navigation.state.params.roomID,
+    otherUser: props.navigation.state.params.name,
     hash: '',
     title: '',
-    activatedChat: true,
+    activatedChat: false,
   }
 
   this.socket.emit('start', this.state.roomID);
@@ -48,8 +49,20 @@ constructor(props) {
     })
   }.bind(this))
 
+  this.socket.on('connect_'+this.state.roomID, function(data){
+    let room = {
+      roomID: this.state.roomID,
+      hash: this.state.hash,
+      chatname: data,
+      user: this.state.user
+    };
+    this.props.navigation.setParams({name: data})
+    AsyncStorage.setItem(this.state.roomID, JSON.stringify(room), () => {});
+  }.bind(this))
+
+
+
   this.socket.on('newMessage_'+this.state.roomID,function(data){
-  console.log(data);
   this.setState({messages: data.concat(this.state.messages)});
 }.bind(this))
 
@@ -69,10 +82,12 @@ componentDidMount() {
 
   const {navigate} = this.props.navigation;
   const {params} = this.props.navigation.state;
+  console.log(this.props.navigation)
   this.setState({
     title: this.props.navigation.state.params.name,
-    roomID: this.props.navigation.state.params.title,
+    roomID: this.props.navigation.state.params.roomID,
     hash: this.props.navigation.state.params.hash,
+    fullString: this.props.navigation.state.params.fullString
   })
 }
 
@@ -172,42 +187,36 @@ renderQR(){
    else return null;
 }
 
+renderQR(){
+   if(this.state.activatedChat == false){
+     return(   <View style={styles.qr}>
+               <QRCode value={this.state.fullString} size={Dimensions.get('window').width-80}/>
+               </View>
+             )
+   }
+   else return null;
+}
+
+
 render() {
   if (!this.state.isReady) {
       return <Expo.AppLoading />;
   }
 
-{/*  if(this.state.title === 'New Chat') {
-    const url = 'http://83.227.100.223:8080/GetConnectedName/'+this.state.roomID;
-    fetch(url)
-    .then((responseJson) => {
-      console.log(JSON.stringify(responseJson))
-      //AsyncStorage.setItem(this.state.roomID, {chatname: JSON.stringify(responseJson)}, () => {});
-    })
-    .catch((error) => {
-      console.log(error)
-    })
-
-  }
-*/}
-
-
-
 return (
 
         <View style={styles.container}>
 
-                  { this.renderQR() }
+          { this.renderQR() }
 
-                  <FlatList
-                    data={(this.state.messages)}
-                      renderItem={({ item }) => (
-                        this.renderFlatlist(item)
-                    )}
-                    keyExtractor={(item, index) => index}
-                    inverted
-                  />
-
+          <FlatList
+            data={this.reverseData(this.state.messages)}
+              renderItem={({ item }) => (
+                  this.renderFlatlist(item)
+              )}
+              keyExtractor={(item, index) => index}
+              inverted
+          />
 
                 <View style={styles.footer}>
                   <TextInput
