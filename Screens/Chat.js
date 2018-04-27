@@ -218,7 +218,7 @@ render() {
 
   return (
     <KeyboardAvoidingView style={styles.container} behavior='padding' keyboardVerticalOffset={80} >
-      {/*this.renderQR()*/}{/*code works w/o this line, will work later when QR dissapears when chat connects*/}
+      {this.renderQR()}{/*code works w/o this line, will work later when QR dissapears when chat connects*/}
       <FlatList
         data={this.reverseData(this.state.messages)}
           renderItem={({ item }) => (
