@@ -98,7 +98,7 @@ export default class HomeScreen extends Component {
                 alignItems:'center',
                 justifyContent:'center',
                 position: 'absolute',
-                bottom: 50,
+                bottom: 30,
                 right: 30,
                 width:60,
                 height:60,
