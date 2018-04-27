@@ -11,7 +11,8 @@ ScrollView,
 Platform,
 Dimensions,
 KeyboardAvoidingView,
-TouchableOpacity } from 'react-native';
+TouchableOpacity,
+AsyncStorage } from 'react-native';
 import { Container, Header, Button, List, ListItem, Body, Text, Left,Right, Icon, Title, Thumbnail } from 'native-base';
 import { Ionicons } from '@expo/vector-icons';
 import Expo from 'expo';
@@ -32,8 +33,8 @@ constructor(props) {
     typing: "",
     messages: [],
     user: 1,
-    roomID: props.navigation.state.params.title,
-    otherUser: props.navigation.state.params.title,
+    roomID: props.navigation.state.params.roomID,
+    otherUser: props.navigation.state.params.name,
     hash: '',
     title: '',
     activatedChat: false,
@@ -47,10 +48,23 @@ constructor(props) {
     })
   }.bind(this))
 
+  this.socket.on('connect_'+this.state.roomID, function(data){
+    let room = {
+      roomID: this.state.roomID,
+      hash: this.state.hash,
+      chatname: data,
+      user: this.state.user
+    };
+    console.log(room);
+    AsyncStorage.setItem(this.state.roomID, JSON.stringify(room), () => {});
+  }.bind(this))
+
+
+
   this.socket.on('newMessage_'+this.state.roomID,function(data){
-  console.log(data);
-  this.setState({messages: this.state.messages.concat(data)});
-}.bind(this))
+    console.log(data);
+    this.setState({messages: this.state.messages.concat(data)});
+  }.bind(this))
 
 }
 
@@ -70,8 +84,9 @@ componentDidMount() {
   const {params} = this.props.navigation.state;
   this.setState({
     title: this.props.navigation.state.params.name,
-    roomID: this.props.navigation.state.params.title,
+    roomID: this.props.navigation.state.params.roomID,
     hash: this.props.navigation.state.params.hash,
+    fullString: this.props.navigation.state.params.fullString
   })
 }
 
@@ -89,9 +104,6 @@ selectAvatar = (sender) => {
 
 decryptMessage = (m) =>{
 
-  console.log(m);
-  console.log(typeof m);
-  console.log(this.state.hash);
   try {
     var decrypted  = CryptoJS.AES.decrypt( m , this.state.hash);
     decrypted = decrypted.toString(CryptoJS.enc.Utf8);
@@ -135,7 +147,7 @@ reverseData(data){
 renderQR(){
    if(this.state.activatedChat == false){
      return(   <View style={styles.qr}>
-               <QRCode value={this.state.hash} size={Dimensions.get('window').width-80}/>
+               <QRCode value={this.state.fullString} size={Dimensions.get('window').width-80}/>
                </View>
              )
    }
@@ -148,21 +160,8 @@ render() {
       return <Expo.AppLoading />;
   }
 
-{/*  if(this.state.title === 'New Chat') {
-    const url = 'http://83.227.100.223:8080/GetConnectedName/'+this.state.roomID;
-    fetch(url)
-    .then((responseJson) => {
-      console.log(JSON.stringify(responseJson))
-      //AsyncStorage.setItem(this.state.roomID, {chatname: JSON.stringify(responseJson)}, () => {});
-    })
-    .catch((error) => {
-      console.log(error)
-    })
-            <View style={styles.qr}>
-          <QRCode value={this.state.hash} size={Dimensions.get('window').width-80}/>
-        </View>
-  }
-*/}
+  console.log(this.state.hash);
+
 return (
 
 <KeyboardAvoidingView behavior="padding" style={styles.container}>

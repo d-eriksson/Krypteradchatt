@@ -12,10 +12,14 @@ import {
   AsyncStorage
 } from 'react-native';
 import { BarCodeScanner, Permissions } from 'expo';
+import SocketIOClient from 'socket.io-client';
+
+window.navigator.userAgent = 'react-native';
 
 export default class QRScanner extends Component {
   constructor (props){
     super(props);
+    this.socket = SocketIOClient('http://83.227.100.223:8080');
     this.state = {
       hasCameraPermission: null,
       scannedString: null,
@@ -73,7 +77,7 @@ export default class QRScanner extends Component {
   }
 
 
- _maybeRenderString = (res) => {
+ _maybeRenderString = async (res) => {
 
     var IsThisOurTypeOfQr = true; // ska bytas ut till något som kollar ifall det är våra qr koder.
     if(IsThisOurTypeOfQr){
@@ -84,15 +88,22 @@ export default class QRScanner extends Component {
         chatname: dividedString[1],
         user: '2',
       };
-      AsyncStorage.getItem('profile').then((res) => {
-        user = JSON.parse(res);
-        const url = 'http://83.227.100.223:8080/connect/'+room.roomID+'/'+user.name+'/';
-        fetch(url);
-      })
+        const profile = await AsyncStorage.getItem('profile');
+        let d = JSON.parse(profile);
+        let roomID = room.roomID;
+        let name = d.name;
+        var data = {
+          name: name,
+          room: roomID
+        }
+        console.log("Emit!");
+        this.socket.emit('connectUser', data);
+      
 
       AsyncStorage.setItem(room.roomID, JSON.stringify(room), () => {});
+      console.log(room);
       const {navigate} = this.props.navigation;
-      navigate('Chat', {title: room.roomID, hash: res, name: room.chatname})
+      navigate('Chat', {roomID: room.roomID, hash: room.hash, fullString: res, name: room.chatname});
     }
   };
 }
