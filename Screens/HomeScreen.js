@@ -106,13 +106,14 @@ export default class HomeScreen extends Component {
                 height:60,
                 borderRadius:60,
                 backgroundColor: 'lightseagreen',
+                flex: 1,
               }}
               onPress={() => {
                   this.createChat();
                 }
               }
               >
-              <Text style={{color: '#132b30'}}>+</Text>
+              <Text style={{color: 'white', fontSize: 40, height: 60, width: 60, textAlign: 'center'}}>+</Text>
           </TouchableOpacity>
     )
   }
