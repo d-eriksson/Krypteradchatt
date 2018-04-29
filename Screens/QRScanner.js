@@ -89,19 +89,25 @@ export default class QRScanner extends Component {
         user: '2',
         activated: true
       };
-        const profile = await AsyncStorage.getItem('profile');
-        let d = JSON.parse(profile);
-        let roomID = room.roomID;
-        let name = d.name;
-        var data = {
-          name: name,
-          room: roomID
-        }
-        //console.log(res);
-        this.socket.emit('connectUser', data);
+        AsyncStorage.getItem('profile', (err, result) => {
+          if (err) {
 
-      AsyncStorage.setItem(room.roomID, JSON.stringify(room), () => {});
-      console.log(room);
+          }
+          else {
+            if (result != null) {
+              let roomID = room.roomID;
+              let name = result.name;
+              var data = {
+                name: name,
+                room: roomID
+              }
+              this.socket.emit('connectUser', data);
+
+              AsyncStorage.setItem(room.roomID, JSON.stringify(room), () => {});
+            }
+          }
+        });
+
       const {navigate} = this.props.navigation;
       navigate('Chat', {roomID: room.roomID, hash: room.hash, fullString: res, name: room.chatname, activated: room.activated});
     }

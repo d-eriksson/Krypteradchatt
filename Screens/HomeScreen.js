@@ -15,6 +15,7 @@ import { List, ListItem, Body, Text, Left, Thumbnail, Header, Input, Item, Conta
 import {Font, AppLoading} from 'expo';
 import {ionicons} from '@expo/vector-icons';
 import StatusBarComponent from '../Components/StatusBarComponent';
+import WelcomeModal from '../Components/WelcomeModal';
 
 export default class HomeScreen extends Component {
 
@@ -71,7 +72,13 @@ export default class HomeScreen extends Component {
 
     const profile = await AsyncStorage.getItem('profile');
     let d = JSON.parse(profile);
-    this.setState({ dataSource : data, chatname: d.name });
+    if(d.name == null){
+      this.setState({ dataSource : data, chatname: "no name entered" });
+    }
+    else{
+      this.setState({ dataSource : data, chatname: d.name });
+    }
+
   }
 
   createChat = () => {
@@ -151,6 +158,7 @@ renderHeader = () => {
     return (
 
       <View>
+          <WelcomeModal title={"Welcome!"}/>
           <StatusBarComponent style={{backgroundColor:'#132b30'}}/>
 
       <View style={{height: Dimensions.get('window').height-80}}>

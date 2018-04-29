@@ -3,7 +3,16 @@ import QRScanner from './Screens/QRScanner';
 import Profile from './Screens/Profile';
 import Chat from './Screens/Chat';
 import HomeScreen from './Screens/HomeScreen';
-import { StackNavigator, TabNavigator } from 'react-navigation';
+import {
+  StackNavigator,
+  TabNavigator
+} from 'react-navigation';
+import {
+  AsyncStorage,
+  } from 'react-native';
+
+
+
 
 const TabNav = TabNavigator(
     {
