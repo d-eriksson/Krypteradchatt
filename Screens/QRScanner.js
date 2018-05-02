@@ -89,16 +89,18 @@ export default class QRScanner extends Component {
         user: '2',
         activated: true
       };
+      console.log(room);
         AsyncStorage.getItem('profile', (err, result) => {
           if (err) {
 
           }
           else {
             if (result != null) {
+              console.log(JSON.parse(result))
               let roomID = room.roomID;
               let name = result.name;
-              var data = {
-                name: name,
+              let data = {
+                name: JSON.parse(result).name,
                 room: roomID
               }
               this.socket.emit('connectUser', data);

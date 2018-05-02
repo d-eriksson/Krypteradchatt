@@ -70,18 +70,15 @@ export default class HomeScreen extends Component {
         }
     }
 
-    const profile = await AsyncStorage.getItem('profile');
-    let d = JSON.parse(profile);
-    if(d.name == null){
-      this.setState({ dataSource : data, chatname: "no name entered" });
-    }
-    else{
-      this.setState({ dataSource : data, chatname: d.name });
-    }
+    this.setState({ dataSource : data });
 
   }
 
   createChat = () => {
+    AsyncStorage.getItem('profile', (err, result) => {
+      let d = JSON.parse(result);
+      console.log(d)
+
     const {navigate} = this.props.navigation;
     fetch('http://83.227.100.223:8080/create')
     .then((res) => res.json())
@@ -90,15 +87,16 @@ export default class HomeScreen extends Component {
           let room = {
             roomID: data.toString(),
             hash: SHA.sha256("Hasch"),
-            chatname: this.state.chatname,
+            chatname: d.name,
             user: this.state.user,
             activated: false
           };
           let fullString = room.roomID + this.state.sign + room.chatname + this.state.sign + room.hash;
           console.log(fullString);
-          AsyncStorage.setItem(room.roomID, JSON.stringify(room), () => {});
+          //AsyncStorage.setItem(room.roomID, JSON.stringify(room), () => {});
           navigate('Chat', {roomID: room.roomID, hash: room.hash, fullString: fullString, name: 'New Chat', activated: room.activated})
     })
+    });
   }
 
   renderButton(){

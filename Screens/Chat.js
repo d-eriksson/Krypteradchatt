@@ -50,16 +50,18 @@ constructor(props) {
   }.bind(this))
 
   this.socket.on('connect_'+this.state.roomID, function(data){
-    let room = {
-      roomID: this.state.roomID,
-      hash: this.state.hash,
-      chatname: data,
-      user: this.state.user,
-      activated: true
-    };
-    this.props.navigation.setParams({name: data})
-    AsyncStorage.setItem(this.state.roomID, JSON.stringify(room), () => {});
-    this.setState({activated: true})
+    if(this.state.title == 'New Chat'){
+      let room = {
+        roomID: this.state.roomID,
+        hash: this.state.hash,
+        chatname: data,
+        user: this.state.user,
+        activated: true
+      };
+      this.props.navigation.setParams({name: data})
+      AsyncStorage.setItem(this.state.roomID, JSON.stringify(room), () => {});
+      this.setState({activated: true})
+    }
   }.bind(this))
 
 
@@ -168,7 +170,7 @@ async sendMessage() {
     this.setState({
          typing: ''
     });
-  } 
+  }
 }
 
 changeTimeFormat(str)
