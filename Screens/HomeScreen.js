@@ -86,7 +86,7 @@ export default class HomeScreen extends Component {
 
           let room = {
             roomID: data.toString(),
-            hash: SHA.sha256("Hasch"),
+            hash: SHA.sha256(Math.random().toString(2)),
             chatname: d.name,
             user: this.state.user,
             activated: false
