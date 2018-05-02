@@ -1,8 +1,8 @@
 {
-  "expoServerPort": 19000,
-  "packagerPort": 19017,
-  "packagerPid": 91092,
-  "expoServerNgrokUrl": "https://r7-4ud.emmaweberyd.krypteradchatt.exp.direct",
-  "packagerNgrokUrl": "https://packager.r7-4ud.emmaweberyd.krypteradchatt.exp.direct",
-  "ngrokPid": 91109
+  "expoServerPort": null,
+  "packagerPort": null,
+  "packagerPid": null,
+  "expoServerNgrokUrl": null,
+  "packagerNgrokUrl": null,
+  "ngrokPid": null
 }

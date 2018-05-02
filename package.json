@@ -36,6 +36,7 @@
     "react-native-keyboard-spacer": "^0.4.1",
     "react-native-qrcode": "^0.2.6",
     "react-native-simple-emoji-picker": "^0.1.0",
+    "react-native-simple-toast": "^0.0.8",
     "react-native-storage": "^0.2.2",
     "react-native-text-input": "^1.1.0",
     "react-native-training-chat-server": "^2.0.0",

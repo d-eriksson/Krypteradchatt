@@ -32,13 +32,38 @@ constructor(props) {
     isReady: false,
     typing: "",
     messages: [],
-    user: 1,
+    user: 2,
     roomID: props.navigation.state.params.roomID,
     otherUser: props.navigation.state.params.name,
     hash: '',
     title: '',
     activated: props.navigation.state.params.activated,
   }
+
+}
+
+async componentWillMount() {
+  await Expo.Font.loadAsync({
+    'Roboto': require('native-base/Fonts/Roboto.ttf'),
+    'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
+    'Ionicons': require('native-base/Fonts/Ionicons.ttf'),
+  });
+  this.setState({isReady:true})
+}
+
+componentDidMount() {
+
+
+  const {navigate} = this.props.navigation;
+  const {params} = this.props.navigation.state;
+  this.setState({
+    title: this.props.navigation.state.params.name,
+    roomID: this.props.navigation.state.params.roomID,
+    hash: this.props.navigation.state.params.hash,
+    fullString: this.props.navigation.state.params.fullString,
+    activated: this.props.navigation.state.params.activated
+  })
+
 
   this.socket.emit('start', this.state.roomID);
 
@@ -66,31 +91,9 @@ constructor(props) {
 
   this.socket.on('newMessage_'+this.state.roomID,function(data){
   this.setState({messages: this.state.messages.concat(data)});
-}.bind(this))
-
-}
-
-async componentWillMount() {
-  await Expo.Font.loadAsync({
-    'Roboto': require('native-base/Fonts/Roboto.ttf'),
-    'Roboto_medium': require('native-base/Fonts/Roboto_medium.ttf'),
-    'Ionicons': require('native-base/Fonts/Ionicons.ttf'),
-  });
-  this.setState({isReady:true})
-}
-
-componentDidMount() {
+  }.bind(this))
 
 
-  const {navigate} = this.props.navigation;
-  const {params} = this.props.navigation.state;
-  this.setState({
-    title: this.props.navigation.state.params.name,
-    roomID: this.props.navigation.state.params.roomID,
-    hash: this.props.navigation.state.params.hash,
-    fullString: this.props.navigation.state.params.fullString,
-    activated: this.props.navigation.state.params.activated
-  })
 }
 
 selectAvatar = (sender) => {
@@ -168,7 +171,7 @@ async sendMessage() {
     this.setState({
          typing: ''
     });
-  } 
+  }
 }
 
 changeTimeFormat(str)

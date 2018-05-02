@@ -1,15 +1,17 @@
 import React, { Component } from 'react';
 import {
   StyleSheet,
-  Text,
   View,
-  Button,
   Image,
   TouchableOpacity,
   AsyncStorage,
-  TextInput
+  TextInput,
+  Alert
   } from 'react-native';
 import StatusBarComponent from '../Components/StatusBarComponent';
+import { Item, Input, Header, Button, List, ListItem, Body, Text, Left,Right, Icon, Title, Thumbnail } from 'native-base';
+import Toast from 'react-native-simple-toast';
+
 export default class Profile extends Component {
 
   constructor(props){
@@ -20,6 +22,7 @@ export default class Profile extends Component {
   }
 
   saveData =()=> {
+    Toast.show('Saved changes!');
 	const {name,favColor} = this.state;
 
 	let profile={
@@ -34,57 +37,61 @@ export default class Profile extends Component {
 	try{
   	  let profile = await AsyncStorage.getItem('profile');
 	  let d = JSON.parse(profile);
-	  alert('Chameleon Name: ' + d.name + ' ' + 'Favourite Color: ' + d.favColor);
+	  Alert.alert('Personal information', 'Name: ' + d.name + '\n' + 'Favourite Color: ' + d.favColor);
 	 }
 	 catch(error){
 	 	 Alert.alert('Error','There was an error while loading the data');
 	 }
   }
 
+
+
   render() {
     return (
 
-    //  <View>
-      //    <StatusBarComponent style={{backgroundColor:'#132b30'}}/>
+
+
 
 				<View style={styles.profileMenu}>
 
-					<View style={styles.inputHolder}>
-						<TextInput
-						style={styles.input}
-						placeholder="Chameleon Name"
-						placeholderTextColor="black"
-						onChangeText={name => this.setState({name})}
-						/>
-					</View>
+          <Item style={styles.inputHolder}>
+
+            <Icon active name='ios-person' style={{color: '#fff'}}/>
+            <Input style={styles.inputText}
+              placeholder='Username'
+              onChangeText={name => this.setState({name})}
+            />
+              </Item>
+
+  <Item style={styles.inputHolder}>
+              <Icon active name='ios-color-palette' style={{color: '#fff'}} />
+              <Input style={styles.inputText}
+                placeholder='Favorite Color'
+                onChangeText={favColor => this.setState({favColor})}
+              />
 
 
-					<View style={styles.inputHolder}>
-						<TextInput
-						style={styles.input}
-						placeholder="Favourite Color"
-						placeholderTextColor="black"
-						onChangeText={favColor => this.setState({favColor})}
-						/>
-					</View>
+          </Item>
+
+
+
 
 					<View style={styles.ButtonHolder}>
 						<View>
 							<TouchableOpacity style={styles.Button} onPress={this.saveData}>
-								<Text> Save </Text>
+								<Text style={styles.buttontext}> Save </Text>
 							</TouchableOpacity>
 						</View>
 
 						<View>
 							<TouchableOpacity style={styles.Button} onPress={this.displayData}>
-								<Text> Display </Text>
+								<Text style={styles.buttontext}> Display </Text>
 							</TouchableOpacity>
 						</View>
 					</View>
 
 				</View>
 
-  //  </View>
     );
   }
 
@@ -93,32 +100,41 @@ export default class Profile extends Component {
 
 const styles = StyleSheet.create({
 	profileMenu:  {
-		backgroundColor: 'white',
+		backgroundColor: '#102027',
 		justifyContent: 'space-around',
 		alignItems: 'stretch',
 		flex: 4
 
 	},
+
+
 	inputHolder: {
-		alignItems: 'stretch',
-		justifyContent: 'center'
-	},
-	Button: {
-		backgroundColor: 'lightseagreen',
 		justifyContent: 'center',
-		alignItems: 'center',
-		width: 100,
-		height: 100
+    marginLeft: 20,
+    marginRight: 20,
+    borderBottomWidth: 1.5,
 	},
+  inputText:{
+    color: 'lightseagreen',
+  },
+
+
 	ButtonHolder: {
 		flexDirection: 'row',
 		justifyContent: 'space-around'
 
 	},
-	input: {
+  Button: {
 		backgroundColor: 'lightseagreen',
-		padding: 20
-	}
+		justifyContent: 'center',
+		alignItems: 'center',
+		width: 80,
+		height: 80,
+    borderRadius: 10,
+	},
+  buttontext:{
+    color: 'white'
+  }
 
 
 });

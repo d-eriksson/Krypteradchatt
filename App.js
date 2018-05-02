@@ -11,6 +11,8 @@ import {
   AsyncStorage,
   } from 'react-native';
 
+  import { Item, Button, Icon, Image} from 'native-base';
+
 
 
 

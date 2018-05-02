@@ -91,7 +91,7 @@ export default class QRScanner extends Component {
       };
         AsyncStorage.getItem('profile', (err, result) => {
           if (err) {
-
+              console.log("an error occured")
           }
           else {
             if (result != null) {
