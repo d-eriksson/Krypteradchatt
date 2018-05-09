@@ -33,7 +33,6 @@ export default class HomeScreen extends Component {
 		this.state = {
       sign: '___',
       chatname: 'Unnamed Chameleon',
-      user: '1',
       dataSource: [],
       refreshing: false,
       loading: true
@@ -88,13 +87,13 @@ export default class HomeScreen extends Component {
             roomID: data.toString(),
             hash: SHA.sha256(Math.random().toString(2)),
             chatname: d.name,
-            user: this.state.user,
+            user: '1',
             activated: false
           };
           let fullString = room.roomID + this.state.sign + room.chatname + this.state.sign + room.hash;
           console.log(fullString);
           //AsyncStorage.setItem(room.roomID, JSON.stringify(room), () => {});
-          navigate('Chat', {roomID: room.roomID, hash: room.hash, fullString: fullString, name: 'New Chat', activated: room.activated})
+          navigate('Chat', {roomID: room.roomID, hash: room.hash, fullString: fullString, name: 'Ny chatt', activated: room.activated, user: room.user})
     })
     });
   }
@@ -156,7 +155,7 @@ renderHeader = () => {
     return (
 
       <View>
-          <WelcomeModal title={"Welcome!"}/>
+          <WelcomeModal title={"Välkommen Enebypark"}/>
           <StatusBarComponent style={{backgroundColor:'#132b30'}}/>
 
       <View style={{height: Dimensions.get('window').height-80}}>
@@ -171,7 +170,7 @@ renderHeader = () => {
                 console.log(item);
                 let fullString = item.roomID + this.state.sign + item.name + this.state.sign + item.hash;
                 const {navigate} = this.props.navigation;
-                navigate('Chat', {roomID: item.roomID, hash: item.hash,fullString:fullString, name: item.chatname, activated: item.activated})
+                navigate('Chat', {roomID: item.roomID, hash: item.hash,fullString:fullString, name: item.chatname, activated: item.activated, user: item.user})
               }}
               avatar
             >

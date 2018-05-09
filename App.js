@@ -16,12 +16,12 @@ import {
 
 const TabNav = TabNavigator(
     {
-      Profile: { screen: Profile },
-      Home: { screen: HomeScreen },
-      Scanner: { screen: QRScanner },
+      Profil: { screen: Profile },
+      Hem: { screen: HomeScreen },
+      Skanner: { screen: QRScanner },
     },
     {
-      initialRouteName: 'Home',
+      initialRouteName: 'Hem',
       swipeEnabled: true,
       tabBarPosition: 'bottom',
       tabBarOptions : {

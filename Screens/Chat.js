@@ -50,7 +50,7 @@ constructor(props) {
   }.bind(this))
 
   this.socket.on('connect_'+this.state.roomID, function(data){
-    if(this.state.title == 'New Chat'){
+    if(this.state.title == 'Ny chatt'){
       let room = {
         roomID: this.state.roomID,
         hash: this.state.hash,
@@ -64,10 +64,8 @@ constructor(props) {
     }
   }.bind(this))
 
-
-
   this.socket.on('newMessage_'+this.state.roomID,function(data){
-  this.setState({messages: this.state.messages.concat(data)});
+  this.setState({messages: data.concat(this.state.messages)});
 }.bind(this))
 
 }
@@ -91,7 +89,8 @@ componentDidMount() {
     roomID: this.props.navigation.state.params.roomID,
     hash: this.props.navigation.state.params.hash,
     fullString: this.props.navigation.state.params.fullString,
-    activated: this.props.navigation.state.params.activated
+    activated: this.props.navigation.state.params.activated,
+    user: this.props.navigation.state.params.user,
   })
 }
 
@@ -193,10 +192,6 @@ renderQR(){
    else return null;
 }
 
-reverseData(data){
-  return data.reverse();
-}
-
 renderTextBox(){
   if(this.state.activated){
     return(
@@ -211,7 +206,7 @@ renderTextBox(){
   )
 } else {
   return(
-  <Text style={styles.input}>Let friend scan QR to activate chat</Text>
+  <Text style={styles.input}>Låt en vän skanna QR-koden</Text>
   )
 }
 }
@@ -225,7 +220,7 @@ render() {
     <KeyboardAvoidingView style={styles.container} behavior='padding' keyboardVerticalOffset={80} >
       {this.renderQR()}{/*code works w/o this line, will work later when QR dissapears when chat connects*/}
       <FlatList
-        data={this.reverseData(this.state.messages)}
+        data={this.state.messages}
           renderItem={({ item }) => (
             this.renderFlatlist(item)
           )}

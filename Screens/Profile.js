@@ -58,7 +58,7 @@ export default class Profile extends Component {
 
             <Icon active name='ios-person' style={{color: '#fff'}}/>
             <Input style={styles.inputText}
-              placeholder='Username'
+              placeholder='Användarnamn'
               onChangeText={name => this.setState({name})}
             />
               </Item>
@@ -66,7 +66,7 @@ export default class Profile extends Component {
   <Item style={styles.inputHolder}>
               <Icon active name='ios-color-palette' style={{color: '#fff'}} />
               <Input style={styles.inputText}
-                placeholder='Favorite Color'
+                placeholder='Favoritfärg'
                 onChangeText={favColor => this.setState({favColor})}
               />
 
@@ -79,13 +79,13 @@ export default class Profile extends Component {
 					<View style={styles.ButtonHolder}>
 						<View>
 							<TouchableOpacity style={styles.Button} onPress={this.saveData}>
-								<Text style={styles.buttontext}> Save </Text>
+								<Text style={styles.buttontext}> Spara </Text>
 							</TouchableOpacity>
 						</View>
 
 						<View>
 							<TouchableOpacity style={styles.Button} onPress={this.displayData}>
-								<Text style={styles.buttontext}> Display </Text>
+								<Text style={styles.buttontext}> Visa </Text>
 							</TouchableOpacity>
 						</View>
 					</View>

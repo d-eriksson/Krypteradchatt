@@ -92,7 +92,6 @@ export default class QRScanner extends Component {
       console.log(room);
         AsyncStorage.getItem('profile', (err, result) => {
           if (err) {
-
           }
           else {
             if (result != null) {
@@ -104,14 +103,13 @@ export default class QRScanner extends Component {
                 room: roomID
               }
               this.socket.emit('connectUser', data);
-
               AsyncStorage.setItem(room.roomID, JSON.stringify(room), () => {});
             }
           }
         });
 
       const {navigate} = this.props.navigation;
-      navigate('Chat', {roomID: room.roomID, hash: room.hash, fullString: res, name: room.chatname, activated: room.activated});
+      navigate('Chat', {roomID: room.roomID, hash: room.hash, fullString: res, name: room.chatname, activated: room.activated, user: room.user});
     }
   };
 }
