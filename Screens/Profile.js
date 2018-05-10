@@ -22,46 +22,65 @@ export default class Profile extends Component {
   	  super(props)
 	  this.state={
 	  	  name:'',
-	  	  favColor:'#00ff00',
+	  	  ChamColor:'',
 	  	  layout: true,
 	  	  color: toHsv('green')
 	  }
   }
+  async componentDidMount() {
+    let profile = await AsyncStorage.getItem('profile');
+    let d = JSON.parse(profile);
+    this.setState({
+      ChamColor : d.ChamColor,
+      name : d.name,
+    })
 
-  saveData =()=> {
-    Toast.show('Saved changes!');
-	const {name,favColor} = this.state;
-
-	let profile={
-		name: name,
-		favColor: favColor
-	}
-	AsyncStorage.setItem('profile',
-	JSON.stringify(profile));
   }
-  changeLayout = () => {
-  	this.setState({
-  		layout: !(this.state.layout)
-  	})
-  }
-
   displayData = async() => {
 	try{
   	  let profile = await AsyncStorage.getItem('profile');
 	  let d = JSON.parse(profile);
-	  Alert.alert('Personal information', 'Name: ' + d.name + '\n' + 'Favourite Color: ' + d.favColor);
+	  Alert.alert('Personal information', 'Name: ' + d.name + '\n' + 'Favourite Color: ' + d.ChamColor);
 	 }
 	 catch(error){
 	 	 Alert.alert('Error','There was an error while loading the data');
 	 }
   }
 
+  saveData =()=> {
+    Toast.show('Saved changes!');
+	const {name,ChamColor} = this.state;
+
+	let profile={
+		name: name,
+		ChamColor: ChamColor
+	}
+	AsyncStorage.setItem('profile',
+	JSON.stringify(profile));
+  this.displayData();
+  }
+
+  changeLayout = () => {
+  	this.setState({
+  		layout: !(this.state.layout)
+  	})
+
+  }
+
+
+
 
 
   render() {
   	if(this.state.layout){
     return (
+      <View style={styles.container}>
 				<View style={styles.profileMenu}>
+        <TintedImage size={200} color={this.state.ChamColor} backgroundColor='#ffffff' />
+        <TouchableOpacity style={styles.LayoutButton} onPress={this.changeLayout}>
+          <Text style={styles.buttontext}> Redigera avatar </Text>
+        </TouchableOpacity>
+
           <Item style={styles.inputHolder}>
               <Icon active name='ios-person' style={{color: '#fff'}}/>
               <Input style={styles.inputText}
@@ -69,19 +88,6 @@ export default class Profile extends Component {
                 onChangeText={name => this.setState({name})}
               />
           </Item>
-
-          <Item style={styles.inputHolder}>
-                <Icon active name='ios-color-palette' style={{color: '#fff'}} />
-                <Input style={styles.inputText}
-                  placeholder='Favoritfärg'
-                  onChangeText={favColor => this.setState({favColor})}
-                />
-          </Item>
-
-
-
-
-
 					<View style={styles.ButtonHolder}>
 						<View>
 							<TouchableOpacity style={styles.Button} onPress={this.saveData}>
@@ -89,33 +95,31 @@ export default class Profile extends Component {
 							</TouchableOpacity>
 						</View>
 
-						<View>
-							<TouchableOpacity style={styles.Button} onPress={this.displayData}>
-								<Text style={styles.buttontext}> Visa </Text>
-							</TouchableOpacity>
-						</View>
 					</View>
 
 				</View>
+      </View>
 
     );
   	}
   	else{
   		return(
-			<View style={styles.containerColor}>
-					<TintedImage color={this.state.color} backgroundColor='#ffffff' size={256} />
-					<TouchableOpacity style={styles.Button} onPress={this.changeLayout}>
-							<Text> Edit Chameleon </Text>
+			<View style={styles.container}>
+        <View style={styles.profileMenu}>
+					<TintedImage color={this.state.ChamColor} backgroundColor='#ffffff' size={200}  />
+					<TouchableOpacity style={styles.LayoutButton} onPress={this.changeLayout}>
+							<Text style={styles.buttontext}> Back to profile </Text>
 					</TouchableOpacity>
-					<View style={{padding: 15, backgroundColor: '#ffffff',height:300,bottom:0, position: 'absolute', width:420}}>
+					<View style={{padding: 15, backgroundColor: '#00000000',height:230,bottom:0,width:420}}>
 					    <ColorPicker
-					      color={this.state.color}
-					      onColorChange={color => this.setState({ color })}
-					      onColorSelected={color => this.setState({ color })}
+					      ChamColor={this.state.ChamColor}
+					      onColorChange={ChamColor => this.setState({ ChamColor })}
+					      onColorSelected={ChamColor => this.setState({ ChamColor })}
 					      style={{flex:1, height:300}}
-					      hideSliders={false}
+					      hideSliders={true}
 					    />
 					</View>
+          </View>
 			</View>
   		);
   	}
@@ -129,27 +133,28 @@ const styles = StyleSheet.create({
 		backgroundColor: '#cecece',
 		flexDirection : 'column',
 		flex : 1,
+
 	},
 	containerColor: {
-		backgroundColor: '#cecece',
+		backgroundColor: '#102027',
 		flexDirection : 'column',
 		flex : 1,
-		alignItems: 'center'
+		alignItems: 'center',
+
 	},
 	scannerButtonHolder: {
 		backgroundColor: '#ffffff',
 		alignItems: 'center',
 		justifyContent: 'center',
-		flex: 1
+		flex: 1,
 	},
 	profileMenu:  {
 		backgroundColor: '#102027',
 		justifyContent: 'space-around',
-		alignItems: 'stretch',
-		flex: 4
+		flex: 1,
+    alignItems: 'center',
 
 	},
-
 
 	inputHolder: {
 		justifyContent: 'center',
@@ -175,8 +180,20 @@ const styles = StyleSheet.create({
 		height: 80,
     borderRadius: 10,
 	},
+  LayoutButton:{
+    	backgroundColor: 'lightseagreen',
+      justifyContent: 'center',
+  		alignItems: 'center',
+  		paddingVertical: 10,
+      paddingHorizontal: 10,
+      borderRadius: 10,
+  },
   buttontext:{
     color: 'white'
+  },
+  avatar:{
+    justifyContent: 'center',
+    alignItems: 'center',
   }
 
 
