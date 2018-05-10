@@ -8,16 +8,23 @@ import {
   TextInput,
   Alert
   } from 'react-native';
+
 import StatusBarComponent from '../Components/StatusBarComponent';
 import { Item, Input, Header, Button, List, ListItem, Body, Text, Left,Right, Icon, Title, Thumbnail } from 'native-base';
 import Toast from 'react-native-simple-toast';
+import TintedImage from '../Components/TintedImage';
+import { ColorPicker, toHsv } from 'react-native-color-picker'
+
 
 export default class Profile extends Component {
 
   constructor(props){
   	  super(props)
 	  this.state={
-	  	  name:'', favColor:''
+	  	  name:'',
+	  	  favColor:'#00ff00',
+	  	  layout: true,
+	  	  color: toHsv('green')
 	  }
   }
 
@@ -31,6 +38,11 @@ export default class Profile extends Component {
 	}
 	AsyncStorage.setItem('profile',
 	JSON.stringify(profile));
+  }
+  changeLayout = () => {
+  	this.setState({
+  		layout: !(this.state.layout)
+  	})
   }
 
   displayData = async() => {
@@ -47,31 +59,25 @@ export default class Profile extends Component {
 
 
   render() {
+  	if(this.state.layout){
     return (
-
-
-
-
 				<View style={styles.profileMenu}>
+          <Item style={styles.inputHolder}>
+              <Icon active name='ios-person' style={{color: '#fff'}}/>
+              <Input style={styles.inputText}
+                placeholder='Användarnamn'
+                onChangeText={name => this.setState({name})}
+              />
+          </Item>
 
           <Item style={styles.inputHolder}>
-
-            <Icon active name='ios-person' style={{color: '#fff'}}/>
-            <Input style={styles.inputText}
-              placeholder='Användarnamn'
-              onChangeText={name => this.setState({name})}
-            />
-              </Item>
-
-  <Item style={styles.inputHolder}>
-              <Icon active name='ios-color-palette' style={{color: '#fff'}} />
-              <Input style={styles.inputText}
-                placeholder='Favoritfärg'
-                onChangeText={favColor => this.setState({favColor})}
-              />
-
-
+                <Icon active name='ios-color-palette' style={{color: '#fff'}} />
+                <Input style={styles.inputText}
+                  placeholder='Favoritfärg'
+                  onChangeText={favColor => this.setState({favColor})}
+                />
           </Item>
+
 
 
 
@@ -93,12 +99,49 @@ export default class Profile extends Component {
 				</View>
 
     );
+  	}
+  	else{
+  		return(
+			<View style={styles.containerColor}>
+					<TintedImage color={this.state.color} backgroundColor='#ffffff' size={256} />
+					<TouchableOpacity style={styles.Button} onPress={this.changeLayout}>
+							<Text> Edit Chameleon </Text>
+					</TouchableOpacity>
+					<View style={{padding: 15, backgroundColor: '#ffffff',height:300,bottom:0, position: 'absolute', width:420}}>
+					    <ColorPicker
+					      color={this.state.color}
+					      onColorChange={color => this.setState({ color })}
+					      onColorSelected={color => this.setState({ color })}
+					      style={{flex:1, height:300}}
+					      hideSliders={false}
+					    />
+					</View>
+			</View>
+  		);
+  	}
   }
 
 
 }
 
 const styles = StyleSheet.create({
+	container: {
+		backgroundColor: '#cecece',
+		flexDirection : 'column',
+		flex : 1,
+	},
+	containerColor: {
+		backgroundColor: '#cecece',
+		flexDirection : 'column',
+		flex : 1,
+		alignItems: 'center'
+	},
+	scannerButtonHolder: {
+		backgroundColor: '#ffffff',
+		alignItems: 'center',
+		justifyContent: 'center',
+		flex: 1
+	},
 	profileMenu:  {
 		backgroundColor: '#102027',
 		justifyContent: 'space-around',
