@@ -23,9 +23,10 @@ io.on('connection', function(socket){
   	var roomID = msg.room;
   	var message = msg.msg;
   	var sender = msg.sender;
-    var sql = "INSERT INTO chat_messages (roomID, message,sentby) VALUES ("+ mysql.escape(roomID) + "," + mysql.escape(message) + "," + mysql.escape(sender) + ")";
+    var color = msg.color;
+    var sql = "INSERT INTO chat_messages (roomID, message,sentby, icon_color) VALUES ("+ mysql.escape(roomID) + "," + mysql.escape(message) + "," + mysql.escape(sender) + "," + mysql.escape(color) + ")";
   	con.query(sql, function (err, result)
-	  {
+    {
 	    if (err) throw err;
 	    console.log("1 record inserted");
   	});

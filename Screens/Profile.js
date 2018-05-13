@@ -49,7 +49,7 @@ export default class Profile extends Component {
 
   saveData =()=> {
     Toast.show('Saved changes!');
-	const {name,ChamColor} = this.state;
+    const {name,ChamColor} = this.state;
 
 	let profile={
 		name: name,

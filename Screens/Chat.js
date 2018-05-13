@@ -20,6 +20,8 @@ import CryptoJS from 'crypto-js';
 import QRCode from 'react-native-qrcode';
 import SocketIOClient from 'socket.io-client';
 import KeyboardSpacer from 'react-native-keyboard-spacer';
+import TintedImage from '../Components/TintedImage';
+
 
 window.navigator.userAgent = 'react-native';
 
@@ -82,16 +84,23 @@ async componentWillMount() {
 componentDidMount() {
 
 
-  const {navigate} = this.props.navigation;
-  const {params} = this.props.navigation.state;
-  this.setState({
-    title: this.props.navigation.state.params.name,
-    roomID: this.props.navigation.state.params.roomID,
-    hash: this.props.navigation.state.params.hash,
-    fullString: this.props.navigation.state.params.fullString,
-    activated: this.props.navigation.state.params.activated,
-    user: this.props.navigation.state.params.user,
-  })
+    const {navigate} = this.props.navigation;
+    const {params} = this.props.navigation.state;
+    this.setState({
+        title: this.props.navigation.state.params.name,
+        roomID: this.props.navigation.state.params.roomID,
+        hash: this.props.navigation.state.params.hash,
+        fullString: this.props.navigation.state.params.fullString,
+        activated: this.props.navigation.state.params.activated,
+        user: this.props.navigation.state.params.user,
+    })
+
+    AsyncStorage.getItem('profile', (err, result) => {
+        let d = JSON.parse(result);
+        this.setState({
+            cham_color: d.ChamColor,
+        })
+    });
 }
 
 selectAvatar = (sender) => {
@@ -119,7 +128,7 @@ renderFlatlist(item){
                           <Text note  style={styles.message2}>{this.decryptMessage(item.message) }</Text>
                         </Body>
                         <Right style = {styles.timecontainer}>
-                          <Thumbnail style= {styles.avatar} source={this.selectAvatar(item.sentby)} />
+                          <TintedImage size={45} color={item.icon_color} backgroundColor='#ffffff' />
                         </Right>
                       </ListItem>
                     )
@@ -128,13 +137,12 @@ renderFlatlist(item){
       return (
                     <ListItem avatar style={styles.row}>
                       <Left>
-                        <Thumbnail style= {styles.avatar} source={this.selectAvatar(item.sentby)} />
+                        <TintedImage size={45} color={item.icon_color} backgroundColor='#ffffff' />
                       </Left>
                       <Body style={styles.text}>
                         <Text note  style={styles.message1}>{this.decryptMessage(item.message) }</Text>
                       </Body>
                       <Right style = {styles.timecontainer}>
-
                         <Text note style={styles.timestamp}>{this.changeTimeFormat(item.send_time)}</Text>
                       </Right>
                     </ListItem>
@@ -162,7 +170,8 @@ async sendMessage() {
     var data = {
       sender : sender,
       msg: msg.toString(),
-      room: room
+      room: room,
+      color: this.state.cham_color,
     }
     this.socket.emit('chat message', data);
 

@@ -1,0 +1,15 @@
+{
+  "expo": {
+    "name" : "Mumblr",
+    "icon" : "./chameleon.png",
+    "version": "0.0.1",
+    "slug": "exp.host/@daviderixon/mumblr",
+    "sdkVersion": "25.0.0",
+    "ios": {
+      "bundleIdentifier": "com.chameleon.mumblr"
+    },
+    "android" : {
+         "package":"com.chameleon.mumblr"
+    },
+  }
+}

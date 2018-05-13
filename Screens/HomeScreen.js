@@ -75,26 +75,24 @@ export default class HomeScreen extends Component {
 
   createChat = () => {
     AsyncStorage.getItem('profile', (err, result) => {
-      let d = JSON.parse(result);
-      console.log(d)
+        let d = JSON.parse(result);
 
-    const {navigate} = this.props.navigation;
-    fetch('http://83.227.100.223:8080/create')
-    .then((res) => res.json())
-    .then((data) => {
+        const {navigate} = this.props.navigation;
+        fetch('http://83.227.100.223:8080/create')
+        .then((res) => res.json())
+        .then((data) => {
 
-          let room = {
-            roomID: data.toString(),
-            hash: SHA.sha256(Math.random().toString(2)),
-            chatname: d.name,
-            user: '1',
-            activated: false
-          };
-          let fullString = room.roomID + this.state.sign + room.chatname + this.state.sign + room.hash;
-          console.log(fullString);
-          //AsyncStorage.setItem(room.roomID, JSON.stringify(room), () => {});
-          navigate('Chat', {roomID: room.roomID, hash: room.hash, fullString: fullString, name: 'Ny chatt', activated: room.activated, user: room.user})
-    })
+            let room = {
+                roomID: data.toString(),
+                hash: SHA.sha256(Math.random().toString(2)),
+                chatname: d.name,
+                user: '1',
+                activated: false
+            };
+            let fullString = room.roomID + this.state.sign + room.chatname + this.state.sign + room.hash;
+            //AsyncStorage.setItem(room.roomID, JSON.stringify(room), () => {});
+            navigate('Chat', {roomID: room.roomID, hash: room.hash, fullString: fullString, name: 'Ny chatt', activated: room.activated, user: room.user})
+        })
     });
   }
 
