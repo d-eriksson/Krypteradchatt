@@ -64,7 +64,8 @@ var con = mysql.createConnection({
   host: "localhost",
   user: "root",
   password: "134GF1570a",
-  database: "TheMainFrame"
+  database: "TheMainFrame",
+  timezone: "utc-2"
 });
 
 // Handle / route
