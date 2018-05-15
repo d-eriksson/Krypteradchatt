@@ -67,4 +67,4 @@ node_modules
 /third-party
 
 # expo
-.expo
+.expo/
