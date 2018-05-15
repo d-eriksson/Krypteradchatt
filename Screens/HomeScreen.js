@@ -17,6 +17,7 @@ import {ionicons} from '@expo/vector-icons';
 import StatusBarComponent from '../Components/StatusBarComponent';
 import WelcomeModal from '../Components/WelcomeModal';
 
+
 export default class HomeScreen extends Component {
 
   async componentWillMount() {

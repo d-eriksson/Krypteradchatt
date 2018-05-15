@@ -52,15 +52,19 @@ constructor(props) {
   }.bind(this))
 
   this.socket.on('connect_'+this.state.roomID, function(data){
+
+    var decrypted  = CryptoJS.AES.decrypt( data , this.state.hash);
+    decrypted = decrypted.toString(CryptoJS.enc.Utf8);
+    console.log("DEC: " + decrypted);
     if(this.state.title == 'Ny chatt'){
       let room = {
         roomID: this.state.roomID,
         hash: this.state.hash,
-        chatname: data,
+        chatname: decrypted,
         user: this.state.user,
         activated: true
       };
-      this.props.navigation.setParams({name: data})
+      this.props.navigation.setParams({name: decrypted})
       AsyncStorage.setItem(this.state.roomID, JSON.stringify(room), () => {});
       this.setState({activated: true})
     }

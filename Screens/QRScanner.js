@@ -13,6 +13,7 @@ import {
 } from 'react-native';
 import { BarCodeScanner, Permissions } from 'expo';
 import SocketIOClient from 'socket.io-client';
+import CryptoJS from 'crypto-js';
 
 window.navigator.userAgent = 'react-native';
 
@@ -95,11 +96,11 @@ export default class QRScanner extends Component {
           }
           else {
             if (result != null) {
-              console.log(JSON.parse(result))
               let roomID = room.roomID;
-              let name = result.name;
+              let name = JSON.parse(result).name;
+              var msg = CryptoJS.AES.encrypt(name, room.hash);
               let data = {
-                name: JSON.parse(result).name,
+                name: msg.toString(),
                 room: roomID
               }
               this.socket.emit('connectUser', data);
@@ -107,6 +108,7 @@ export default class QRScanner extends Component {
             }
           }
         });
+        console.log(room.chatname);
 
       const {navigate} = this.props.navigation;
       navigate('Chat', {roomID: room.roomID, hash: room.hash, fullString: res, name: room.chatname, activated: room.activated, user: room.user});
