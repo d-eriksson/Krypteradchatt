@@ -222,8 +222,6 @@ renderTextBox(){
 }
 }
 
-
-
 renderHeader() {
   const { goBack } = this.props.navigation;
   return (
@@ -239,7 +237,12 @@ renderHeader() {
           <Title>{this.state.otherUser}</Title>
         </Body>
         <Right>
-          <Button transparent>
+          <Button transparent
+            onPress={() => {
+              AsyncStorage.removeItem(this.state.roomID);
+              goBack()
+            }}
+          >
             <Icon name='more' />
           </Button>
         </Right>
