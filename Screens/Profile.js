@@ -24,6 +24,8 @@ export default class Profile extends Component {
 	  	  name:'',
 	  	  ChamColor:'',
         tempName:'',
+        SpecialCaseName:'',
+        NameWasChanged: false,
 	  	  layout: true,
 	  	  color: toHsv('green')
 	  }
@@ -51,17 +53,31 @@ export default class Profile extends Component {
 
   saveData =()=> {
     Toast.show('Saved changes!');
-    const {name,ChamColor,tempName} = this.state;
+    const {name,ChamColor,tempName,SpecialCaseName} = this.state;
 
-	let profile={
-		name: tempName,
-		ChamColor: ChamColor
-	}
-  this.setState({name: tempName});
-	AsyncStorage.setItem('profile',
-	JSON.stringify(profile));
-  this.displayData();
-  }
+    AsyncStorage.getItem('profile', (err,result) => {
+      let d = JSON.parse(result);
+      this.setState({SpecialCaseName: d.name});
+    });
+
+    {this.state.NameWasChanged == false
+      ? this.setState({name: SpecialCaseName})
+      : this.setState({name: name})
+    }
+    let profile={
+       name: tempName,
+       ChamColor: ChamColor
+     }
+
+     this.setState({name: tempName})
+     AsyncStorage.setItem('profile',
+     JSON.stringify(profile));
+     this.displayData();
+
+   }
+
+
+
 
   changeLayout = () => {
   	this.setState({
@@ -89,11 +105,18 @@ export default class Profile extends Component {
                 {this.state.name == '' ?
                 <Input style={styles.inputText}
                   placeholder = 'Användarnamn'
-                  onChangeText={tempName => this.setState({tempName})}
+                  onChangeText={tempName =>
+                    this.setState({
+                      tempName: tempName,
+                      NameWasChanged: true,
+                  })}
                 /> :
                 <Input style={styles.inputText}
                   placeholder = {this.state.name}
-                  onChangeText={tempName => this.setState({tempName})}
+                  onChangeText={tempName => this.setState({
+                    tempName: tempName,
+                    NameWasChanged: true,
+                  })}
                 />}
           </Item>
 					<View style={styles.ButtonHolder}>
