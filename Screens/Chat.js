@@ -256,7 +256,7 @@ render() {
     <View style={styles.container}>
     <StatusBarComponent style={{backgroundColor:'#132b30'}}/>
     {this.renderHeader()}
-    <KeyboardAvoidingView style={styles.container} behavior='padding' keyboardVerticalOffset={80} >
+    <KeyboardAvoidingView style={styles.container} behavior='padding'>
       {this.renderQR()}
       <FlatList
         data={this.state.messages}
