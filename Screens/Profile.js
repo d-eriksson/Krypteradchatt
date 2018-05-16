@@ -23,6 +23,7 @@ export default class Profile extends Component {
 	  this.state={
 	  	  name:'',
 	  	  ChamColor:'',
+        tempName:'',
 	  	  layout: true,
 	  	  color: toHsv('green')
 	  }
@@ -33,6 +34,7 @@ export default class Profile extends Component {
     this.setState({
       ChamColor : d.ChamColor,
       name : d.name,
+      tempName: d.name,
     })
 
   }
@@ -49,12 +51,13 @@ export default class Profile extends Component {
 
   saveData =()=> {
     Toast.show('Saved changes!');
-    const {name,ChamColor} = this.state;
+    const {name,ChamColor,tempName} = this.state;
 
 	let profile={
-		name: name,
+		name: tempName,
 		ChamColor: ChamColor
 	}
+  this.setState({name: tempName});
 	AsyncStorage.setItem('profile',
 	JSON.stringify(profile));
   this.displayData();
@@ -83,10 +86,15 @@ export default class Profile extends Component {
 
           <Item style={styles.inputHolder}>
               <Icon active name='ios-person' style={{color: '#fff'}}/>
-              <Input style={styles.inputText}
-                placeholder='Användarnamn'
-                onChangeText={name => this.setState({name})}
-              />
+                {this.state.name == '' ?
+                <Input style={styles.inputText}
+                  placeholder = 'Användarnamn'
+                  onChangeText={tempName => this.setState({tempName})}
+                /> :
+                <Input style={styles.inputText}
+                  placeholder = {this.state.name}
+                  onChangeText={tempName => this.setState({tempName})}
+                />}
           </Item>
 					<View style={styles.ButtonHolder}>
 						<View>
