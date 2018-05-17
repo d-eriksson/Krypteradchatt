@@ -1,4 +1,7 @@
 {
-  "urlRandomness": "5z-d7v",
-  "hostType": "tunnel"
+  "hostType": "tunnel",
+  "lanType": "ip",
+  "dev": true,
+  "minify": false,
+  "urlRandomness": "a8-biz"
 }

@@ -19,20 +19,25 @@ import { ColorPicker, toHsv } from 'react-native-color-picker'
 export default class Profile extends Component {
 
   constructor(props){
-  	  super(props)
+  	super(props)
 	  this.state={
 	  	  name:'',
 	  	  ChamColor:'',
 	  	  layout: true,
-	  	  color: toHsv('green')
+	  	  color: toHsv('green'),
+        ChamImg: 1,
 	  }
   }
   async componentDidMount() {
     let profile = await AsyncStorage.getItem('profile');
     let d = JSON.parse(profile);
+    if(!(d.ChamImg)){
+      d.ChamImg = 1;
+    }
     this.setState({
       ChamColor : d.ChamColor,
       name : d.name,
+      ChamImg: d.ChamImg,
     })
 
   }
@@ -49,11 +54,12 @@ export default class Profile extends Component {
 
   saveData =()=> {
     Toast.show('Saved changes!');
-    const {name,ChamColor} = this.state;
+    const {name,ChamColor,ChamImg} = this.state;
 
 	let profile={
 		name: name,
-		ChamColor: ChamColor
+		ChamColor: ChamColor,
+    ChamImg: ChamImg
 	}
 	AsyncStorage.setItem('profile',
 	JSON.stringify(profile));
@@ -61,11 +67,26 @@ export default class Profile extends Component {
   }
 
   changeLayout = () => {
-  	this.setState({
-  		layout: !(this.state.layout)
-  	})
-
+    this.setState({
+      layout: !(this.state.layout)
+    })
   }
+
+  switchImage = () => {
+    var ChamImage = Number(this.state.ChamImg);
+    console.log(ChamImage);
+    ChamImage = ChamImage + 1;
+    if(ChamImage > 3){
+      ChamImage = 1;
+    }
+    else if(ChamImage < 1){
+      ChamImage = 3;
+    }
+    this.setState({
+      ChamImg: ChamImage,
+    })
+  }
+
 
 
 
@@ -76,7 +97,7 @@ export default class Profile extends Component {
     return (
       <View style={styles.container}>
 				<View style={styles.profileMenu}>
-        <TintedImage size={200} color={this.state.ChamColor} backgroundColor='#ffffff' />
+        <TintedImage size={200} color={this.state.ChamColor} backgroundColor='#ffffff' version ={this.state.ChamImg}/>
         <TouchableOpacity style={styles.LayoutButton} onPress={this.changeLayout}>
           <Text style={styles.buttontext}> Redigera avatar </Text>
         </TouchableOpacity>
@@ -106,21 +127,25 @@ export default class Profile extends Component {
   		return(
 			<View style={styles.container}>
         <View style={styles.profileMenu}>
-					<TintedImage color={this.state.ChamColor} backgroundColor='#ffffff' size={200}  />
-					<TouchableOpacity style={styles.LayoutButton} onPress={this.changeLayout}>
-							<Text style={styles.buttontext}> Back to profile </Text>
-					</TouchableOpacity>
-					<View style={{padding: 15, backgroundColor: '#00000000',height:230,bottom:0,width:420}}>
-					    <ColorPicker
-					      ChamColor={this.state.ChamColor}
-					      onColorChange={ChamColor => this.setState({ ChamColor })}
-					      onColorSelected={ChamColor => this.setState({ ChamColor })}
-					      style={{flex:1, height:300}}
-					      hideSliders={true}
-					    />
-					</View>
+
+          <TintedImage color={this.state.ChamColor} backgroundColor='#ffffff' size={200} version={this.state.ChamImg} />
+          <TouchableOpacity style={styles.LayoutButton} onPress={this.switchImage}>
+                <Text style={styles.buttontext}> Change Emote </Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.LayoutButton} onPress={this.changeLayout}>
+              <Text style={styles.buttontext}> Back to profile </Text>
+          </TouchableOpacity>
+          <View style={{padding: 0, backgroundColor: '#00000000',height:245,bottom:0,width:420}}>
+              <ColorPicker
+                ChamColor={ChamColor => this.setState({ ChamColor })}
+                onColorChange={ChamColor => this.setState({ ChamColor })}
+                onColorSelected={ChamColor => this.setState({ ChamColor })}
+                style={{flex:1, height:300}}
+                hideSliders={true}
+              />
           </View>
-			</View>
+          </View>
+      </View>
   		);
   	}
   }
