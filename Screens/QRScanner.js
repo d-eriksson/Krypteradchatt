@@ -49,7 +49,6 @@ export default class QRScanner extends Component {
   render() {
     return (
       <View style={styles.container}>
-
         {this.state.hasCameraPermission === null
           ? <Text>Requesting for camera permission</Text>
           : this.state.hasCameraPermission === false
@@ -72,7 +71,6 @@ export default class QRScanner extends Component {
                 }}
               />
           }
-
       </View>
     );
   }
@@ -89,13 +87,11 @@ export default class QRScanner extends Component {
         user: '2',
         activated: true
       };
-      console.log(room);
         AsyncStorage.getItem('profile', (err, result) => {
           if (err) {
           }
           else {
             if (result != null) {
-              console.log(JSON.parse(result))
               let roomID = room.roomID;
               let name = result.name;
               let data = {
@@ -110,6 +106,7 @@ export default class QRScanner extends Component {
 
       const {navigate} = this.props.navigation;
       navigate('Chat', {roomID: room.roomID, hash: room.hash, fullString: res, name: room.chatname, activated: room.activated, user: room.user});
+
     }
   };
 }

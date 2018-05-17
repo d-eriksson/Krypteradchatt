@@ -24,7 +24,6 @@ import TintedImage from '../Components/TintedImage';
 import StatusBarComponent from '../Components/StatusBarComponent';
 import { StackActions, NavigationActions } from 'react-navigation';
 
-
 window.navigator.userAgent = 'react-native';
 
 export default class Chat extends Component {
@@ -64,11 +63,11 @@ constructor(props) {
       };
       this.props.navigation.setParams({name: data})
       AsyncStorage.setItem(this.state.roomID, JSON.stringify(room), () => {});
-      this.setState({activated: true})
+      this.setState({activated: true, otherUser: data})
     }
   }.bind(this))
 
-  this.socket.on('newMessage_'+this.state.roomID,function(data){
+this.socket.on('newMessage_'+this.state.roomID,function(data){
   this.setState({messages: data.concat(this.state.messages)});
 }.bind(this))
 
@@ -222,13 +221,22 @@ renderTextBox(){
 }
 }
 
+goBack() {
+  const { navigation } = this.props;
+  console.log(navigation.state.params);
+  navigation.state.params.refresh();
+  navigation.goBack();
+}
+
 renderHeader() {
-  const { goBack } = this.props.navigation;
+  const { navigation } = this.props;
   return (
       <Header style={styles.header}>
         <Left>
           <Button transparent
-            onPress={() => goBack()}
+            onPress={() => {
+              navigation.goBack();
+            }}
           >
             <Icon name='arrow-back' />
           </Button>
@@ -238,9 +246,9 @@ renderHeader() {
         </Body>
         <Right>
           <Button transparent
-            onPress={() => {
+            onPress={() => { //we should remove item from other user aswell
               AsyncStorage.removeItem(this.state.roomID);
-              goBack()
+              navigation.goBack();
             }}
           >
             <Icon name='more' />

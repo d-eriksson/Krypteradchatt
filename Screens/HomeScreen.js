@@ -25,6 +25,7 @@ export default class HomeScreen extends Component {
       Ionicons: require("native-base/Fonts/Ionicons.ttf"),
       Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf")
     });
+    this.sub = this.props.navigation.addListener('willFocus', () => this.onRefresh());
     this.setState({ loading: false });
   }
 
@@ -74,6 +75,11 @@ export default class HomeScreen extends Component {
 
   }
 
+  componentWillUnmount() {
+    this.sub.forEach(sub => sub.remove());
+  }
+
+
   createChat = () => {
     AsyncStorage.getItem('profile', (err, result) => {
         let d = JSON.parse(result);
@@ -91,7 +97,6 @@ export default class HomeScreen extends Component {
                 activated: false
             };
             let fullString = room.roomID + this.state.sign + room.chatname + this.state.sign + room.hash;
-            //AsyncStorage.setItem(room.roomID, JSON.stringify(room), () => {});
             navigate('Chat', {roomID: room.roomID, hash: room.hash, fullString: fullString, name: 'Ny chatt', activated: room.activated, user: room.user})
         })
     });
@@ -154,7 +159,7 @@ renderHeader = () => {
     return (
 
       <View>
-          <WelcomeModal title={"Välkommen Enebypark"}/>
+          <WelcomeModal title={"Välkommen"}/>
           <StatusBarComponent style={{backgroundColor:'#132b30'}}/>
 
       <View style={{height: Dimensions.get('window').height-80}}>
