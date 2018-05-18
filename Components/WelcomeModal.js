@@ -42,138 +42,160 @@ export default class WelcomeModal extends Component {
         ChamColor: '#ffffff',
     })
   }
-  setModalVisible(visible) {
-    this.setState({ modalVisible: visible });
-  }
-  saveData =()=> {
-  	const name = this.state.name;
-    if(name.length > 0){
-      let profile={
-    		name: name,
-    	}
-    	AsyncStorage.setItem('profile',
-    	JSON.stringify(profile));
-      this.setModalVisible(!this.state.modalVisible);
+    setModalVisible(visible) {
+        this.setState({ modalVisible: visible });
     }
-  }
-  nextScreen = () => {
-    var p = Number(this.state.page);
-    if(p < 5){
-      var p = p + 1;
-      this.setState({page: p});
+
+    saveData =()=> {
+        const name = this.state.name;
+        if(name.length > 0){
+            let profile={
+        		name: name,
+        	}
+    	   AsyncStorage.setItem('profile', JSON.stringify(profile));
+            this.setModalVisible(!this.state.modalVisible);
+        }
     }
-    console.log(p);
-  }
-  prevScreen = () =>{
-    var p = Number(this.state.page);
-    if(p > 0){
-      var p = p - 1;
-      this.setState({page: p});
+    nextScreen = () => {
+        var p = Number(this.state.page);
+        if(p < 5){
+            var p = p + 1;
+            this.setState({page: p});
+        }
     }
-    console.log(p);
-  }
-  RegisterUser(styles){
-    return(
-      <View style={styles.ftreContainer}>
-          <View style={styles.ftreTitleContainer}>
-            <Text style={styles.ftreTitle}>Register your account</Text>
-          </View>
-            <View style={styles.ftreDescriptionContainer}>
-              <TextInput
-              style={styles.input}
-              placeholder="Namn"
-              placeholderTextColor="gray"
-              onChangeText={name => this.setState({name})}
-              />
-            </View>
-              <TouchableHighlight onPress={this.saveData} style={styles.ftreExitContainer}>
-                <View style={styles.ftreExitButtonContainer}>
-                  <Text style={styles.ftreExitButtonText}> Save </Text>
+    prevScreen = () =>{
+        var p = Number(this.state.page);
+        if(p > 1){
+            var p = p - 1;
+            this.setState({page: p});
+        }
+    }
+    RegisterUser(){
+        return(
+            <View style={styles.ftreContainer}>
+                <View style={styles.ftreTitleContainer}>
+                    <Text style={styles.ftreTitle}>Lastly add a name</Text>
                 </View>
-              </TouchableHighlight>
-          </View>
+                <View style={styles.ftreDescriptionContainer}>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Name"
+                        placeholderTextColor="white"
+                        onChangeText={name => this.setState({name})}
+                    />
+                </View>
+                <TouchableHighlight onPress={this.saveData} style={styles.ftreExitContainer}>
+                    <View style={styles.ftreExitButtonContainer}>
+                        <Text style={styles.ftreExitButtonText}> Save </Text>
+                    </View>
+                </TouchableHighlight>
+            </View>   
         );
-  }
-SetAvatar(styles){
-    return(
-    <View style={styles.ftreContainer}>
-        <TintedImage style={styles.tintedImage} color={this.state.ChamColor} backgroundColor='#ffffff' size={200} />
-        <View style={styles.colorWheel}>
-            <ColorPicker
-              ChamColor={this.state.ChamColor}
-              onColorChange={ChamColor => this.setState({ ChamColor })}
-              onColorSelected={ChamColor => this.setState({ ChamColor })}
-              style={{flex:1, height:300}}
-              hideSliders={true}
-            />
-        </View>
-    </View>
-    );
-  }
-  page(styles){
-    console.log(this.state.page);
-    if(Number(this.state.page) == 1){
-      return this.RegisterUser(styles);
     }
-    else if (Number(this.state.page) == 2){
-      return this.SetAvatar(styles);
-    }
-  }
-
-
-  render() {
-    return (
-      <View>
-        <Modal
-          animationType={"slide"}
-          transparent={true}
-          visible={this.state.modalVisible}
-          onRequestClose={() => {
-            alert("Modal has been closed.");
-          }}
-        >
-
-          <View style={styles.ftreContainer}>
-                  {this.page(styles)}
-          
-            <View style={styles.navButtonContainer}>
-                <TouchableHighlight onPress={this.prevScreen} style={styles.navButton}>
-                  <View style={styles.navButtonView}>
-                    <Text style={styles.navButtonText}>Prev</Text>
-                  </View>
-                </TouchableHighlight>
-                <TouchableHighlight onPress={this.nextScreen} style={styles.navButton}>
-                  <View style={styles.navButtonView}>
-                    <Text style={styles.navButtonText}>Next</Text>
-                  </View>
-                </TouchableHighlight>
-                
+    SetAvatar(){
+        return(
+            <View style={styles.ftreContainer}>
+                <View style={styles.tintedImage}>
+                    <TintedImage color={this.state.ChamColor} backgroundColor='#ffffff' size={200} />
+                </View>
+                <View style={styles.colorWheel}>
+                    <ColorPicker
+                      ChamColor={this.state.ChamColor}
+                      onColorChange={ChamColor => this.setState({ ChamColor })}
+                      onColorSelected={ChamColor => this.setState({ ChamColor })}
+                      style={{flex:1, height:300}}
+                      hideSliders={true}
+                    />
+                </View>
             </View>
-          </View>
-        </Modal>
-      </View>
-    );
+        );
+    }
+    startPage(){
+        return(
+            <View style={styles.ftreContainer}>
+                <Text> Welcome to mumblr!</Text>
+            </View>
+        );
+    }
+    footer(){
+        var leftButtonStyle = styles.navButton;
+        var rightButtonStyle = styles.navButton; 
+        if(Number(this.state.page) < 2){
+            leftButtonStyle = styles.navButtonInactive;
+        }
+        else if(Number(this.state.page) > 5){
+            rightButtonStyle = styles.navButtonInactive;
+        }
+        
+        return(
+            <View style={styles.navButtonContainer}>
+                <TouchableHighlight onPress={this.prevScreen} style={leftButtonStyle}>
+                    <View style={styles.navButtonView}>
+                        <Text style={styles.navButtonText}>Prev</Text>
+                    </View>
+                </TouchableHighlight>
+                <TouchableHighlight onPress={this.nextScreen} style={rightButtonStyle}>
+                    <View style={styles.navButtonView}>
+                        <Text style={styles.navButtonText}>Next</Text>
+                    </View>
+                </TouchableHighlight>
+            </View>
+        );
+    }
+    page(){
+        if(Number(this.state.page) == 1){
+            return this.startPage();
+        }
+        else if (Number(this.state.page) == 2){
+            return this.SetAvatar();
+        }
+        else if (Number(this.state.page) == 3){
+            return this.RegisterUser();
+        }
+    }
+
+
+    render() {
+        return (
+            <View>
+                <Modal
+                  animationType={"slide"}
+                  transparent={true}
+                  visible={this.state.modalVisible}
+                  onRequestClose={() => {
+                    alert("Modal has been closed.");
+                  }}
+                >
+                    <View style={styles.ftreContainer}>
+                        {this.page()}
+                        {this.footer()}
+                  
+
+                    </View>
+                </Modal>
+            </View>
+        );
   }
 }
 const styles = StyleSheet.create({
-ftreContainer:{
-		backgroundColor:'white',
+    ftreContainer:{
+		backgroundColor:'#2C4A48',
 		flex:5,
 		marginTop:0,
 		marginBottom:0,
 		marginLeft:0,
 		marginRight:0,
 	},
-	ftreTitle:{
+    ftreTitle:{
 		color:'black',
-    fontWeight:'bold',
+        fontWeight:'bold',
 		fontSize:20,
 		textAlign:'center',
 		marginTop:30,
 	},
 	ftreDescription:{
 		color:'black',
-    fontSize:15,
+        fontSize:15,
 		marginRight:20,
 		marginLeft:20
 	},
@@ -187,7 +209,7 @@ ftreContainer:{
 		flexDirection:'row',
 		justifyContent:'center',
 		alignItems:'center',
-    backgroundColor: '#ffffff'
+        backgroundColor: '#2C4A48'
 	},
 	ftreDescriptionContainer:{
 		flex:5
@@ -196,12 +218,12 @@ ftreContainer:{
 		flex:1,
 		justifyContent:'center',
 		alignItems:'center',
-    backgroundColor:'#ffffff',
+        backgroundColor:'#2C4A48',
 	},
 	ftreExitButtonContainer:{
 		backgroundColor:'lightseagreen',
 		borderRadius:10,
-    padding:20,
+        padding:20,
 		justifyContent:'center',
 	},
 	ftreExitButtonText:{
@@ -210,38 +232,55 @@ ftreContainer:{
 		fontWeight:'bold',
 		textAlign:'center'
 	},
-  input:{
-    padding: 20,
-    textAlign:'center'
-  },
+    input:{
+        padding: 20,
+        textAlign:'center'
+    },
 
-  navButtonContainer:{
-    flex:1,
-    flexDirection:'row',
-    alignItems:'center',
-    bottom: 0,
-    backgroundColor: '#ffffff',
-    height:100
-
-  },
-  navButton:{
-    flex: 2,
-    flexDirection: 'column',
-    backgroundColor:'lightseagreen',
-    borderRadius:10,
-    justifyContent:'center',
-  },
-  navButtonView:{
-    backgroundColor:'lightseagreen',
-    borderRadius:10,
-    justifyContent:'center',
-    paddingRight: 40,
-    paddingLeft:40,
-  },
-  navButtonText:{
-    color: 'white',
-    fontSize: 18,
-    fontWeight: 'bold',
-    textAlign: 'center'
-  }
+    navButtonContainer:{
+        flex:1,
+        flexDirection:'row',
+        alignItems:'center',
+        bottom: 0,
+        backgroundColor: '#2C4A48',
+        height:100
+    },
+    navButton:{
+        flex: 2,
+        flexDirection: 'column',
+        backgroundColor:'lightseagreen',
+        borderRadius:10,
+        justifyContent:'center',
+    },
+    navButtonInactive:{
+        flex: 2,
+        flexDirection: 'column',
+        backgroundColor:'gray',
+        borderRadius:10,
+        justifyContent:'center',
+    },
+    navButtonView:{
+        backgroundColor:'lightseagreen',
+        borderRadius:10,
+        justifyContent:'center',
+        paddingRight: 40,
+        paddingLeft:40,
+    },
+    navButtonText:{
+        color: 'white',
+        fontSize: 18,
+        fontWeight: 'bold',
+        textAlign: 'center'
+    },
+    colorWheel:{
+        flex: 4,
+        flexDirection: 'row',
+        alignItems:'center',
+    },
+    tintedImage:{
+        flex: 2,
+        flexDirection: 'row',
+        alignItems:'center',
+        justifyContent: 'space-around',
+    }
 });
