@@ -40,6 +40,8 @@ constructor(props) {
     hash: '',
     title: '',
     activated: props.navigation.state.params.activated,
+    chamcolor: '',
+    chamimg: 1,
   }
 
   this.socket.emit('start', this.state.roomID);
@@ -53,7 +55,7 @@ constructor(props) {
 
   this.socket.on('connect_'+this.state.roomID, function(data){
 
-    var decrypted  = CryptoJS.AES.decrypt( data , this.state.hash);
+    var decrypted  = CryptoJS.AES.decrypt(data.connectName , this.state.hash);
     decrypted = decrypted.toString(CryptoJS.enc.Utf8);
     console.log("DEC: " + decrypted);
     if(this.state.title == 'Ny chatt'){
@@ -64,8 +66,13 @@ constructor(props) {
         chatname: decrypted,
         user: this.state.user,
         activated: true,
-        lastmsg: 'no messages'
+        lastmsg: 'no messages',
+        friendColor: data.chamcolor,
+        friendImg: data.chamimg,
       };
+
+      console.log("profile info created chat: " + room.friendColor + " " + room.friendImg)
+
       this.props.navigation.setParams({name: decrypted})
       AsyncStorage.setItem(this.state.roomID, JSON.stringify(room), () => {});
       this.setState({activated: true})
@@ -89,7 +96,9 @@ constructor(props) {
       chatname: res.chatname,
       user: res.user,
       activated: res.activated,
-      lastmsg: datadecrypt
+      lastmsg: datadecrypt,
+      friendColor: res.friendColor,
+      friendImg: res.friendImg,
     }
 
     AsyncStorage.setItem(res.roomID, JSON.stringify(room), () => {});
@@ -129,8 +138,10 @@ componentDidMount() {
 
     AsyncStorage.getItem('profile', (err, result) => {
         let d = JSON.parse(result);
+
         this.setState({
-            cham_color: d.ChamColor,
+            chamcolor: d.ChamColor,
+            chamimg: d.ChamImg,
         })
     });
 }
@@ -149,7 +160,7 @@ renderFlatlist(item){
                           <Text note  style={styles.message2}>{this.decryptMessage(item.message) }</Text>
                         </Body>
                         <Right style = {styles.timecontainer}>
-                          <TintedImage size={45} color={item.icon_color} backgroundColor='#ffffff' />
+                          <TintedImage size={45} color={item.icon_color} version={Number(item.icon_img)} backgroundColor='#ffffff' />
                         </Right>
                       </ListItem>
                     )
@@ -158,7 +169,7 @@ renderFlatlist(item){
       return (
                     <ListItem avatar style={styles.row}>
                       <Left>
-                        <TintedImage size={45} color={item.icon_color} backgroundColor='#ffffff' />
+                          <TintedImage size={45} color={item.icon_color} version={Number(item.icon_img)} backgroundColor='#ffffff' />
                       </Left>
                       <Body style={styles.text}>
                         <Text note  style={styles.message1}>{this.decryptMessage(item.message) }</Text>
@@ -192,7 +203,8 @@ async sendMessage() {
       sender : sender,
       msg: msg.toString(),
       room: room,
-      color: this.state.cham_color,
+      color: this.state.chamcolor,
+      img: this.state.chamimg,
     }
     this.socket.emit('chat message', data);
 

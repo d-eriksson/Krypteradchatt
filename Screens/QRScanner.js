@@ -89,27 +89,42 @@ export default class QRScanner extends Component {
         chatname: dividedString[1],
         user: '2',
         activated: true,
-        lastmsg: 'no messages'
+        lastmsg: 'no messages',
+        friendColor: dividedString[3],
+        friendImg: dividedString[4],
       };
-      console.log(room);
+
         AsyncStorage.getItem('profile', (err, result) => {
           if (err) {
           }
           else {
             if (result != null) {
+
               let roomID = room.roomID;
-              let name = JSON.parse(result).name;
+
+              let res = JSON.parse(result);
+
+              let name = res.name;
+              let chamcolor = res.ChamColor;
+              let chamimg = res.ChamImg;
+
+
               var msg = CryptoJS.AES.encrypt(name, room.hash);
+
               let data = {
                 name: msg.toString(),
-                room: roomID
+                room: roomID,
+                chamimg: chamimg,
+                chamcolor: chamcolor,
               }
+
+              console.log("profile info scanned: " + room.friendColor + " " + room.friendImg)
+
               this.socket.emit('connectUser', data);
               AsyncStorage.setItem(room.roomID, JSON.stringify(room), () => {});
             }
           }
         });
-        console.log(room.chatname);
 
       const {navigate} = this.props.navigation;
       navigate('Chat', {roomID: room.roomID, hash: room.hash, fullString: res, name: room.chatname, activated: room.activated, user: room.user});

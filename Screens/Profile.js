@@ -13,13 +13,18 @@ import StatusBarComponent from '../Components/StatusBarComponent';
 import { Item, Input, Header, Button, List, ListItem, Body, Text, Left,Right, Icon, Title, Thumbnail } from 'native-base';
 import Toast from 'react-native-simple-toast';
 import TintedImage from '../Components/TintedImage';
-import { ColorPicker, toHsv } from 'react-native-color-picker'
+import { ColorPicker, toHsv } from 'react-native-color-picker';
+import SocketIOClient from 'socket.io-client';
+
+
+window.navigator.userAgent = 'react-native';
 
 
 export default class Profile extends Component {
 
   constructor(props){
   	super(props)
+    this.socket = SocketIOClient('http://83.227.100.223:8080');
 	  this.state={
 	  	  name:'',
 	  	  ChamColor:'',
@@ -52,7 +57,7 @@ export default class Profile extends Component {
 	 }
   }
 
-  saveData =()=> {
+saveData =async() => {
     Toast.show('Saved changes!');
     const {name,ChamColor,ChamImg} = this.state;
 
@@ -64,6 +69,8 @@ export default class Profile extends Component {
 	AsyncStorage.setItem('profile',
 	JSON.stringify(profile));
   this.displayData();
+
+
   }
 
   changeLayout = () => {

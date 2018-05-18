@@ -24,7 +24,9 @@ io.on('connection', function(socket){
   	var message = msg.msg;
   	var sender = msg.sender;
     var color = msg.color;
-    var sql = "INSERT INTO chat_messages (roomID, message,sentby, icon_color) VALUES ("+ mysql.escape(roomID) + "," + mysql.escape(message) + "," + mysql.escape(sender) + "," + mysql.escape(color) + ")";
+    var img = msg.img;
+
+    var sql = "INSERT INTO chat_messages (roomID, message,sentby, icon_color, icon_img) VALUES ("+ mysql.escape(roomID) + "," + mysql.escape(message) + "," + mysql.escape(sender) + "," + mysql.escape(color) + "," + mysql.escape(img) + ")";
   	con.query(sql, function (err, result)
     {
 	    if (err) throw err;
@@ -49,16 +51,26 @@ io.on('connection', function(socket){
   });
 
     socket.on('connectUser', function(data){
+
       var roomID = data.room;
-      var connectName = data.name;
-      var sql = "UPDATE chatts SET connected=1, connected_name= "+ mysql.escape(connectName) +" WHERE roomID = " + mysql.escape(roomID);
+
+      var info = {
+        connectName: data.name,
+        chamcolor: data.chamcolor,
+        chamimg: data.chamimg,
+      }
+
+
+      var sql = "UPDATE chatts SET connected=1, connected_name= "+ mysql.escape(data.name) +" WHERE roomID = " + mysql.escape(roomID);
       con.query(sql, function(err, result){
           if(err) throw err;
-          console.log(connectName);
-          socket.broadcast.emit("connect_"+roomID, connectName);
+
+          socket.broadcast.emit("connect_"+roomID, info);
       })
     })
-});
+
+  });
+
 
 var con = mysql.createConnection({
   host: "localhost",

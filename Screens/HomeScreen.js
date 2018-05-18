@@ -41,6 +41,8 @@ export default class HomeScreen extends Component {
       dataSource: [],
       refreshing: false,
       loading: true,
+      activeroomID: '',
+
 		};
         this.socket = SocketIOClient('http://83.227.100.223:8080');
 
@@ -69,14 +71,12 @@ export default class HomeScreen extends Component {
   }
 
   async componentDidMount() {
-    AsyncStorage.clear();
     const data = [];
     let keys = await AsyncStorage.getAllKeys();
     for (let inKey of keys) {
         let obj = await AsyncStorage.getItem(inKey);
         if(inKey != "profile"){
           data.push(JSON.parse(obj));
-          console.log("datasource: "+obj)
         }
     }
 
@@ -98,9 +98,11 @@ export default class HomeScreen extends Component {
                 hash: SHA.sha256(Math.random().toString(2)),
                 chatname: d.name,
                 user: '1',
-                activated: false
+                activated: false,
+                chamcolor: d.ChamColor,
+                chamimg: d.ChamImg
             };
-            let fullString = room.roomID + this.state.sign + room.chatname + this.state.sign + room.hash;
+            let fullString = room.roomID + this.state.sign + room.chatname + this.state.sign + room.hash + this.state.sign + room.chamcolor + this.state.sign + room.chamimg;
             //AsyncStorage.setItem(room.roomID, JSON.stringify(room), () => {});
             navigate('Chat', {roomID: room.roomID, hash: room.hash, fullString: fullString, name: 'Ny chatt', activated: room.activated, user: room.user})
         })
@@ -156,6 +158,8 @@ renderHeader = () => {
 };
 
 
+
+
   render() {
     if (this.state.loading) {
       return (
@@ -185,7 +189,7 @@ renderHeader = () => {
               avatar
             >
               <Left>
-                  <TintedImage size={45} color={item.friendColor} backgroundColor='#ffffff' />
+                  <TintedImage size={45} color={item.friendColor} version={Number(item.friendImg)} backgroundColor='#ffffff' />
               </Left>
               <Body>
                 <Text>{ item.chatname }</Text>
