@@ -251,7 +251,7 @@ renderHeader() {
   const { navigation } = this.props;
   return (
       <Header style={styles.header}>
-        <Left>
+        <Left style={{flex: 1}}>
           <Button transparent
             onPress={() => {
               navigation.goBack();
@@ -260,10 +260,10 @@ renderHeader() {
             <Icon name='arrow-back' />
           </Button>
         </Left>
-        <Body>
+        <Body style={{flex: 1, alignItems:'center'}}>
           <Title>{this.state.otherUser}</Title>
         </Body>
-        <Right>
+        <Right style={{flex: 1}}>
           <Button transparent
             onPress={this.showAlert}
           >

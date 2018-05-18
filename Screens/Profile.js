@@ -34,7 +34,6 @@ export default class Profile extends Component {
       ChamColor : d.ChamColor,
       name : d.name,
     })
-
   }
 
   displayData = async() => {
@@ -67,10 +66,6 @@ export default class Profile extends Component {
   	})
 
   }
-
-
-
-
 
   render() {
   	if(this.state.layout){
