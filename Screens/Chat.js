@@ -12,7 +12,8 @@ Platform,
 Dimensions,
 KeyboardAvoidingView,
 TouchableOpacity,
-AsyncStorage } from 'react-native';
+AsyncStorage,
+Alert } from 'react-native';
 import { Container, Header, Button, List, ListItem, Body, Text, Left,Right, Icon, Title, Thumbnail } from 'native-base';
 import { Ionicons } from '@expo/vector-icons';
 import Expo from 'expo';
@@ -22,7 +23,6 @@ import SocketIOClient from 'socket.io-client';
 import KeyboardSpacer from 'react-native-keyboard-spacer';
 import TintedImage from '../Components/TintedImage';
 import StatusBarComponent from '../Components/StatusBarComponent';
-import { StackActions, NavigationActions } from 'react-navigation';
 
 window.navigator.userAgent = 'react-native';
 
@@ -228,6 +228,25 @@ goBack() {
   navigation.goBack();
 }
 
+  handleDelete = () => {
+    const { navigation } = this.props;
+    AsyncStorage.removeItem(this.state.roomID);
+    navigation.goBack();
+  };
+
+  showAlert = () => {
+
+    Alert.alert(
+      'Delete',
+      'Do you want to delete this account? You cannot undo this action.',
+      [
+        {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+        {text: 'Delete', onPress: () => this.handleDelete()},
+      ],
+      { cancelable: false }
+    )
+  }
+
 renderHeader() {
   const { navigation } = this.props;
   return (
@@ -246,10 +265,7 @@ renderHeader() {
         </Body>
         <Right>
           <Button transparent
-            onPress={() => { //we should remove item from other user aswell
-              AsyncStorage.removeItem(this.state.roomID);
-              navigation.goBack();
-            }}
+            onPress={this.showAlert}
           >
             <Icon name='more' />
           </Button>
