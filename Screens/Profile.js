@@ -44,17 +44,17 @@ export default class Profile extends Component {
       name : d.name,
       ChamImg: d.ChamImg,
     })
-
   }
+
   displayData = async() => {
-	try{
-  	  let profile = await AsyncStorage.getItem('profile');
-	  let d = JSON.parse(profile);
-	  Alert.alert('Personal information', 'Name: ' + d.name + '\n' + 'Favourite Color: ' + d.ChamColor);
-	 }
-	 catch(error){
-	 	 Alert.alert('Error','There was an error while loading the data');
-	 }
+  	try{
+    	  let profile = await AsyncStorage.getItem('profile');
+  	  let d = JSON.parse(profile);
+  	  Alert.alert('Personal information', 'Name: ' + d.name + '\n' + 'Favourite Color: ' + d.ChamColor);
+  	 }
+  	 catch(error){
+  	 	 Alert.alert('Error','There was an error while loading the data');
+  	 }
   }
 
 saveData =async() => {
@@ -93,10 +93,6 @@ saveData =async() => {
       ChamImg: ChamImage,
     })
   }
-
-
-
-
 
 
   render() {

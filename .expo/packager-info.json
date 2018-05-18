@@ -1,1 +1,8 @@
-{}
+{
+  "expoServerPort": 19003,
+  "packagerPort": 19004,
+  "packagerPid": 8744,
+  "expoServerNgrokUrl": "https://b2-krx.josefineflygge.krypteradchatt.exp.direct",
+  "packagerNgrokUrl": "https://packager.b2-krx.josefineflygge.krypteradchatt.exp.direct",
+  "ngrokPid": 8780
+}
