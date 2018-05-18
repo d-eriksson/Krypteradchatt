@@ -88,7 +88,8 @@ export default class QRScanner extends Component {
         hash: dividedString[2],
         chatname: dividedString[1],
         user: '2',
-        activated: true
+        activated: true,
+        lastmsg: 'no messages'
       };
       console.log(room);
         AsyncStorage.getItem('profile', (err, result) => {

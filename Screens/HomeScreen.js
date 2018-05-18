@@ -16,6 +16,10 @@ import {Font, AppLoading} from 'expo';
 import {ionicons} from '@expo/vector-icons';
 import StatusBarComponent from '../Components/StatusBarComponent';
 import WelcomeModal from '../Components/WelcomeModal';
+import TintedImage from '../Components/TintedImage';
+import SocketIOClient from 'socket.io-client';
+
+window.navigator.userAgent = 'react-native';
 
 
 export default class HomeScreen extends Component {
@@ -36,9 +40,13 @@ export default class HomeScreen extends Component {
       chatname: 'Unnamed Chameleon',
       dataSource: [],
       refreshing: false,
-      loading: true
+      loading: true,
 		};
+        this.socket = SocketIOClient('http://83.227.100.223:8080');
+
+    //vad är detta?
     this.createChat = this.createChat.bind(this);
+
 	}
 
   onRefresh = async () => {
@@ -61,12 +69,14 @@ export default class HomeScreen extends Component {
   }
 
   async componentDidMount() {
+    AsyncStorage.clear();
     const data = [];
     let keys = await AsyncStorage.getAllKeys();
     for (let inKey of keys) {
         let obj = await AsyncStorage.getItem(inKey);
         if(inKey != "profile"){
           data.push(JSON.parse(obj));
+          console.log("datasource: "+obj)
         }
     }
 
@@ -145,6 +155,7 @@ renderHeader = () => {
 )
 };
 
+
   render() {
     if (this.state.loading) {
       return (
@@ -154,7 +165,7 @@ renderHeader = () => {
     return (
 
       <View>
-          <WelcomeModal title={"Välkommen Enebypark"}/>
+          <WelcomeModal title={"Välkommen!"}/>
           <StatusBarComponent style={{backgroundColor:'#132b30'}}/>
 
       <View style={{height: Dimensions.get('window').height-80}}>
@@ -166,7 +177,7 @@ renderHeader = () => {
             renderItem={({ item }) => (
             <ListItem
               onPress={() => {
-                console.log(item);
+                //console.log(item);
                 let fullString = item.roomID + this.state.sign + item.name + this.state.sign + item.hash;
                 const {navigate} = this.props.navigation;
                 navigate('Chat', {roomID: item.roomID, hash: item.hash,fullString:fullString, name: item.chatname, activated: item.activated, user: item.user})
@@ -174,11 +185,11 @@ renderHeader = () => {
               avatar
             >
               <Left>
-                <Thumbnail style={{width: 40, height: 40, borderRadius: 40/2}} source={require('../aang.jpg')}></Thumbnail>
+                  <TintedImage size={45} color={item.friendColor} backgroundColor='#ffffff' />
               </Left>
               <Body>
                 <Text>{ item.chatname }</Text>
-                <Text note>{ 'det senaste meddelandet' }</Text>
+                <Text note>{ item.lastmsg }</Text>
               </Body>
             </ListItem>
           )}
