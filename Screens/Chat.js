@@ -267,7 +267,7 @@ renderHeader() {
           <Button transparent
             onPress={this.showAlert}
           >
-            <Icon name='more' />
+            <Icon name='trash' />
           </Button>
         </Right>
       </Header>
