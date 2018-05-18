@@ -53,12 +53,14 @@ constructor(props) {
 
   this.socket.on('connect_'+this.state.roomID, function(data){
     if(this.state.title == 'Ny chatt'){
+
       let room = {
         roomID: this.state.roomID,
         hash: this.state.hash,
         chatname: data,
         user: this.state.user,
-        activated: true
+        activated: true,
+        lastmsg: 'no messages'
       };
       this.props.navigation.setParams({name: data})
       AsyncStorage.setItem(this.state.roomID, JSON.stringify(room), () => {});
@@ -68,6 +70,32 @@ constructor(props) {
 
   this.socket.on('newMessage_'+this.state.roomID,function(data){
   this.setState({messages: data.concat(this.state.messages)});
+
+  AsyncStorage.getItem(this.state.roomID, (err, result) => {
+
+    var dataobj = data[0];
+    var datamsg = dataobj.message;
+    datadecrypt = this.decryptMessage(datamsg);
+
+    res = JSON.parse(result);
+
+    let room = {
+      roomID: res.roomID,
+      hash: res.hash,
+      chatname: res.chatname,
+      user: res.user,
+      activated: res.activated,
+      lastmsg: datadecrypt
+    }
+
+    AsyncStorage.setItem(res.roomID, JSON.stringify(room), () => {});
+
+
+  });
+
+
+
+
 }.bind(this))
 
 }
@@ -103,17 +131,6 @@ componentDidMount() {
     });
 }
 
-selectAvatar = (sender) => {
-
-  const userIcon = require('../chameleon.png');
-  const otherUserIcon = require('../chameleon2.jpg');
-
-       if (sender == this.state.user) {
-           return userIcon;
-       } else {
-           return otherUserIcon;
-       }
-   }
 
 
 renderFlatlist(item){
