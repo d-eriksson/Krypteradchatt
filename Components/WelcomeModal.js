@@ -7,6 +7,7 @@ import {
   TouchableHighlight,
   StyleSheet,
   TextInput,
+  Image,
 } from "react-native";
 import FadeInView from "../Components/FadeInView";
 import StatusBarComponent from '../Components/StatusBarComponent';
@@ -23,36 +24,44 @@ export default class WelcomeModal extends Component {
       ChamColor: '#ffffff',
     };
   }
-  componentDidMount() {
-    AsyncStorage.getItem('profile', (err, result) => {
-      if (err) {
-      } else {
-        if (result == null) {
-          this.setModalVisible(true);
-        }
-      }
-    });
-    AsyncStorage.setItem(this.props.pagekey, JSON.stringify({"value":"true"}), (err,result) => {
-            console.log("error",err,"result",result);
-            });
-    this.setState({
-        modalVisible: false,
-        name: '',
-        page: 1,
-        ChamColor: '#ffffff',
-    })
-  }
+    componentDidMount() {
+        AsyncStorage.getItem('profile', (err, result) => {
+            if (err) {
+            } else {
+                if (result == null) {
+                    this.setModalVisible(true);
+                }
+                else if(result.name == null){
+                    this.setModalVisible(true);
+                }
+                else if(result.ChamColor == null){
+                    this.setModalVisible(true)
+                }
+            }
+        });
+        AsyncStorage.setItem(this.props.pagekey, JSON.stringify({"value":"true"}), (err,result) => {
+                console.log("error",err,"result",result);
+                });
+        this.setState({
+            modalVisible: false,
+            name: '',
+            page: 1,
+            ChamColor: '#ffffff',
+        })
+    }
     setModalVisible(visible) {
         this.setState({ modalVisible: visible });
     }
 
     saveData =()=> {
         const name = this.state.name;
+        const c = this.state.ChamColor;
         if(name.length > 0){
             let profile={
         		name: name,
+                ChamColor: c,
         	}
-    	   AsyncStorage.setItem('profile', JSON.stringify(profile));
+            AsyncStorage.setItem('profile', JSON.stringify(profile));
             this.setModalVisible(!this.state.modalVisible);
         }
     }
@@ -74,7 +83,7 @@ export default class WelcomeModal extends Component {
         return(
             <View style={styles.ftreContainer}>
                 <View style={styles.ftreTitleContainer}>
-                    <Text style={styles.ftreTitle}>Lastly add a name</Text>
+                    <Text style={styles.bigText}>Lastly add a name</Text>
                 </View>
                 <View style={styles.ftreDescriptionContainer}>
                     <TextInput
@@ -95,6 +104,7 @@ export default class WelcomeModal extends Component {
     SetAvatar(){
         return(
             <View style={styles.ftreContainer}>
+                <Text style={styles.bigText}> Pick an avatar! </Text>
                 <View style={styles.tintedImage}>
                     <TintedImage color={this.state.ChamColor} backgroundColor='#ffffff' size={200} />
                 </View>
@@ -113,29 +123,58 @@ export default class WelcomeModal extends Component {
     startPage(){
         return(
             <View style={styles.ftreContainer}>
-                <Text> Welcome to mumblr!</Text>
+                <View style={styles.welcomeContainer}>
+                    <Text style={styles.bigText}> Welcome to mumblr!</Text>
+                    <Text style={styles.medText}> The chat app where everybody is your friend!</Text>
+                </View>
+            </View>
+        );
+    }
+    HowToCreateChat(){
+        return(
+            <View style={styles.ftreContainer}>
+                <View style={styles.welcomeContainer}>
+                    <Text style={styles.bigText}> Click a button like this one!</Text>
+                    <View style={styles.clickImg}>
+                        <Image source={require('../Icons/click.png')} style={styles.images}/>
+                    </View>
+                    <Text style={styles.medText}> To create a chat with your friend!</Text>
+                </View>
+            </View>
+        );
+    }
+    HowToScan(){
+        return(
+            <View style={styles.ftreContainer}>
+                <View style={styles.welcomeContainer}>
+                    <Text style={styles.bigText}>Have a friend scan your QR-code</Text>
+                    <View style={styles.clickImg}>
+                        <Image source={require('../Icons/qrKod.png')} style={styles.images}/>
+                    </View>
+                    <Text style={styles.medText}> And bob's your uncle!</Text>
+                </View>
             </View>
         );
     }
     footer(){
-        var leftButtonStyle = styles.navButton;
-        var rightButtonStyle = styles.navButton; 
+        var leftButtonStyle = styles.navButtonView;
+        var rightButtonStyle = styles.navButtonView; 
         if(Number(this.state.page) < 2){
-            leftButtonStyle = styles.navButtonInactive;
+            leftButtonStyle = styles.navButtonViewInactive;
         }
-        else if(Number(this.state.page) > 5){
-            rightButtonStyle = styles.navButtonInactive;
+        else if(Number(this.state.page) > 4){
+            rightButtonStyle = styles.navButtonViewInactive;
         }
         
         return(
             <View style={styles.navButtonContainer}>
-                <TouchableHighlight onPress={this.prevScreen} style={leftButtonStyle}>
-                    <View style={styles.navButtonView}>
+                <TouchableHighlight onPress={this.prevScreen} style={styles.navButton}>
+                    <View style={leftButtonStyle}>
                         <Text style={styles.navButtonText}>Prev</Text>
                     </View>
                 </TouchableHighlight>
-                <TouchableHighlight onPress={this.nextScreen} style={rightButtonStyle}>
-                    <View style={styles.navButtonView}>
+                <TouchableHighlight onPress={this.nextScreen} style={styles.navButton}>
+                    <View style={rightButtonStyle}>
                         <Text style={styles.navButtonText}>Next</Text>
                     </View>
                 </TouchableHighlight>
@@ -147,9 +186,15 @@ export default class WelcomeModal extends Component {
             return this.startPage();
         }
         else if (Number(this.state.page) == 2){
-            return this.SetAvatar();
+            return this.HowToCreateChat();
         }
         else if (Number(this.state.page) == 3){
+            return this.HowToScan();
+        }
+        else if (Number(this.state.page) == 4){
+            return this.SetAvatar();
+        }   
+        else if (Number(this.state.page) == 5){
             return this.RegisterUser();
         }
     }
@@ -169,8 +214,6 @@ export default class WelcomeModal extends Component {
                     <View style={styles.ftreContainer}>
                         {this.page()}
                         {this.footer()}
-                  
-
                     </View>
                 </Modal>
             </View>
@@ -180,7 +223,7 @@ export default class WelcomeModal extends Component {
 const styles = StyleSheet.create({
     ftreContainer:{
 		backgroundColor:'#2C4A48',
-		flex:5,
+		flex:6,
 		marginTop:0,
 		marginBottom:0,
 		marginLeft:0,
@@ -234,7 +277,8 @@ const styles = StyleSheet.create({
 	},
     input:{
         padding: 20,
-        textAlign:'center'
+        textAlign:'center',
+        color:'white'
     },
 
     navButtonContainer:{
@@ -252,19 +296,20 @@ const styles = StyleSheet.create({
         borderRadius:10,
         justifyContent:'center',
     },
-    navButtonInactive:{
-        flex: 2,
-        flexDirection: 'column',
-        backgroundColor:'gray',
-        borderRadius:10,
-        justifyContent:'center',
-    },
     navButtonView:{
         backgroundColor:'lightseagreen',
         borderRadius:10,
         justifyContent:'center',
         paddingRight: 40,
         paddingLeft:40,
+    },
+    navButtonViewInactive:{
+        backgroundColor:'#0f0f0f',
+        borderRadius:10,
+        justifyContent:'center',
+        paddingRight: 40,
+        paddingLeft:40,
+        height: 0,
     },
     navButtonText:{
         color: 'white',
@@ -282,5 +327,37 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems:'center',
         justifyContent: 'space-around',
+    },
+    bigText:{
+        color:'white',
+        fontSize: 46,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        flex:1,
+        alignItems:'center',
+        justifyContent: 'center',
+    },
+    medText:{
+        color:'white',
+        fontSize: 32,
+        textAlign: 'center',
+        flex:2,
+        alignItems:'center',
+        justifyContent: 'center',
+    },
+    clickImg:{
+        flex:2,
+        alignItems:'center',
+        justifyContent: 'center',
+    },
+    welcomeContainer:{
+        flex: 1,
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    images:{
+        width: 200,
+        height: 200,
     }
 });
