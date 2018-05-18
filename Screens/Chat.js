@@ -21,7 +21,8 @@ import QRCode from 'react-native-qrcode';
 import SocketIOClient from 'socket.io-client';
 import KeyboardSpacer from 'react-native-keyboard-spacer';
 import TintedImage from '../Components/TintedImage';
-
+import StatusBarComponent from '../Components/StatusBarComponent';
+import { StackActions, NavigationActions } from 'react-navigation';
 
 window.navigator.userAgent = 'react-native';
 
@@ -75,11 +76,11 @@ constructor(props) {
 
       this.props.navigation.setParams({name: decrypted})
       AsyncStorage.setItem(this.state.roomID, JSON.stringify(room), () => {});
-      this.setState({activated: true})
+      this.setState({activated: true, otherUser: data})
     }
   }.bind(this))
 
-  this.socket.on('newMessage_'+this.state.roomID,function(data){
+this.socket.on('newMessage_'+this.state.roomID,function(data){
   this.setState({messages: data.concat(this.state.messages)});
 
   AsyncStorage.getItem(this.state.roomID, (err, result) => {
@@ -253,14 +254,54 @@ renderTextBox(){
 }
 }
 
+goBack() {
+  const { navigation } = this.props;
+  console.log(navigation.state.params);
+  navigation.state.params.refresh();
+  navigation.goBack();
+}
+
+renderHeader() {
+  const { navigation } = this.props;
+  return (
+      <Header style={styles.header}>
+        <Left>
+          <Button transparent
+            onPress={() => {
+              navigation.goBack();
+            }}
+          >
+            <Icon name='arrow-back' />
+          </Button>
+        </Left>
+        <Body>
+          <Title>{this.state.otherUser}</Title>
+        </Body>
+        <Right>
+          <Button transparent
+            onPress={() => { //we should remove item from other user aswell
+              AsyncStorage.removeItem(this.state.roomID);
+              navigation.goBack();
+            }}
+          >
+            <Icon name='more' />
+          </Button>
+        </Right>
+      </Header>
+  );
+}
+
 render() {
   if (!this.state.isReady) {
       return <Expo.AppLoading />;
   }
 
   return (
-    <KeyboardAvoidingView style={styles.container} behavior='padding' keyboardVerticalOffset={80} >
-      {this.renderQR()}{/*code works w/o this line, will work later when QR dissapears when chat connects*/}
+    <View style={styles.container}>
+    <StatusBarComponent style={{backgroundColor:'#132b30'}}/>
+    {this.renderHeader()}
+    <KeyboardAvoidingView style={styles.container} behavior='padding'>
+      {this.renderQR()}
       <FlatList
         data={this.state.messages}
           renderItem={({ item }) => (
@@ -283,6 +324,7 @@ render() {
           </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>
+    </View>
 )
 }
 }
@@ -353,6 +395,9 @@ footer: {
   qr: {
     alignItems: 'center',
     marginTop: 20,
+  },
+  header: {
+    backgroundColor: 'lightseagreen',
   }
 
 });

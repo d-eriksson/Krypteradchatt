@@ -30,6 +30,7 @@ export default class HomeScreen extends Component {
       Ionicons: require("native-base/Fonts/Ionicons.ttf"),
       Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf")
     });
+    this.sub = this.props.navigation.addListener('willFocus', () => this.onRefresh());
     this.setState({ loading: false });
   }
 
@@ -71,6 +72,7 @@ export default class HomeScreen extends Component {
   }
 
   async componentDidMount() {
+
     const data = [];
     let keys = await AsyncStorage.getAllKeys();
     for (let inKey of keys) {
@@ -83,6 +85,11 @@ export default class HomeScreen extends Component {
     this.setState({ dataSource : data });
 
   }
+
+  componentWillUnmount() {
+    this.sub.forEach(sub => sub.remove());
+  }
+
 
   createChat = () => {
     AsyncStorage.getItem('profile', (err, result) => {
