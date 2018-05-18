@@ -30,6 +30,7 @@ export default class HomeScreen extends Component {
       Ionicons: require("native-base/Fonts/Ionicons.ttf"),
       Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf")
     });
+    this.sub = this.props.navigation.addListener('willFocus', () => this.onRefresh());
     this.setState({ loading: false });
   }
 
@@ -41,12 +42,8 @@ export default class HomeScreen extends Component {
       dataSource: [],
       refreshing: false,
       loading: true,
-      activeroomID: '',
-
 		};
-        this.socket = SocketIOClient('http://83.227.100.223:8080');
-
-    //vad är detta?
+    this.socket = SocketIOClient('http://83.227.100.223:8080');
     this.createChat = this.createChat.bind(this);
 
 	}

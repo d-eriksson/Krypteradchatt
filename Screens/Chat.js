@@ -12,7 +12,8 @@ Platform,
 Dimensions,
 KeyboardAvoidingView,
 TouchableOpacity,
-AsyncStorage } from 'react-native';
+AsyncStorage,
+Alert } from 'react-native';
 import { Container, Header, Button, List, ListItem, Body, Text, Left,Right, Icon, Title, Thumbnail } from 'native-base';
 import { Ionicons } from '@expo/vector-icons';
 import Expo from 'expo';
@@ -76,7 +77,7 @@ constructor(props) {
 
       this.props.navigation.setParams({name: decrypted})
       AsyncStorage.setItem(this.state.roomID, JSON.stringify(room), () => {});
-      this.setState({activated: true, otherUser: data})
+      this.setState({activated: true, otherUser: decrypted})
     }
   }.bind(this))
 
@@ -261,11 +262,31 @@ goBack() {
   navigation.goBack();
 }
 
+handleDelete = () => {
+   const { navigation } = this.props;
+   AsyncStorage.removeItem(this.state.roomID);
+   navigation.goBack();
+ };
+
+ showAlert = () => {
+
+   Alert.alert(
+     'Delete',
+     'Do you want to delete this account? You cannot undo this action.',
+     [
+       {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+       {text: 'Delete', onPress: () => this.handleDelete()},
+     ],
+     { cancelable: false }
+   )
+ }
+
+
 renderHeader() {
   const { navigation } = this.props;
   return (
       <Header style={styles.header}>
-        <Left>
+        <Left style={{flex:1}}>
           <Button transparent
             onPress={() => {
               navigation.goBack();
@@ -274,17 +295,14 @@ renderHeader() {
             <Icon name='arrow-back' />
           </Button>
         </Left>
-        <Body>
+        <Body style={{flex:1, alignItems:'center'}}>
           <Title>{this.state.otherUser}</Title>
         </Body>
-        <Right>
+        <Right style={{flex: 1}}>
           <Button transparent
-            onPress={() => { //we should remove item from other user aswell
-              AsyncStorage.removeItem(this.state.roomID);
-              navigation.goBack();
-            }}
+            onPress={this.showAlert}
           >
-            <Icon name='more' />
+            <Icon name='trash' />
           </Button>
         </Right>
       </Header>
