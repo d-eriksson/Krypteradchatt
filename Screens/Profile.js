@@ -24,7 +24,6 @@ export default class Profile extends Component {
 	  	  name:'',
 	  	  ChamColor:'',
 	  	  layout: true,
-	  	  color: toHsv('green')
 	  }
   }
   async componentDidMount() {

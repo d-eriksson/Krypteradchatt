@@ -60,6 +60,7 @@ export default class HomeScreen extends Component {
   }
 
   async componentDidMount() {
+    AsyncStorage.clear();
     const data = [];
     let keys = await AsyncStorage.getAllKeys();
     for (let inKey of keys) {
@@ -153,7 +154,7 @@ renderHeader = () => {
     return (
 
       <View>
-          <WelcomeModal title={"Välkommen Enebypark"}/>
+          <WelcomeModal title={"Välkommen"}/>
           <StatusBarComponent style={{backgroundColor:'#132b30'}}/>
 
       <View style={{height: Dimensions.get('window').height-80}}>
