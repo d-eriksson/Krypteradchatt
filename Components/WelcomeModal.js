@@ -14,6 +14,7 @@ import StatusBarComponent from '../Components/StatusBarComponent';
 import TintedImage from '../Components/TintedImage';
 import { ColorPicker, toHsv } from 'react-native-color-picker';
 
+
 export default class WelcomeModal extends Component {
   constructor(props) {
     super(props);
@@ -30,12 +31,6 @@ export default class WelcomeModal extends Component {
             } else {
                 if (result == null) {
                     this.setModalVisible(true);
-                }
-                else if(result.name == null){
-                    this.setModalVisible(true);
-                }
-                else if(result.ChamColor == null){
-                    this.setModalVisible(true)
                 }
             }
         });
@@ -98,7 +93,7 @@ export default class WelcomeModal extends Component {
                         <Text style={styles.ftreExitButtonText}> Save </Text>
                     </View>
                 </TouchableHighlight>
-            </View>   
+            </View>
         );
     }
     SetAvatar(){
@@ -158,14 +153,14 @@ export default class WelcomeModal extends Component {
     }
     footer(){
         var leftButtonStyle = styles.navButtonView;
-        var rightButtonStyle = styles.navButtonView; 
+        var rightButtonStyle = styles.navButtonView;
         if(Number(this.state.page) < 2){
             leftButtonStyle = styles.navButtonViewInactive;
         }
         else if(Number(this.state.page) > 4){
             rightButtonStyle = styles.navButtonViewInactive;
         }
-        
+
         return(
             <View style={styles.navButtonContainer}>
                 <TouchableHighlight onPress={this.prevScreen} style={styles.navButton}>
@@ -193,7 +188,7 @@ export default class WelcomeModal extends Component {
         }
         else if (Number(this.state.page) == 4){
             return this.SetAvatar();
-        }   
+        }
         else if (Number(this.state.page) == 5){
             return this.RegisterUser();
         }

@@ -52,6 +52,7 @@ constructor(props) {
   }.bind(this))
 
   this.socket.on('connect_'+this.state.roomID, function(data){
+
     if(this.state.title == 'Ny chatt'){
       let room = {
         roomID: this.state.roomID,
@@ -64,6 +65,7 @@ constructor(props) {
       AsyncStorage.setItem(this.state.roomID, JSON.stringify(room), () => {});
       this.setState({activated: true})
     }
+    this.playSound();
   }.bind(this))
 
   this.socket.on('newMessage_'+this.state.roomID,function(data){
@@ -102,7 +104,15 @@ componentDidMount() {
         })
     });
 }
-
+async playSound() {
+  const yaaay = new Expo.Audio.Sound();
+  try{
+    await yaaay.loadAsync(require('../assets/sounds/Yaaay.mp3'))
+    await yaaay.playAsync();
+  }catch(err){
+    console.log(err);
+  }
+}
 selectAvatar = (sender) => {
 
   const userIcon = require('../chameleon.png');
