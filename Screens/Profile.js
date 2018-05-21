@@ -13,13 +13,18 @@ import StatusBarComponent from '../Components/StatusBarComponent';
 import { Item, Input, Header, Button, List, ListItem, Body, Text, Left,Right, Icon, Title, Thumbnail } from 'native-base';
 import Toast from 'react-native-simple-toast';
 import TintedImage from '../Components/TintedImage';
-import { ColorPicker, toHsv } from 'react-native-color-picker'
+import { ColorPicker, toHsv } from 'react-native-color-picker';
+import SocketIOClient from 'socket.io-client';
+
+
+window.navigator.userAgent = 'react-native';
 
 
 export default class Profile extends Component {
 
   constructor(props){
   	super(props)
+    this.socket = SocketIOClient('http://83.227.100.223:8080');
 	  this.state={
 	  	  name:'',
 	  	  ChamColor:'',
@@ -39,20 +44,20 @@ export default class Profile extends Component {
       name : d.name,
       ChamImg: d.ChamImg,
     })
-
   }
+
   displayData = async() => {
-	try{
-  	  let profile = await AsyncStorage.getItem('profile');
-	  let d = JSON.parse(profile);
-	  Alert.alert('Personal information', 'Name: ' + d.name + '\n' + 'Favourite Color: ' + d.ChamColor);
-	 }
-	 catch(error){
-	 	 Alert.alert('Error','There was an error while loading the data');
-	 }
+  	try{
+    	  let profile = await AsyncStorage.getItem('profile');
+  	  let d = JSON.parse(profile);
+  	  Alert.alert('Personal information', 'Name: ' + d.name + '\n' + 'Favourite Color: ' + d.ChamColor);
+  	 }
+  	 catch(error){
+  	 	 Alert.alert('Error','There was an error while loading the data');
+  	 }
   }
 
-  saveData =()=> {
+saveData =async() => {
     Toast.show('Saved changes!');
     const {name,ChamColor,ChamImg} = this.state;
 
@@ -64,6 +69,8 @@ export default class Profile extends Component {
 	AsyncStorage.setItem('profile',
 	JSON.stringify(profile));
   this.displayData();
+
+
   }
 
   changeLayout = () => {
@@ -86,10 +93,6 @@ export default class Profile extends Component {
       ChamImg: ChamImage,
     })
   }
-
-
-
-
 
 
   render() {

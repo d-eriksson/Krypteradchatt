@@ -12,7 +12,8 @@ Platform,
 Dimensions,
 KeyboardAvoidingView,
 TouchableOpacity,
-AsyncStorage } from 'react-native';
+AsyncStorage,
+Alert } from 'react-native';
 import { Container, Header, Button, List, ListItem, Body, Text, Left,Right, Icon, Title, Thumbnail } from 'native-base';
 import { Ionicons } from '@expo/vector-icons';
 import Expo from 'expo';
@@ -21,7 +22,8 @@ import QRCode from 'react-native-qrcode';
 import SocketIOClient from 'socket.io-client';
 import KeyboardSpacer from 'react-native-keyboard-spacer';
 import TintedImage from '../Components/TintedImage';
-
+import StatusBarComponent from '../Components/StatusBarComponent';
+import { StackActions, NavigationActions } from 'react-navigation';
 
 window.navigator.userAgent = 'react-native';
 
@@ -40,6 +42,8 @@ constructor(props) {
     hash: '',
     title: '',
     activated: props.navigation.state.params.activated,
+    chamcolor: '',
+    chamimg: 1,
   }
 
   this.socket.emit('start', this.state.roomID);
@@ -52,7 +56,7 @@ constructor(props) {
   }.bind(this))
 
   this.socket.on('connect_'+this.state.roomID, function(data){
-    var decrypted  = CryptoJS.AES.decrypt( data , this.state.hash);
+    var decrypted  = CryptoJS.AES.decrypt(data.connectName , this.state.hash);
     decrypted = decrypted.toString(CryptoJS.enc.Utf8);
     console.log("DEC: " + decrypted);
     if(this.state.title == 'Ny chatt'){
@@ -63,16 +67,21 @@ constructor(props) {
         chatname: decrypted,
         user: this.state.user,
         activated: true,
-        lastmsg: 'no messages'
+        lastmsg: 'no messages',
+        friendColor: data.chamcolor,
+        friendImg: data.chamimg,
       };
+
+      console.log("profile info created chat: " + room.friendColor + " " + room.friendImg)
+
       this.props.navigation.setParams({name: decrypted})
       AsyncStorage.setItem(this.state.roomID, JSON.stringify(room), () => {});
-      this.setState({activated: true})
+      this.setState({activated: true, otherUser: decrypted})
     }
     this.playSound();
   }.bind(this))
 
-  this.socket.on('newMessage_'+this.state.roomID,function(data){
+this.socket.on('newMessage_'+this.state.roomID,function(data){
   this.setState({messages: data.concat(this.state.messages)});
 
   AsyncStorage.getItem(this.state.roomID, (err, result) => {
@@ -89,7 +98,9 @@ constructor(props) {
       chatname: res.chatname,
       user: res.user,
       activated: res.activated,
-      lastmsg: datadecrypt
+      lastmsg: datadecrypt,
+      friendColor: res.friendColor,
+      friendImg: res.friendImg,
     }
 
     AsyncStorage.setItem(res.roomID, JSON.stringify(room), () => {});
@@ -129,8 +140,10 @@ componentDidMount() {
 
     AsyncStorage.getItem('profile', (err, result) => {
         let d = JSON.parse(result);
+
         this.setState({
-            cham_color: d.ChamColor,
+            chamcolor: d.ChamColor,
+            chamimg: d.ChamImg,
         })
     });
 }
@@ -156,7 +169,7 @@ renderFlatlist(item){
                           <Text note  style={styles.message2}>{this.decryptMessage(item.message) }</Text>
                         </Body>
                         <Right style = {styles.timecontainer}>
-                          <TintedImage size={45} color={item.icon_color} backgroundColor='#ffffff' />
+                          <TintedImage size={45} color={item.icon_color} version={Number(item.icon_img)} backgroundColor='#ffffff' />
                         </Right>
                       </ListItem>
                     )
@@ -165,7 +178,7 @@ renderFlatlist(item){
       return (
                     <ListItem avatar style={styles.row}>
                       <Left>
-                        <TintedImage size={45} color={item.icon_color} backgroundColor='#ffffff' />
+                          <TintedImage size={45} color={item.icon_color} version={Number(item.icon_img)} backgroundColor='#ffffff' />
                       </Left>
                       <Body style={styles.text}>
                         <Text note  style={styles.message1}>{this.decryptMessage(item.message) }</Text>
@@ -199,7 +212,8 @@ async sendMessage() {
       sender : sender,
       msg: msg.toString(),
       room: room,
-      color: this.state.cham_color,
+      color: this.state.chamcolor,
+      img: this.state.chamimg,
     }
     this.socket.emit('chat message', data);
 
@@ -248,14 +262,71 @@ renderTextBox(){
 }
 }
 
+goBack() {
+  const { navigation } = this.props;
+  console.log(navigation.state.params);
+  navigation.state.params.refresh();
+  navigation.goBack();
+}
+
+handleDelete = () => {
+   const { navigation } = this.props;
+   AsyncStorage.removeItem(this.state.roomID);
+   navigation.goBack();
+ };
+
+ showAlert = () => {
+
+   Alert.alert(
+     'Delete',
+     'Do you want to delete this account? You cannot undo this action.',
+     [
+       {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+       {text: 'Delete', onPress: () => this.handleDelete()},
+     ],
+     { cancelable: false }
+   )
+ }
+
+
+renderHeader() {
+  const { navigation } = this.props;
+  return (
+      <Header style={styles.header}>
+        <Left style={{flex:1}}>
+          <Button transparent
+            onPress={() => {
+              navigation.goBack();
+            }}
+          >
+            <Icon name='arrow-back' />
+          </Button>
+        </Left>
+        <Body style={{flex:1, alignItems:'center'}}>
+          <Title>{this.state.otherUser}</Title>
+        </Body>
+        <Right style={{flex: 1}}>
+          <Button transparent
+            onPress={this.showAlert}
+          >
+            <Icon name='trash' />
+          </Button>
+        </Right>
+      </Header>
+  );
+}
+
 render() {
   if (!this.state.isReady) {
       return <Expo.AppLoading />;
   }
 
   return (
-    <KeyboardAvoidingView style={styles.container} behavior='padding' keyboardVerticalOffset={80} >
-      {this.renderQR()}{/*code works w/o this line, will work later when QR dissapears when chat connects*/}
+    <View style={styles.container}>
+    <StatusBarComponent style={{backgroundColor:'#132b30'}}/>
+    {this.renderHeader()}
+    <KeyboardAvoidingView style={styles.container} behavior='padding'>
+      {this.renderQR()}
       <FlatList
         data={this.state.messages}
           renderItem={({ item }) => (
@@ -278,6 +349,7 @@ render() {
           </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>
+    </View>
 )
 }
 }
@@ -348,6 +420,9 @@ footer: {
   qr: {
     alignItems: 'center',
     marginTop: 20,
+  },
+  header: {
+    backgroundColor: 'lightseagreen',
   }
 
 });
