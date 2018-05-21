@@ -26,6 +26,7 @@ export default class QRScanner extends Component {
       scannedString: null,
       isRead: false
     };
+
   }
 
   componentWillMount() {
@@ -34,6 +35,7 @@ export default class QRScanner extends Component {
 
   componentDidMount() {
     this._requestCameraPermission();
+    
   }
 
   componentWillUnmount() {
@@ -70,7 +72,10 @@ export default class QRScanner extends Component {
                     this.setState({
                       isRead: true
                     });
-                    this._maybeRenderString(result.data)
+                    if(this.props.navigation.isFocused()){
+                      this._maybeRenderString(result.data)
+                    }
+                    
                     console.log(result.data)
                   }
                 }}
