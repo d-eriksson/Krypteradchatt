@@ -12,7 +12,7 @@ import {
   } from 'react-native';
 import * as SHA from 'js-sha256';
 import { List, ListItem, Body, Text, Left, Thumbnail, Header, Input, Item, Container, Button, Icon, Root } from 'native-base';
-import {Font, AppLoading} from 'expo';
+import {Font, AppLoading, Audio} from 'expo';
 import {ionicons} from '@expo/vector-icons';
 import StatusBarComponent from '../Components/StatusBarComponent';
 import WelcomeModal from '../Components/WelcomeModal';
@@ -79,8 +79,8 @@ export default class HomeScreen extends Component {
           console.log("datasource: "+obj)
         }
     }
-
     this.setState({ dataSource : data });
+
 
   }
 
@@ -106,6 +106,7 @@ export default class HomeScreen extends Component {
         })
     });
   }
+
 
   renderButton(){
       return (

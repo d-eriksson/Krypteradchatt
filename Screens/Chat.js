@@ -52,7 +52,6 @@ constructor(props) {
   }.bind(this))
 
   this.socket.on('connect_'+this.state.roomID, function(data){
-
     var decrypted  = CryptoJS.AES.decrypt( data , this.state.hash);
     decrypted = decrypted.toString(CryptoJS.enc.Utf8);
     console.log("DEC: " + decrypted);
@@ -70,6 +69,7 @@ constructor(props) {
       AsyncStorage.setItem(this.state.roomID, JSON.stringify(room), () => {});
       this.setState({activated: true})
     }
+    this.playSound();
   }.bind(this))
 
   this.socket.on('newMessage_'+this.state.roomID,function(data){
@@ -135,8 +135,15 @@ componentDidMount() {
     });
 }
 
-
-
+async playSound() {
+  const yaaay = new Expo.Audio.Sound();
+  try{
+    await yaaay.loadAsync(require('../assets/sounds/Yaaay.mp3'))
+    await yaaay.playAsync();
+  }catch(err){
+    console.log(err);
+  }
+}
 renderFlatlist(item){
 
     if(item.sentby == this.state.user){

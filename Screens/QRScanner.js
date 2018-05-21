@@ -11,7 +11,7 @@ import {
   TouchableOpacity,
   AsyncStorage
 } from 'react-native';
-import { BarCodeScanner, Permissions } from 'expo';
+import { BarCodeScanner, Permissions, Audio } from 'expo';
 import SocketIOClient from 'socket.io-client';
 import CryptoJS from 'crypto-js';
 
@@ -39,7 +39,15 @@ export default class QRScanner extends Component {
   componentWillUnmount() {
     this.sub.forEach(sub => sub.remove());
   }
-
+  async playSound() {
+    const yaaay = new Audio.Sound();
+    try{
+      await yaaay.loadAsync(require('../assets/sounds/Yaaay.mp3'))
+      await yaaay.playAsync();
+    }catch(err){
+      console.log(err);
+    }
+  }
   _requestCameraPermission = async () => {
     const { status } = await Permissions.askAsync(Permissions.CAMERA);
     this.setState({
@@ -110,7 +118,7 @@ export default class QRScanner extends Component {
           }
         });
         console.log(room.chatname);
-
+        this.playSound();
       const {navigate} = this.props.navigation;
       navigate('Chat', {roomID: room.roomID, hash: room.hash, fullString: res, name: room.chatname, activated: room.activated, user: room.user});
     }
