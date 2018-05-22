@@ -100,6 +100,7 @@ saveData =async() => {
   	if(this.state.layout){
     return (
       <View style={styles.container}>
+          <StatusBarComponent style={{backgroundColor:'#102027'}}/>
 				<View style={styles.profileMenu}>
         <TintedImage size={200} color={this.state.ChamColor} backgroundColor='#ffffff' version ={this.state.ChamImg}/>
         <TouchableOpacity style={styles.LayoutButton} onPress={this.changeLayout}>
