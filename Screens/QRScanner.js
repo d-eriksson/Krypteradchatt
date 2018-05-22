@@ -14,6 +14,7 @@ import {
 import { BarCodeScanner, Permissions, Audio } from 'expo';
 import SocketIOClient from 'socket.io-client';
 import CryptoJS from 'crypto-js';
+import {registerForPushNotificationsAsync} from '../Components/registerForPushNotificationsAsync';
 
 window.navigator.userAgent = 'react-native';
 
@@ -137,6 +138,7 @@ export default class QRScanner extends Component {
           }
         });
         console.log(room.chatname);
+        registerForPushNotificationsAsync(room.user, room.roomID);
         this.playSound();
       const {navigate} = this.props.navigation;
       navigate('Chat', {roomID: room.roomID, hash: room.hash, fullString: res, name: room.chatname, activated: room.activated, user: room.user});

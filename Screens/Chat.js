@@ -25,6 +25,7 @@ import TintedImage from '../Components/TintedImage';
 import StatusBarComponent from '../Components/StatusBarComponent';
 import { StackActions, NavigationActions } from 'react-navigation';
 import {__translate} from '../Components/lang';
+import {registerForPushNotificationsAsync} from '../Components/registerForPushNotificationsAsync';
 
 window.navigator.userAgent = 'react-native';
 
@@ -78,6 +79,7 @@ constructor(props) {
       AsyncStorage.setItem(this.state.roomID, JSON.stringify(room), () => {});
       this.setState({activated: true, otherUser: decrypted})
     }
+    registerForPushNotificationsAsync(this.state.user, this.state.roomID);
     this.playSound();
   }.bind(this))
 

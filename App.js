@@ -6,6 +6,7 @@ import HomeScreen from './Screens/HomeScreen';
 import {buildTerms,__translate} from './Components/lang';
 import { Ionicons } from '@expo/vector-icons';
 
+
 import {
   StackNavigator,
   TabNavigator
@@ -15,6 +16,7 @@ import {
   } from 'react-native';
 
 buildTerms();
+
 const TabNav = TabNavigator(
     {
       Profil: { 

@@ -20,6 +20,7 @@ import TintedImage from '../Components/TintedImage';
 import SocketIOClient from 'socket.io-client';
 import {buildTerms,__translate} from '../Components/lang';
 
+
 window.navigator.userAgent = 'react-native';
 
 
