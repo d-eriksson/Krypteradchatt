@@ -24,7 +24,7 @@ export default class Profile extends Component {
 	  	  name:'',
 	  	  ChamColor:'',
         tempName:'',
-        SpecialCaseName:'',
+        NameInStorage:'',
         NameWasChanged: false,
 	  	  layout: true,
 	  	  color: toHsv('green')
@@ -40,6 +40,15 @@ export default class Profile extends Component {
     })
 
   }
+
+  ComponentWillMount() {
+    this.sub = this.props.navigation.Addlistener('willFocus',() => this.Setstate({tempName: '', NameWasChanged: false}))
+  }
+
+  ComponentWillUnmount() {
+    this.sub.forEach(sub => sub.remove());
+  }
+
   displayData = async() => {
 	try{
   	  let profile = await AsyncStorage.getItem('profile');
@@ -53,16 +62,18 @@ export default class Profile extends Component {
 
   saveData =()=> {
     Toast.show('Saved changes!');
-    const {name,ChamColor,tempName,SpecialCaseName} = this.state;
+    const {name,ChamColor,tempName,NameInStorage} = this.state;
 
     AsyncStorage.getItem('profile', (err,result) => {
       let d = JSON.parse(result);
-      this.setState({SpecialCaseName: d.name});
+      this.setState({NameInStorage: d.name});
     });
 
     {this.state.NameWasChanged == false
-      ? this.setState({name: SpecialCaseName})
-      : this.setState({name: name})
+      ? this.setState({name: NameInStorage})
+      : this.state.tempName == ''
+        ? this.setState({name: NameInStorage})
+        : this.setState({name: this.state.name})
     }
     let profile={
        name: tempName,
@@ -76,19 +87,12 @@ export default class Profile extends Component {
 
    }
 
-
-
-
   changeLayout = () => {
   	this.setState({
   		layout: !(this.state.layout)
   	})
 
   }
-
-
-
-
 
   render() {
   	if(this.state.layout){
