@@ -4,6 +4,9 @@
         "splash": {
           "image": "Icons/chameleonsplash.png",
           "resizeMode": "cover"
-        }
+        },
+        "name": "mumblr",
+        "icon": "Icons/chameleonicon.png"
+
   }
 }
