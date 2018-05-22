@@ -24,6 +24,7 @@ import KeyboardSpacer from 'react-native-keyboard-spacer';
 import TintedImage from '../Components/TintedImage';
 import StatusBarComponent from '../Components/StatusBarComponent';
 import { StackActions, NavigationActions } from 'react-navigation';
+import {__translate} from '../Components/lang';
 
 window.navigator.userAgent = 'react-native';
 
@@ -59,8 +60,7 @@ constructor(props) {
     var decrypted  = CryptoJS.AES.decrypt(data.connectName , this.state.hash);
     decrypted = decrypted.toString(CryptoJS.enc.Utf8);
     console.log("DEC: " + decrypted);
-    if(this.state.title == 'Ny chatt'){
-
+    if(this.state.title == __translate("New chat")){
       let room = {
         roomID: this.state.roomID,
         hash: this.state.hash,
@@ -252,12 +252,12 @@ renderTextBox(){
       onChangeText={text => this.setState({typing: text})}
       style={styles.input}
       underlineColorAndroid="transparent"
-      placeholder="Type something secret.."
+      placeholder={__translate("Type something secret...")}
     />
   )
 } else {
   return(
-  <Text style={styles.input}>Låt en vän skanna QR-koden</Text>
+  <Text style={styles.input}>{__translate("Let a friend scan the QR-code")}</Text>
   )
 }
 }
@@ -278,11 +278,11 @@ handleDelete = () => {
  showAlert = () => {
 
    Alert.alert(
-     'Delete',
-     'Do you want to delete this account? You cannot undo this action.',
+      __translate('Delete'),
+      __translate('Do you want to delete this account? You cannot undo this action.'),
      [
-       {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-       {text: 'Delete', onPress: () => this.handleDelete()},
+       {text: __translate('Cancel'), onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+       {text: __translate('Delete'), onPress: () => this.handleDelete()},
      ],
      { cancelable: false }
    )

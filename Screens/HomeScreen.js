@@ -18,6 +18,7 @@ import StatusBarComponent from '../Components/StatusBarComponent';
 import WelcomeModal from '../Components/WelcomeModal';
 import TintedImage from '../Components/TintedImage';
 import SocketIOClient from 'socket.io-client';
+import {buildTerms,__translate} from '../Components/lang';
 
 window.navigator.userAgent = 'react-native';
 
@@ -69,6 +70,7 @@ export default class HomeScreen extends Component {
 
   async componentDidMount() {
     const data = [];
+    AsyncStorage.clear();
     let keys = await AsyncStorage.getAllKeys();
     for (let inKey of keys) {
         let obj = await AsyncStorage.getItem(inKey);
@@ -77,8 +79,6 @@ export default class HomeScreen extends Component {
         }
     }
     this.setState({ dataSource : data });
-
-
   }
 
   createChat = () => {
@@ -101,7 +101,7 @@ export default class HomeScreen extends Component {
             };
             let fullString = room.roomID + this.state.sign + room.chatname + this.state.sign + room.hash + this.state.sign + room.chamcolor + this.state.sign + room.chamimg;
             //AsyncStorage.setItem(room.roomID, JSON.stringify(room), () => {});
-            navigate('Chat', {roomID: room.roomID, hash: room.hash, fullString: fullString, name: 'Ny chatt', activated: room.activated, user: room.user})
+            navigate('Chat', {roomID: room.roomID, hash: room.hash, fullString: fullString, name: __translate("New chat"), activated: room.activated, user: room.user})
         })
     });
   }
@@ -142,13 +142,13 @@ renderHeader = () => {
     <Item>
       <Icon name="search" />
           <Input
-          placeholder="Sök..."
+          placeholder={__translate("Search...")}
           />
       <Icon name="ios-people" />
     </Item>
 
     <Button transparent>
-      <Text>Sök...</Text>
+      <Text>{__translate("Search...")}</Text>
     </Button>
 </Header>
 

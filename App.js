@@ -3,6 +3,8 @@ import QRScanner from './Screens/QRScanner';
 import Profile from './Screens/Profile';
 import Chat from './Screens/Chat';
 import HomeScreen from './Screens/HomeScreen';
+import {buildTerms,__translate} from './Components/lang';
+
 import {
   StackNavigator,
   TabNavigator
@@ -11,12 +13,14 @@ import {
   AsyncStorage,
   } from 'react-native';
 
-
-
-
+buildTerms();
+var P_Label = __translate("Profile");
 const TabNav = TabNavigator(
     {
-      Profil: { screen: Profile },
+      Profil: { 
+        screen: Profile,
+        label: P_Label,
+      },
       Hem: { screen: HomeScreen },
       Skanner: { screen: QRScanner },
     },

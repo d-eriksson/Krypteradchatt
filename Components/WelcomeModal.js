@@ -13,6 +13,7 @@ import FadeInView from "../Components/FadeInView";
 import StatusBarComponent from '../Components/StatusBarComponent';
 import TintedImage from '../Components/TintedImage';
 import { ColorPicker, toHsv } from 'react-native-color-picker';
+import {__translate} from '../Components/lang'
 
 
 export default class WelcomeModal extends Component {
@@ -78,7 +79,7 @@ export default class WelcomeModal extends Component {
         return(
             <View style={styles.ftreContainer}>
                 <View style={styles.ftreTitleContainer}>
-                    <Text style={styles.bigText}>Lastly add a name</Text>
+                    <Text style={styles.bigText}>{__translate("Lastly add a name")}</Text>
                 </View>
                 <View style={styles.ftreDescriptionContainer}>
                     <TextInput
@@ -90,7 +91,7 @@ export default class WelcomeModal extends Component {
                 </View>
                 <TouchableHighlight onPress={this.saveData} style={styles.ftreExitContainer}>
                     <View style={styles.ftreExitButtonContainer}>
-                        <Text style={styles.ftreExitButtonText}> Save </Text>
+                        <Text style={styles.ftreExitButtonText}> {__translate("Save")} </Text>
                     </View>
                 </TouchableHighlight>
             </View>
@@ -99,7 +100,7 @@ export default class WelcomeModal extends Component {
     SetAvatar(){
         return(
             <View style={styles.ftreContainer}>
-                <Text style={styles.bigText}> Pick an avatar! </Text>
+                <Text style={styles.bigText}> {__translate("Pick an avatar!")} </Text>
                 <View style={styles.tintedImage}>
                     <TintedImage color={this.state.ChamColor} backgroundColor='#ffffff' size={200} version={1}/>
                 </View>
@@ -119,8 +120,8 @@ export default class WelcomeModal extends Component {
         return(
             <View style={styles.ftreContainer}>
                 <View style={styles.welcomeContainer}>
-                    <Text style={styles.bigText}> Welcome to mumblr!</Text>
-                    <Text style={styles.medText}> The chat app where everybody is your friend!</Text>
+                    <Text style={styles.bigText}> {__translate("Welcome to mumblr")}</Text>
+                    <Text style={styles.medText}> {__translate("The chat app where everybody is your friend!")}</Text>
                 </View>
             </View>
         );
@@ -129,11 +130,11 @@ export default class WelcomeModal extends Component {
         return(
             <View style={styles.ftreContainer}>
                 <View style={styles.welcomeContainer}>
-                    <Text style={styles.bigText}> Click a button like this one!</Text>
+                    <Text style={styles.bigText}> {__translate("Click a button like this one!")}</Text>
                     <View style={styles.clickImg}>
                         <Image source={require('../Icons/click.png')} style={styles.images}/>
                     </View>
-                    <Text style={styles.medText}> To create a chat with your friend!</Text>
+                    <Text style={styles.medText}> {__translate("To create a chat with your friend!")}</Text>
                 </View>
             </View>
         );
@@ -142,11 +143,11 @@ export default class WelcomeModal extends Component {
         return(
             <View style={styles.ftreContainer}>
                 <View style={styles.welcomeContainer}>
-                    <Text style={styles.bigText}>Have a friend scan your QR-code</Text>
+                    <Text style={styles.bigText}>{__translate("Have a friend scan your QR-code")}</Text>
                     <View style={styles.clickImg}>
                         <Image source={require('../Icons/qrKod.png')} style={styles.images}/>
                     </View>
-                    <Text style={styles.medText}> And bob's your uncle!</Text>
+                    <Text style={styles.medText}> {__translate("And bob's your uncle!")}</Text>
                 </View>
             </View>
         );
@@ -165,12 +166,12 @@ export default class WelcomeModal extends Component {
             <View style={styles.navButtonContainer}>
                 <TouchableHighlight onPress={this.prevScreen} style={styles.navButton}>
                     <View style={leftButtonStyle}>
-                        <Text style={styles.navButtonText}>Prev</Text>
+                        <Text style={styles.navButtonText}>{__translate("Back")}</Text>
                     </View>
                 </TouchableHighlight>
                 <TouchableHighlight onPress={this.nextScreen} style={styles.navButton}>
                     <View style={rightButtonStyle}>
-                        <Text style={styles.navButtonText}>Next</Text>
+                        <Text style={styles.navButtonText}>{__translate("Next")}</Text>
                     </View>
                 </TouchableHighlight>
             </View>
