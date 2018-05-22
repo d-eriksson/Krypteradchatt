@@ -4,6 +4,7 @@ import Profile from './Screens/Profile';
 import Chat from './Screens/Chat';
 import HomeScreen from './Screens/HomeScreen';
 import {buildTerms,__translate} from './Components/lang';
+import { Ionicons } from '@expo/vector-icons';
 
 import {
   StackNavigator,
@@ -14,15 +15,29 @@ import {
   } from 'react-native';
 
 buildTerms();
-var P_Label = __translate("Profile");
 const TabNav = TabNavigator(
     {
       Profil: { 
         screen: Profile,
-        label: P_Label,
+        navigationOptions: ({ navigation }) => ({
+          title: __translate("Profile"),
+          tabBarIcon: ({ tintColor }) => <Ionicons name="md-person" size={28} color={tintColor}/>
+        })
+       },
+      Hem: { 
+        screen: HomeScreen,
+        navigationOptions: ({ navigation }) => ({
+          title: __translate("Home"),
+          tabBarIcon: ({ tintColor }) => <Ionicons name="md-home" size={28} color={tintColor}/>
+        })
       },
-      Hem: { screen: HomeScreen },
-      Skanner: { screen: QRScanner },
+      Skanner: { 
+        screen: QRScanner,
+         navigationOptions: ({ navigation }) => ({
+          title: __translate("Scanner"),
+          tabBarIcon: ({ tintColor }) => <Ionicons name="md-qr-scanner" size={28} color={tintColor}/>
+        })
+      },
     },
     {
       initialRouteName: 'Hem',
@@ -37,7 +52,9 @@ const TabNav = TabNavigator(
         indicatorStyle: {
           borderBottomColor: 'lightseagreen',
           borderBottomWidth: 2,
-        }
+        },
+        showLabel: true,
+        showIcon: true,
     }
     }
   );
