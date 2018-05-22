@@ -84,7 +84,7 @@ export default class WelcomeModal extends Component {
                 <View style={styles.ftreDescriptionContainer}>
                     <TextInput
                         style={styles.input}
-                        placeholder="Name"
+                        placeholder={__translate("Name")}
                         placeholderTextColor="white"
                         onChangeText={name => this.setState({name})}
                     />
