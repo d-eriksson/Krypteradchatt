@@ -70,7 +70,6 @@ export default class HomeScreen extends Component {
 
   async componentDidMount() {
     const data = [];
-    AsyncStorage.clear();
     let keys = await AsyncStorage.getAllKeys();
     for (let inKey of keys) {
         let obj = await AsyncStorage.getItem(inKey);
