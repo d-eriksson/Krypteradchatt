@@ -99,12 +99,10 @@ export default class HomeScreen extends Component {
                 chamimg: d.ChamImg
             };
             let fullString = room.roomID + this.state.sign + room.chatname + this.state.sign + room.hash + this.state.sign + room.chamcolor + this.state.sign + room.chamimg;
-            //AsyncStorage.setItem(room.roomID, JSON.stringify(room), () => {});
             navigate('Chat', {roomID: room.roomID, hash: room.hash, fullString: fullString, name: __translate("New chat"), activated: room.activated, user: room.user})
         })
     });
   }
-
 
   renderButton(){
       return (
@@ -154,9 +152,6 @@ renderHeader = () => {
 )
 };
 
-
-
-
   render() {
     if (this.state.loading) {
       return (
@@ -168,8 +163,8 @@ renderHeader = () => {
       <View>
           <WelcomeModal title={"Välkommen!"}/>
           <StatusBarComponent style={{backgroundColor:'#132b30'}}/>
-
-      <View style={{height: Dimensions.get('window').height-80}}>
+          {this.renderHeader()}
+      <View style={{height: Dimensions.get('window').height-140}}>
         <List>
           <FlatList
             data={this.state.dataSource}
@@ -178,7 +173,6 @@ renderHeader = () => {
             renderItem={({ item }) => (
             <ListItem
               onPress={() => {
-                //console.log(item);
                 let fullString = item.roomID + this.state.sign + item.name + this.state.sign + item.hash;
                 const {navigate} = this.props.navigation;
                 navigate('Chat', {roomID: item.roomID, hash: item.hash,fullString:fullString, name: item.chatname, activated: item.activated, user: item.user})
@@ -195,7 +189,6 @@ renderHeader = () => {
             </ListItem>
           )}
           keyExtractor={(item,index) => item.roomID}
-          ListHeaderComponent={this.renderHeader}
           />
         </List>
         {this.renderButton()}
