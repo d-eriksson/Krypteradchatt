@@ -279,7 +279,7 @@ handleDelete = () => {
 
    Alert.alert(
       __translate('Delete'),
-      __translate('Do you want to delete this account? You cannot undo this action.'),
+      __translate('Do you want to delete this chat? You cannot undo this action.'),
      [
        {text: __translate('Cancel'), onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
        {text: __translate('Delete'), onPress: () => this.handleDelete()},

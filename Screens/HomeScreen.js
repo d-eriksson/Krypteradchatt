@@ -155,8 +155,6 @@ renderHeader = () => {
 };
 
 
-
-
   render() {
     if (this.state.loading) {
       return (
@@ -168,8 +166,8 @@ renderHeader = () => {
       <View>
           <WelcomeModal title={"Välkommen!"}/>
           <StatusBarComponent style={{backgroundColor:'#132b30'}}/>
-
-      <View style={{height: Dimensions.get('window').height-80}}>
+          {this.renderHeader()}
+      <View style={{height: Dimensions.get('window').height-140}}>
         <List>
           <FlatList
             data={this.state.dataSource}
@@ -195,7 +193,6 @@ renderHeader = () => {
             </ListItem>
           )}
           keyExtractor={(item,index) => item.roomID}
-          ListHeaderComponent={this.renderHeader}
           />
         </List>
         {this.renderButton()}
