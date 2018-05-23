@@ -126,9 +126,7 @@ export default class Profile extends Component {
           animationType="slide"
           transparent={false}
           visible={this.state.modalVisible}
-          onRequestClose={() => {
-            alert('Modal has been closed.');
-          }}>
+          >
             <View style={styles.containter}>
                 <Header style={styles.header}>
                         <Left style={{flex:1}}>
@@ -150,14 +148,14 @@ export default class Profile extends Component {
 
                       <Image source={require('../Icons/mumblr_font.png')} style={styles.mumblricon} />
 
-                    <Text style={{color:'lightseagreen', fontSize: 20, color: "lightseagreen", textAlign: 'center'}}>Den krypteradade chatten</Text>
+                    <Text style={{color:'lightseagreen', fontSize: 20, color: "lightseagreen", textAlign: 'center'}}>Chattenappen där alla är kompisar</Text>
                         <Text style={{paddingTop:15,fontSize: 15, width:300}}>
                           I Mumblr kan du endast börja chatta med personer du träffat i verkligheten. Med hjälp av
                           QR-koden som är unik för varje chatt kan Mumblr kryptera dina meddelanden
                           så att du kan vara säker på att ingen annan än du och din kompis kan läsa vad ni skrivit.</Text>
                         <Text style={{paddingTop:10,fontSize: 15, width:300}}>
                           Den här appen är ett kandidatprojekt utvecklat av fem studenter vid Linköpings Universitet.
-                          Tveka inte att höra av er till oss!</Text>
+                          Tveka inte att höra av dig till oss!</Text>
 
                         <View style={{paddingTop: 20, flex: 1, flexDirection: 'row', justifyContent: 'space-between'}}>
                           <Button rounded light style={{backgroundColor: 'lightseagreen'}}>
@@ -193,7 +191,7 @@ export default class Profile extends Component {
             </Button>
 
   			<View style={styles.profileMenu}>
-          <TintedImage size={170} color={this.state.ChamColor} backgroundColor='#ffffff' version ={this.state.ChamImg}/>
+          <TintedImage size={200} color={this.state.ChamColor} backgroundColor='#ffffff' version ={this.state.ChamImg}/>
           <Button rounded style={{backgroundColor: 'lightseagreen', alignSelf: "center"}} onPress={this.changeLayout}>
           <Text style={styles.buttontext}> {__translate("Edit avatar")} </Text>
           </Button>

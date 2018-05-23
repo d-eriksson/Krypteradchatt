@@ -69,6 +69,7 @@ export default class HomeScreen extends Component {
   }
 
   async componentDidMount() {
+    AsyncStorage.clear();
     const data = [];
     let keys = await AsyncStorage.getAllKeys();
     for (let inKey of keys) {
@@ -174,7 +175,7 @@ renderHeader = () => {
           <WelcomeModal title={"Välkommen!"}/>
           <StatusBarComponent style={{backgroundColor:'#132b30'}}/>
 
-      <View style={{height: Dimensions.get('window').height-80, backgroundColor:'#102027'}}>
+      <View style={{height: Dimensions.get('window').height-80, backgroundColor:'white'}}>
         <List>
           <FlatList
             data={this.state.dataSource}
@@ -195,7 +196,7 @@ renderHeader = () => {
               </Left>
               <Body style={{borderBottomColor: '#132b30'}}>
                 <Text style={{color: 'lightseagreen'}}>{ item.chatname }</Text>
-                <Text note style={{color: 'white'}}>{ item.lastmsg }</Text>
+                <Text note style={{color: 'black'}}>{ item.lastmsg }</Text>
               </Body>
             </ListItem>
           )}

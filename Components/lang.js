@@ -77,14 +77,14 @@ export function buildTerms(){
       "Next" : "Nästa",
       "Back" : "Tillbaka",
       "Do you want to delete this account? You cannot undo this action." : "Vill du ta bort det här kontot? Du kan inte ångra detta.",
-      "Welcome to mumblr" : "Välkommen till mumblr",
-      "The chat app where everybody is your friend!" : "Chatt appen där alla är kompisar",
+      "Welcome to" : "Välkommen till",
+      "The chat app where everybody is your friend!" : "Chattappen där alla är kompisar",
       "Click a button like this one!" : "Klicka på en knapp som denna!",
       "To create a chat with your firend!" : "För att skapa en chatt med din vän",
       "Have a friend scan your QR-code" : "Låt en vän skanna din QR-kod",
-      "And bob's your uncle!" : "Och Bob är din farbror",
+      "And bob's your uncle!" : "Och sen är saken biff!",
       "Pick an avatar!" : "Välj en avatar",
-      "Lastly add a name" : "Lägg till ett namn",
+      "Lastly, add a name" : "Slutligen, lägg till ett namn:",
       "Name" : "Namn",
   });
   setTerms("es", {
