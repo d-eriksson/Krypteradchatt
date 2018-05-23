@@ -4,7 +4,14 @@ const app = express();
 var mysql = require('mysql');
 var http = require('http');
 var server = http.Server(app);
+var bodyParser = require('body-parser');
 server.listen(8080, () => console.log('Listening on 8080'));
+var Expo = require('expo-server-sdk');
+
+app.use(bodyParser.json()); // support json encoded bodies
+app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
+
+let expo = new Expo();
 
 //Create socket.io instance
 var io = require('socket.io')(server);
@@ -25,6 +32,8 @@ io.on('connection', function(socket){
   	var sender = msg.sender;
     var color = msg.color;
     var img = msg.img;
+    var token;
+    let messages = [];
 
     var sql = "INSERT INTO chat_messages (roomID, message,sentby, icon_color, icon_img) VALUES ("+ mysql.escape(roomID) + "," + mysql.escape(message) + "," + mysql.escape(sender) + "," + mysql.escape(color) + "," + mysql.escape(img) + ")";
   	con.query(sql, function (err, result)
@@ -35,12 +44,43 @@ io.on('connection', function(socket){
     var sql = "SELECT * FROM chat_messages WHERE roomID= " + mysql.escape(roomID) + " ORDER BY send_time DESC LIMIT 1"
     con.query(sql,function(err,result){
         if(err) throw err;
-        console.log(result);
-        console.log("Emitting to: " + roomID);
         socket.emit("newMessage_"+roomID, result);
         socket.broadcast.emit("newMessage_"+roomID, result);
     })
+    sql = "SELECT * FROM chatts WHERE roomID = " + mysql.escape(roomID);
+    con.query(sql,function(err,result){
+      if(err) throw err;
+      if(sender == "2"){
+        token = result[0].one_token;
+      }
+      else{
+        token = result[0].two_token;
+      }
+      
+      if (Expo.isExpoPushToken(token)) {
+
+          let message = {
+            to: token,
+            sound: 'default',
+            body: 'You have a new message!',
+          }
+          messages.push(message);
+          sendit(messages);
+      }
+
+    })
+
   });
+
+  async function sendit(message){
+      
+      try {
+            let receipts = await expo.sendPushNotificationsAsync(message);
+            console.log(receipts);
+          } catch (error) {
+            console.error(error);
+          }
+  }
 
   //in componentDidMount load all msgs
   socket.on('start', function(roomID){
@@ -59,8 +99,6 @@ io.on('connection', function(socket){
         chamcolor: data.chamcolor,
         chamimg: data.chamimg,
       }
-
-
       var sql = "UPDATE chatts SET connected=1, connected_name= "+ mysql.escape(data.name) +" WHERE roomID = " + mysql.escape(roomID);
       con.query(sql, function(err, result){
           if(err) throw err;
@@ -187,6 +225,23 @@ app.get('/clear/', function(req,res){
         con.query(sql, function(err, result){
         if(err) throw err;
         console.log("Clear!");
+        res.send("");
+    })
+})
+
+app.post('/users/push-token/', function (req,res){
+    var user = req.body.user.username;
+    var token = req.body.token.value;
+    var roomID = req.body.room;
+    if(user =='1'){
+        var sql = "UPDATE chatts SET one_token =" + mysql.escape(token) + "WHERE roomID = " + mysql.escape(roomID);
+    }
+    else{
+        var sql = "UPDATE chatts SET two_token =" + mysql.escape(token) + "WHERE roomID = " + mysql.escape(roomID);
+    }
+
+    con.query(sql, function(err, result){
+        if(err) throw err;
         res.send("");
     })
 })

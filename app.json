@@ -1,12 +1,17 @@
 {
-  "expo": {
+  	"expo": {
         "sdkVersion": "25.0.0",
         "splash": {
           "image": "Icons/chameleonsplash.png",
           "resizeMode": "cover"
         },
+        "notification": {
+    		"icon": "Icons/notification.png",
+    		"color": "#20b2aa",
+    		"androidMode": "collapse",
+    		"androidCollapsedTitle": "You have #{unread_notifications} new messages",
+  		}
         "name": "mumblr",
         "icon": "Icons/chameleonicon.png"
-
-  }
+ 	}
 }

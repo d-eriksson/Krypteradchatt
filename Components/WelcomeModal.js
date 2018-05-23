@@ -56,6 +56,7 @@ export default class WelcomeModal extends Component {
             let profile={
         		name: name,
                 ChamColor: c,
+                ChamImg: 1,
         	}
             AsyncStorage.setItem('profile', JSON.stringify(profile));
             this.setModalVisible(!this.state.modalVisible);
