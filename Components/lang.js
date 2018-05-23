@@ -15,13 +15,13 @@ export function __translate(term) {
 
     //Check if has registered terms in current i18nLocale;
     if (TERMS[i18nLocale]){
-      
+
       //Return the registered or empty string to prevent error
       return TERMS[i18nLocale][term] || '';
 
     } else {
-      
-      //Check if has language without a especific region like 
+
+      //Check if has language without a especific region like
       //Example en-CA to en
       const simplei18nLocale = i18nLocale.split('_')[0];
 
@@ -40,7 +40,7 @@ export function buildTerms(){
       "Username" : "Username",
       "Save" : "Save",
       "Change emote" : "Change emote",
-      "Back to profile" : "Back to profile",
+      "Go back" : "Go back",
       "Type something secret..." : "Type something secret...",
       "Let a friend scan the QR-code" : "Let a friend scan the QR-code",
       "New chat" : "New chat",
@@ -68,7 +68,7 @@ export function buildTerms(){
       "Username" : "Användarnamn",
       "Save" : "Spara",
       "Change emote" : "Ändra uttryck",
-      "Back to profile" : "Tillbaka till profilen",
+      "Go back" : "Tillbaka",
       "Type something secret..." : "Skriv något hemligt...",
       "Let a friend scan the QR-code" : "Låt en vän skanna QR-koden",
       "New chat" : "Ny chatt",
