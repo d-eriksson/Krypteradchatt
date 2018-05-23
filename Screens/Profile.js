@@ -29,6 +29,9 @@ export default class Profile extends Component {
 	  this.state={
 	  	  name:'',
 	  	  ChamColor:'',
+        tempName:'',
+        NameInStorage:'',
+        NameWasChanged: false,
 	  	  layout: true,
 	  	  color: toHsv('green'),
         ChamImg: 1,
@@ -44,32 +47,46 @@ export default class Profile extends Component {
       ChamColor : d.ChamColor,
       name : d.name,
       ChamImg: d.ChamImg,
+      tempName: d.name,
     })
   }
 
-  displayData = async() => {
-  	try{
-    	  let profile = await AsyncStorage.getItem('profile');
-  	  let d = JSON.parse(profile);
-  	  Alert.alert('Personal information', 'Name: ' + d.name + '\n' + 'Favourite Color: ' + d.ChamColor);
-  	 }
-  	 catch(error){
-  	 	 Alert.alert('Error','There was an error while loading the data');
-  	 }
+  ComponentWillMount() {
+    this.sub = this.props.navigation.Addlistener('willFocus',() => this.Setstate({tempName: '', NameWasChanged: false}))
+  }
+
+  ComponentWillUnmount() {
+    this.sub.forEach(sub => sub.remove());
   }
 
 saveData =async() => {
     Toast.show('Saved changes!');
-    const {name,ChamColor,ChamImg} = this.state;
+    const {name,ChamColor,tempName,NameInStorage,ChamImg} = this.state;
 
-	let profile={
-		name: name,
-		ChamColor: ChamColor,
-    ChamImg: ChamImg
-	}
-	AsyncStorage.setItem('profile',
-	JSON.stringify(profile));
-  this.displayData();
+    AsyncStorage.getItem('profile', (err,result) => {
+      let d = JSON.parse(result);
+      this.setState({NameInStorage: d.name});
+    });
+
+    let NameToStore = tempName;
+
+    {this.state.NameWasChanged == false
+      ? NameToStore = NameInStorage
+      : this.state.tempName == ''
+        ? NameToStore = name
+        : NameToStore = NameToStore
+    }
+    let profile={
+       name: NameToStore,
+       ChamColor: ChamColor
+       ChamImg: ChamImg
+     }
+
+     this.setState({name: NameToStore})
+     AsyncStorage.setItem('profile',
+     JSON.stringify(profile));
+
+   }
 
 
   }
@@ -109,10 +126,22 @@ saveData =async() => {
 
           <Item style={styles.inputHolder}>
               <Icon active name='ios-person' style={{color: '#fff'}}/>
-              <Input style={styles.inputText}
-                placeholder={__translate("Username")}
-                onChangeText={name => this.setState({name})}
-              />
+                {this.state.name == ''
+                ? <Input style={styles.inputText}
+                    placeholder={__translate("Username")}
+                    onChangeText={tempName =>
+                      this.setState({
+                      tempName: tempName,
+                      NameWasChanged: true,
+                    })}
+                  />
+                : <Input style={styles.inputText}
+                    placeholder = {this.state.name}
+                    onChangeText={tempName => this.setState({
+                    tempName: tempName,
+                    NameWasChanged: true,
+                  })}
+                />}
           </Item>
 					<View style={styles.ButtonHolder}>
 						<View>
