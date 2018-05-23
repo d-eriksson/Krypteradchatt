@@ -59,7 +59,7 @@ export default class Profile extends Component {
     this.sub.forEach(sub => sub.remove());
   }
 
-saveData =async() => {
+  saveData = async() => {
     Toast.show('Saved changes!');
     const {name,ChamColor,tempName,NameInStorage,ChamImg} = this.state;
 
@@ -78,7 +78,7 @@ saveData =async() => {
     }
     let profile={
        name: NameToStore,
-       ChamColor: ChamColor
+       ChamColor: ChamColor,
        ChamImg: ChamImg
      }
 
@@ -88,13 +88,10 @@ saveData =async() => {
 
    }
 
-
-  }
-
   changeLayout = () => {
     this.setState({
       layout: !(this.state.layout)
-    })
+    });
   }
 
   switchImage = () => {
@@ -109,56 +106,52 @@ saveData =async() => {
     }
     this.setState({
       ChamImg: ChamImage,
-    })
+    });
   }
-
 
   render() {
   	if(this.state.layout){
-    return (
+      return (
       <View style={styles.container}>
-          <StatusBarComponent style={{backgroundColor:'#102027'}}/>
-				<View style={styles.profileMenu}>
-        <TintedImage size={200} color={this.state.ChamColor} backgroundColor='#ffffff' version ={this.state.ChamImg}/>
-        <TouchableOpacity style={styles.LayoutButton} onPress={this.changeLayout}>
-          <Text style={styles.buttontext}> {__translate("Edit avatar")} </Text>
-        </TouchableOpacity>
-
+        <StatusBarComponent style={{backgroundColor:'#102027'}}/>
+  			<View style={styles.profileMenu}>
+          <TintedImage size={200} color={this.state.ChamColor} backgroundColor='#ffffff' version ={this.state.ChamImg}/>
+          <TouchableOpacity style={styles.LayoutButton} onPress={this.changeLayout}>
+            <Text style={styles.buttontext}> {__translate("Edit avatar")} </Text>
+          </TouchableOpacity>
           <Item style={styles.inputHolder}>
-              <Icon active name='ios-person' style={{color: '#fff'}}/>
-                {this.state.name == ''
-                ? <Input style={styles.inputText}
-                    placeholder={__translate("Username")}
-                    onChangeText={tempName =>
-                      this.setState({
-                      tempName: tempName,
-                      NameWasChanged: true,
-                    })}
-                  />
-                : <Input style={styles.inputText}
-                    placeholder = {this.state.name}
-                    onChangeText={tempName => this.setState({
-                    tempName: tempName,
-                    NameWasChanged: true,
-                  })}
-                />}
-          </Item>
-					<View style={styles.ButtonHolder}>
-						<View>
-							<TouchableOpacity style={styles.Button} onPress={this.saveData}>
-								<Text style={styles.buttontext}> {__translate("Save")} </Text>
-							</TouchableOpacity>
-						</View>
-
-					</View>
-
-				</View>
+                <Icon active name='ios-person' style={{color: '#fff'}}/>
+                  {this.state.name == ''
+                  ? <Input style={styles.inputText}
+                      placeholder={__translate("Username")}
+                      onChangeText={tempName =>
+                        this.setState({
+                        tempName: tempName,
+                        NameWasChanged: true,
+                      })}
+                    />
+                  : <Input style={styles.inputText}
+                      placeholder = {this.state.name}
+                      onChangeText={tempName => this.setState({
+                        tempName: tempName,
+                        NameWasChanged: true,
+                      })}
+                    />
+                  }
+            </Item>
+  				  <View style={styles.ButtonHolder}>
+  							         <TouchableOpacity style={styles.Button} onPress={this.saveData}>
+  								               <Text style={styles.buttontext}> {__translate("Save")} </Text>
+  							         </TouchableOpacity>
+  				  </View>
+  			</View>
       </View>
 
-    );
-  	}
+      )
+    	}
   	else{
   		return(
+
 			<View style={styles.container}>
         <View style={styles.profileMenu}>
 
@@ -178,9 +171,9 @@ saveData =async() => {
                 hideSliders={true}
               />
           </View>
-          </View>
+        </View>
       </View>
-  		);
+  		)
   	}
   }
 
