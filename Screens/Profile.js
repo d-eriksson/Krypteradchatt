@@ -49,17 +49,6 @@ export default class Profile extends Component {
     this.sub.forEach(sub => sub.remove());
   }
 
-  displayData = async() => {
-	try{
-  	  let profile = await AsyncStorage.getItem('profile');
-	  let d = JSON.parse(profile);
-	  Alert.alert('Personal information', 'Name: ' + d.name + '\n' + 'Favourite Color: ' + d.ChamColor);
-	 }
-	 catch(error){
-	 	 Alert.alert('Error','There was an error while loading the data');
-	 }
-  }
-
   saveData =()=> {
     Toast.show('Saved changes!');
     const {name,ChamColor,tempName,NameInStorage} = this.state;
@@ -69,21 +58,22 @@ export default class Profile extends Component {
       this.setState({NameInStorage: d.name});
     });
 
+    let NameToStore = tempName;
+
     {this.state.NameWasChanged == false
-      ? this.setState({name: NameInStorage})
+      ? NameToStore = NameInStorage
       : this.state.tempName == ''
-        ? this.setState({name: NameInStorage})
-        : this.setState({name: this.state.name})
+        ? NameToStore = name
+        : NameToStore = NameToStore
     }
     let profile={
-       name: tempName,
+       name: NameToStore,
        ChamColor: ChamColor
      }
 
-     this.setState({name: tempName})
+     this.setState({name: NameToStore})
      AsyncStorage.setItem('profile',
      JSON.stringify(profile));
-     this.displayData();
 
    }
 
@@ -106,18 +96,18 @@ export default class Profile extends Component {
 
           <Item style={styles.inputHolder}>
               <Icon active name='ios-person' style={{color: '#fff'}}/>
-                {this.state.name == '' ?
-                <Input style={styles.inputText}
-                  placeholder = 'Användarnamn'
-                  onChangeText={tempName =>
-                    this.setState({
+                {this.state.name == ''
+                ? <Input style={styles.inputText}
+                    placeholder = 'Användarnamn'
+                    onChangeText={tempName =>
+                      this.setState({
                       tempName: tempName,
                       NameWasChanged: true,
-                  })}
-                /> :
-                <Input style={styles.inputText}
-                  placeholder = {this.state.name}
-                  onChangeText={tempName => this.setState({
+                    })}
+                  />
+                : <Input style={styles.inputText}
+                    placeholder = {this.state.name}
+                    onChangeText={tempName => this.setState({
                     tempName: tempName,
                     NameWasChanged: true,
                   })}
