@@ -16,7 +16,6 @@ import {
   } from 'react-native';
 
 buildTerms();
-
 const TabNav = TabNavigator(
     {
       Profil: { 

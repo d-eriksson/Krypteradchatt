@@ -1,5 +1,11 @@
 {
   "expo": {
-    "sdkVersion": "25.0.0"
+    "sdkVersion": "25.0.0",
+    "notification": {
+    	"icon": "Icons/notification.png",
+    	"color": "#20b2aa",
+    	"androidMode": "collapse",
+    	"androidCollapsedTitle": "You have #{unread_notifications} new messages",
+  	}
   }
 }
