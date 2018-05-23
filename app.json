@@ -10,7 +10,7 @@
     		"color": "#20b2aa",
     		"androidMode": "collapse",
     		"androidCollapsedTitle": "You have #{unread_notifications} new messages",
-  		}
+  		},
         "name": "mumblr",
         "icon": "Icons/chameleonicon.png"
  	}
