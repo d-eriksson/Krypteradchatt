@@ -12,7 +12,7 @@
     		"androidCollapsedTitle": "You have #{unread_notifications} new messages",
   		},
         "name": "mumblr",
-        "icon": "Icons/chameleonicon.png",
+        "icon": "Icons/chameleonicon2.png",
         "version": "1.0.0",
         "ios": {
 	      "bundleIdentifier": "com.mumblr.mumblr"

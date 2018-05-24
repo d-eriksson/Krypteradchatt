@@ -6,7 +6,8 @@ import {
   TouchableOpacity,
   AsyncStorage,
   TextInput,
-  Alert
+  Alert,
+  Modal
   } from 'react-native';
 
 import StatusBarComponent from '../Components/StatusBarComponent';
@@ -16,7 +17,6 @@ import TintedImage from '../Components/TintedImage';
 import { ColorPicker, toHsv } from 'react-native-color-picker';
 import SocketIOClient from 'socket.io-client';
 import {__translate} from '../Components/lang';
-
 
 window.navigator.userAgent = 'react-native';
 
@@ -35,6 +35,7 @@ export default class Profile extends Component {
 	  	  layout: true,
 	  	  color: toHsv('green'),
         ChamImg: 1,
+        modalVisible: false,
 	  }
   }
   async componentDidMount() {
@@ -109,16 +110,94 @@ export default class Profile extends Component {
     });
   }
 
+  setModalVisible(visible) {
+   this.setState({modalVisible: visible});
+ }
+
   render() {
   	if(this.state.layout){
+        /* Profile startpage */
       return (
+
+
       <View style={styles.container}>
-        <StatusBarComponent style={{backgroundColor:'#102027'}}/>
+
+        <Modal
+          animationType="slide"
+          transparent={false}
+          visible={this.state.modalVisible}
+          onRequestClose={() => {
+            this.setModalVisible(!this.state.modalVisible)
+          }}
+          >
+            <View style={styles.containter}>
+                <Header style={styles.header}>
+                        <Left style={{flex:1}}>
+                          <Button transparent   onPress={() => {
+                              this.setModalVisible(!this.state.modalVisible);
+                            }}>
+                            <Icon name='arrow-back' />
+                          </Button>
+                        </Left>
+                        <Body style={{flex:1, alignItems:'center'}}>
+                          <Title>Om</Title>
+                        </Body>
+                        <Right style={{flex: 1}}>
+                        </Right>
+                </Header>
+
+                  <View style={styles.infoPage}>
+                  <View style={{paddingTop: 30,alignItems:'center'}}>
+
+                      <Image source={require('../Icons/mumblr_font.png')} style={styles.mumblricon} />
+
+                    <Text style={{color:'lightseagreen', fontSize: 20, color: "lightseagreen", textAlign: 'center'}}>Chattenappen där alla är kompisar</Text>
+                        <Text style={{paddingTop:15,fontSize: 15, width:300}}>
+                          I Mumblr kan du endast börja chatta med personer du träffat i verkligheten. Med hjälp av
+                          QR-koden som är unik för varje chatt kan Mumblr kryptera dina meddelanden
+                          så att du kan vara säker på att ingen annan än du och din kompis kan läsa vad ni skrivit.</Text>
+                        <Text style={{paddingTop:10,fontSize: 15, width:300}}>
+                          Den här appen är ett kandidatprojekt utvecklat av fem studenter vid Linköpings Universitet.
+                          Tveka inte att höra av dig till oss!</Text>
+
+                        <View style={{paddingTop: 20, flex: 1, flexDirection: 'row', justifyContent: 'space-between'}}>
+                          <Button rounded light style={{backgroundColor: 'lightseagreen'}}>
+                            <Text>GitHub</Text>
+                            <Icon name='logo-github' style={{color: 'white'}} />
+                          </Button>
+                          <Button rounded light style={{marginLeft: 10, backgroundColor: 'lightseagreen'}}>
+                          <Text>Mail</Text>
+                          <Icon name='mail' style={{color: 'white'}} />
+                        </Button>
+                  </View>
+
+              </View>
+              </View>
+            </View>
+        </Modal>
+
+            <StatusBarComponent style={{backgroundColor:'#102027'}}/>
+          <Header style={styles.header}>
+                    <Left style={{flex:1}}>
+                    </Left>
+                    <Body style={{flex:1, alignItems:'center'}}>
+                      <Title>Profil</Title>
+                    </Body>
+                    <Right style={{flex: 1}}>
+                    </Right>
+              </Header>
+
+            <Button transparent onPress={() => {
+                this.setModalVisible(!this.state.modalVisible);
+              }}>
+              <Icon name='ios-information-circle' style={{color: '#fff'}}/>
+            </Button>
+
   			<View style={styles.profileMenu}>
           <TintedImage size={200} color={this.state.ChamColor} backgroundColor='#ffffff' version ={this.state.ChamImg}/>
-          <TouchableOpacity style={styles.LayoutButton} onPress={this.changeLayout}>
-            <Text style={styles.buttontext}> {__translate("Edit avatar")} </Text>
-          </TouchableOpacity>
+          <Button rounded style={{backgroundColor: 'lightseagreen', alignSelf: "center"}} onPress={this.changeLayout}>
+          <Text style={styles.buttontext}> {__translate("Edit avatar")} </Text>
+          </Button>
           <Item style={styles.inputHolder}>
                 <Icon active name='ios-person' style={{color: '#fff'}}/>
                   {this.state.name == ''
@@ -140,9 +219,9 @@ export default class Profile extends Component {
                   }
             </Item>
   				  <View style={styles.ButtonHolder}>
-  							         <TouchableOpacity style={styles.Button} onPress={this.saveData}>
-  								               <Text style={styles.buttontext}> {__translate("Save")} </Text>
-  							         </TouchableOpacity>
+                         <Button rounded style={{backgroundColor: 'lightseagreen', alignSelf: "center"}} onPress={this.saveData}>
+                         <Text style={styles.buttontext}> {__translate("Save")} </Text>
+                         </Button>
   				  </View>
   			</View>
       </View>
@@ -150,24 +229,37 @@ export default class Profile extends Component {
       )
     	}
   	else{
+      /* Change your avatar */
+
   		return(
 
 			<View style={styles.container}>
-        <View style={styles.profileMenu}>
-
-          <TintedImage color={this.state.ChamColor} backgroundColor='#ffffff' size={200} version={this.state.ChamImg} />
-          <TouchableOpacity style={styles.LayoutButton} onPress={this.switchImage}>
+            <StatusBarComponent style={{backgroundColor:'#102027'}}/>
+        <Header style={styles.header}>
+                <Left style={{flex:1}}>
+                  <Button transparent onPress={this.changeLayout}>
+                    <Icon name='arrow-back' />
+                  </Button>
+                </Left>
+                <Body style={{flex:1, alignItems:'center'}}>
+                  <Title>Profil</Title>
+                </Body>
+                <Right style={{flex: 1}}>
+                </Right>
+          </Header>
+      <View style={styles.profileMenu}>
+    <TintedImage color={this.state.ChamColor} backgroundColor='#ffffff' size={170} version={this.state.ChamImg} />
+            <View style={{flexDirection: 'row'}}>
+                <Button rounded style={{backgroundColor: 'lightseagreen', alignSelf: "center"}} small onPress={this.switchImage}>
                 <Text style={styles.buttontext}> {__translate("Change emote")} </Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.LayoutButton} onPress={this.changeLayout}>
-              <Text style={styles.buttontext}> {__translate("Back to profile")} </Text>
-          </TouchableOpacity>
-          <View style={{padding: 0, backgroundColor: '#00000000',height:245,bottom:0,width:420}}>
+                </Button>
+              </View>
+          <View style={{padding: 0,height:200,bottom:0,width:420}}>
               <ColorPicker
                 ChamColor={ChamColor => this.setState({ ChamColor })}
                 onColorChange={ChamColor => this.setState({ ChamColor })}
                 onColorSelected={ChamColor => this.setState({ ChamColor })}
-                style={{flex:1, height:300}}
+                style={{flex:1, height:200}}
                 hideSliders={true}
               />
           </View>
@@ -182,7 +274,7 @@ export default class Profile extends Component {
 
 const styles = StyleSheet.create({
 	container: {
-		backgroundColor: '#cecece',
+		backgroundColor: '#102027',
 		flexDirection : 'column',
 		flex : 1,
 
@@ -205,8 +297,19 @@ const styles = StyleSheet.create({
 		justifyContent: 'space-around',
 		flex: 1,
     alignItems: 'center',
-
 	},
+  infoPage: {
+    justifyContent: 'space-around',
+    flexDirection : 'column',
+    flex: 1,
+    alignItems: 'center',
+  },
+  mumblricon: {
+   resizeMode: 'contain',
+   width: 300,
+   height: 72,
+   paddingVertical: 50,
+  },
 
 	inputHolder: {
 		justifyContent: 'center',
@@ -246,6 +349,9 @@ const styles = StyleSheet.create({
   avatar:{
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  header:{
+    backgroundColor: 'lightseagreen',
   }
 
 

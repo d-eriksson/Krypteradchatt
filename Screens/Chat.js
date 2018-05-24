@@ -68,7 +68,7 @@ constructor(props) {
         chatname: decrypted,
         user: this.state.user,
         activated: true,
-        lastmsg: 'no messages',
+        lastmsg: 'Write your first message!',
         friendColor: data.chamcolor,
         friendImg: data.chamimg,
       };

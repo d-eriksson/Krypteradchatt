@@ -15,13 +15,13 @@ export function __translate(term) {
 
     //Check if has registered terms in current i18nLocale;
     if (TERMS[i18nLocale]){
-      
+
       //Return the registered or empty string to prevent error
       return TERMS[i18nLocale][term] || '';
 
     } else {
-      
-      //Check if has language without a especific region like 
+
+      //Check if has language without a especific region like
       //Example en-CA to en
       const simplei18nLocale = i18nLocale.split('_')[0];
 
@@ -40,7 +40,7 @@ export function buildTerms(){
       "Username" : "Username",
       "Save" : "Save",
       "Change emote" : "Change emote",
-      "Back to profile" : "Back to profile",
+      "Go back" : "Go back",
       "Type something secret..." : "Type something secret...",
       "Let a friend scan the QR-code" : "Let a friend scan the QR-code",
       "New chat" : "New chat",
@@ -68,7 +68,7 @@ export function buildTerms(){
       "Username" : "Användarnamn",
       "Save" : "Spara",
       "Change emote" : "Ändra uttryck",
-      "Back to profile" : "Tillbaka till profilen",
+      "Go back" : "Tillbaka",
       "Type something secret..." : "Skriv något hemligt...",
       "Let a friend scan the QR-code" : "Låt en vän skanna QR-koden",
       "New chat" : "Ny chatt",
@@ -77,14 +77,14 @@ export function buildTerms(){
       "Next" : "Nästa",
       "Back" : "Tillbaka",
       "Do you want to delete this account? You cannot undo this action." : "Vill du ta bort det här kontot? Du kan inte ångra detta.",
-      "Welcome to mumblr" : "Välkommen till mumblr",
-      "The chat app where everybody is your friend!" : "Chatt appen där alla är kompisar",
+      "Welcome to" : "Välkommen till",
+      "The chat app where everybody is your friend!" : "Chattappen där alla är kompisar",
       "Click a button like this one!" : "Klicka på en knapp som denna!",
       "To create a chat with your firend!" : "För att skapa en chatt med din vän",
       "Have a friend scan your QR-code" : "Låt en vän skanna din QR-kod",
-      "And bob's your uncle!" : "Och Bob är din farbror",
+      "And bob's your uncle!" : "Och sen är saken biff!",
       "Pick an avatar!" : "Välj en avatar",
-      "Lastly add a name" : "Lägg till ett namn",
+      "Lastly, add a name" : "Slutligen, lägg till ett namn:",
       "Name" : "Namn",
   });
   setTerms("es", {

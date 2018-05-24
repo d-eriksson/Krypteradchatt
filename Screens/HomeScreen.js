@@ -70,6 +70,7 @@ export default class HomeScreen extends Component {
   }
 
   async componentDidMount() {
+    AsyncStorage.clear();
     const data = [];
     let keys = await AsyncStorage.getAllKeys();
     for (let inKey of keys) {
@@ -119,6 +120,11 @@ export default class HomeScreen extends Component {
                 borderRadius:60,
                 backgroundColor: 'lightseagreen',
                 flex: 1,
+                shadowColor: 'rgba(0, 0, 0, 0.1)',
+                shadowOpacity: 0.9,
+                elevation: 6,
+                shadowRadius: 12 ,
+                shadowOffset : { width: 1, height: 13},
               }}
               onPress={() => {
                   this.createChat();
@@ -164,8 +170,8 @@ renderHeader = () => {
       <View>
           <WelcomeModal title={"Välkommen!"}/>
           <StatusBarComponent style={{backgroundColor:'#132b30'}}/>
-          {this.renderHeader()}
-      <View style={{height: Dimensions.get('window').height-140}}>
+
+      <View style={{height: Dimensions.get('window').height-80, backgroundColor:'white'}}>
         <List>
           <FlatList
             data={this.state.dataSource}
@@ -183,9 +189,9 @@ renderHeader = () => {
               <Left>
                   <TintedImage size={45} color={item.friendColor} version={Number(item.friendImg)} backgroundColor='#ffffff' />
               </Left>
-              <Body>
-                <Text>{ item.chatname }</Text>
-                <Text note>{ item.lastmsg }</Text>
+              <Body style={{borderBottomColor: '#132b30'}}>
+                <Text style={{color: 'lightseagreen'}}>{ item.chatname }</Text>
+                <Text note style={{color: 'black'}}>{ item.lastmsg }</Text>
               </Body>
             </ListItem>
           )}

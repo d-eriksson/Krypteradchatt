@@ -36,7 +36,7 @@ export default class QRScanner extends Component {
 
   componentDidMount() {
     this._requestCameraPermission();
-    
+
   }
 
   componentWillUnmount() {
@@ -76,7 +76,7 @@ export default class QRScanner extends Component {
                     if(this.props.navigation.isFocused()){
                       this._maybeRenderString(result.data)
                     }
-                    
+
                     console.log(result.data)
                   }
                 }}
@@ -101,7 +101,7 @@ export default class QRScanner extends Component {
         chatname: dividedString[1],
         user: '2',
         activated: true,
-        lastmsg: 'no messages',
+        lastmsg: 'Write your first message!',
         friendColor: dividedString[3],
         friendImg: dividedString[4],
       };
