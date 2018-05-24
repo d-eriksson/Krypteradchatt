@@ -2,7 +2,7 @@
 Applikationen byggs upp av ett antal skärmar. Vilken skärm som visas beror på hur man har navigerat i appen. De olika skärmarna är Chat, HomeScreen, Profile och QRScanner. Navigeringen är uppbyggd i filen App.js.
 
 # App.js
-Appens 4 sidor kan navigeras till på följande sätt, som definieras i App.js. Det finns en StackNavigator som har två vyer: hemvyn och chattvyn. Hemvyn byggs upp av en TabNavigator som har tre vyer: HomeScreen, Profile och QRScanner. 
+Appens 4 sidor kan navigeras till på följande sätt, som definieras i App.js. Det finns en StackNavigator som har två vyer: hemvyn och chattvyn. Hemvyn byggs upp av en TabNavigator som har tre vyer: HomeScreen, Profile och QRScanner.
 
 # HomeScreen.js
 HomeScreen är den vy som visas när användaren öppnar appen. Här finns en lista av alla chatter som användaren har ackumulerat sedan hen skaffade appen. Det finns även möjlighet att söka efter specifika chatter med hjälp av sökfältet som ligger högst upp i vyn. Här kan man även skapa chatter genom att trycka på ett plustecken i det nedre vänstra hörnet.
@@ -54,6 +54,21 @@ Om papperskorg-ikonen trycks på dyker en ruta upp som frågar om användaren ä
 
 ## render
 Renderar skärmens innheåll. Uppifrån och ned renderas en statusbar, header (med bakåtknapp, namn på chatten och delete-funktion), en Flatlist som renderar meddelandeobjekt och en skrivruta.
+
+# QRScanner.js
+Skannern är till för att skanna QR-koder för att kunna lägga till en chatt med en annan användare.
+
+## ComponentWillMount
+Funktionen kallas på när appen öppnas. Här definieras en "listener" som känner av när Skannern visas på skärmen och sätter en boolean isRead till false i samband med detta. Det är för att se till att det ska gå att läsa in en ny QR-kod. Anledningen till att variabeln finns är för att kameran bara ska läsa in QR-koden en gång innan man navigeras vidare in i den nyskapta chatten. Utan denna variabel hinner kameran läsa in QR-koden flera gånger vilket skapar problem med att flera av samma fönster öpnnas. Så fort en QR-kod läses in sätts alltså variabeln till true, som hindrar skannern från att fortsätta läsa in QR-koden.
+
+## ComponentDidMount
+I denna funktion kallas funktionen requestCameraPermission på.
+
+## requestCameraPermission
+Ber om användarens tillåtelse att använda kameran för att skanna QR-koder. Sparar svaret i ett state.
+
+## maybeRenderString
+Funktionens namn är inte så beskrivande, då den har kvar ett tidigt namn. Sedan dess har funktionens uppgift ändrats. Det funktionen gör är att den tar in en sträng som läses in från QR-koden, och sen delas strängen upp i de olika variablerna med hjälp av en split-funktion. variablerna sparas sedan som ett objekt i AsyncStorage för att lagra chatten i enheten.
 
 # Profile.js
 Profilsidan innehåller information om användaren och ger hen möjlighet att redigera sin avatar och användarnamn.
