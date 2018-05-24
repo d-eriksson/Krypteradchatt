@@ -187,10 +187,10 @@ renderHeader = () => {
               }}
               avatar
             >
-              <Left>
+              <Left style={{borderBottomWidth: 0}}>
                   <TintedImage size={45} color={item.friendColor} version={Number(item.friendImg)} backgroundColor='#ffffff' />
               </Left>
-              <Body style={{borderBottomColor: '#132b30'}}>
+              <Body style={{borderBottomWidth: 0}}>
                 <Text style={{color: 'lightseagreen'}}>{ item.chatname }</Text>
                 <Text note style={{color: 'black'}}>{ item.lastmsg }</Text>
               </Body>
