@@ -170,8 +170,9 @@ renderHeader = () => {
       <View>
           <WelcomeModal title={"Välkommen!"}/>
           <StatusBarComponent style={{backgroundColor:'#132b30'}}/>
+          {this.renderHeader()}
 
-      <View style={{height: Dimensions.get('window').height-80, backgroundColor:'white'}}>
+      <View style={{height: Dimensions.get('window').height-140, backgroundColor:'white'}}>
         <List>
           <FlatList
             data={this.state.dataSource}
