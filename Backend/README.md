@@ -1,3 +1,10 @@
+#Backend.js
+Detta är serversidan av applikationen vilken är byggd på Node.js och....
+
+#Socket.IO
+(skriv om hur backend och frontend socketsen hör ihop)
+
+
 # How to use the RESTful webservice
 
 The backend root can be found at http://83.227.100.223:8080. This doesn't work on iOS since it's not a https connection but this will be fixed eventually.

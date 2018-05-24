@@ -25,9 +25,6 @@ Renderar headern som innehåller sökrutan. Kallas på i render.
 ## render
 Renderar skärmens innehåll. Uppifrån och ned renderas en statusbar, headern med sökfunktionen, en lista med alla chatter och en knapp för att skapa nya chatter, och sedan en tab-bar längst ned på sidan.
 
-# WelcomeModal.js
-Om det är första gången en användare öppnar appen triggas en välkomstmodul innan användaren kan göra något annat. fortsätt
-
 # Chat.js
 Chat.js är vyn som anvvändaren ser när hen skapar en ny chatt med någon eller navigerar till en chatt som redan existerar. Det är här kommunikationen med andra användare sker genom att skriva in meddelandet i textrutan längst ned, skicka det, varpå det renderas på skärmen. På samma sätt renderas meddelanden som den andra personen skickat. I chattvyn finns det även möjlighet att radera den aktuella chatten.
 
@@ -77,3 +74,7 @@ Trycker användaren på infoknappen högst upp till vänster triggas denna modul
 
 ## render
 Renderar skärmens innheåll. Uppifrån och ned renderas en StatusBar, en infoknapp, personens avatar och namn, knappar för att redigera dessa och en spara-knapp.
+
+# QRSCanner
+
+# AsyncStorage
