@@ -1,5 +1,8 @@
 # Screens
-Applikationen byggs upp av ett antal skärmar. Vilken skärm som visas beror på hur man har navigerat i appen. De olika skärmarna är Chat, HomeScreen, Profile och QRScanner.
+Applikationen byggs upp av ett antal skärmar. Vilken skärm som visas beror på hur man har navigerat i appen. De olika skärmarna är Chat, HomeScreen, Profile och QRScanner. Navigeringen är uppbyggd i filen App.js.
+
+# App.js
+Appens 4 sidor kan navigeras till på följande sätt, som definieras i App.js. Det finns en StackNavigator som har två vyer: hemvyn och chattvyn. Hemvyn byggs upp av en TabNavigator som har tre vyer: HomeScreen, Profile och QRScanner. 
 
 # HomeScreen.js
 HomeScreen är den vy som visas när användaren öppnar appen. Här finns en lista av alla chatter som användaren har ackumulerat sedan hen skaffade appen. Det finns även möjlighet att söka efter specifika chatter med hjälp av sökfältet som ligger högst upp i vyn. Här kan man även skapa chatter genom att trycka på ett plustecken i det nedre vänstra hörnet.
