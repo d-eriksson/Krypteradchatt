@@ -1,8 +1,8 @@
 # Screens
 Applikationen byggs upp av ett antal skärmar. Vilken skärm som visas beror på hur man har navigerat i appen. De olika skärmarna är Chat, HomeScreen, Profile och QRScanner.
 
-# HomeScreen
-HomeScreen är den vy som visas när användaren öppnar appen. Här finns en lista av alla chatter som användaren har ackumulerat sedan hen skaffade appen. Det finns även möjlighet att söka efter specifika chatter med hjälp av sökfältet som ligger högst iupp i vyn. Här kan man även skapa chatter genom att trycka på ett plustecken i det nedre vänstra hörnet.
+# HomeScreen.js
+HomeScreen är den vy som visas när användaren öppnar appen. Här finns en lista av alla chatter som användaren har ackumulerat sedan hen skaffade appen. Det finns även möjlighet att söka efter specifika chatter med hjälp av sökfältet som ligger högst upp i vyn. Här kan man även skapa chatter genom att trycka på ett plustecken i det nedre vänstra hörnet.
 
 ## componentWillMount
 Funktionen componentWillMount() är en del av React Natives Life Cycle Methods, som du kan läsa mer om här https://engineering.musefind.com/react-lifecycle-methods-how-and-when-to-use-them-2111a1b692b1. Den kallas på när skärmen ska öppnas. Funktionen används i detta fall till att ladda in vissa fonter, samt till att skapa en "Listener" som håller reda på när hem-vyn kommer in i fokus. "Listenern" ser till att kalla på uppdateringsfunktionen, se onRefresh nedan, så att eventuellt tillagda chatter dyker upp direkt i hem-vyn när man navigerar dit, samt att borttagna chatter ska försvinna från hem-vyn direkt.
@@ -25,6 +25,55 @@ Renderar headern som innehåller sökrutan. Kallas på i render.
 ## render
 Renderar skärmens innehåll. Uppifrån och ned renderas en statusbar, headern med sökfunktionen, en lista med alla chatter och en knapp för att skapa nya chatter, och sedan en tab-bar längst ned på sidan.
 
-# ChatScreen
+# WelcomeModal.js
+Om det är första gången en användare öppnar appen triggas en välkomstmodul innan användaren kan göra något annat. fortsätt
 
-## 
+# Chat.js
+Chat.js är vyn som anvvändaren ser när hen skapar en ny chatt med någon eller navigerar till en chatt som redan existerar. Det är här kommunikationen med andra användare sker genom att skriva in meddelandet i textrutan längst ned, skicka det, varpå det renderas på skärmen. På samma sätt renderas meddelanden som den andra personen skickat. I chattvyn finns det även möjlighet att radera den aktuella chatten.
+
+## ComponentWillMount
+Funktionen kallas på när skärmen ska öppnas, innan renderfunktionen körs. Här laddas relevanta typsnitt in innan fönstret skall renderas.
+
+## ComponentDidMount
+Funktionen kallas på när skärmen har öppnats. Används setState i denna funktion triggas en ny rendering, men innan användaren ser något på skärmen. Här hämtas data som är kopplad till rummet, som t.ex. rumsID:et och användarnamnet på den andra användaren, parametrar som skickas med när man trycker på en specifik chatt i hemvyn, som sedan ska visas på skärmen. Även info om ens egen profil hämtas från det lokala lagringsutrymmet.
+
+## renderFlatlist
+Denna funktion returnerar de enskilda chattbubblorna: dvs avsändarens avatar, meddelande och klockslag. Utseendet varierar beroende på om det är den aktuella användarens bubbla eller inte.
+
+## decryptMessage
+Denna funktion använder den gemensamma kryptonyckeln för rummet (this.state.hash) och avkrypterar det meddelandet som kommer från servern med hjälp av AES-kryptering. För detta används biblioteket Crypto.js.
+
+## sendMessage
+Detta sker när användaren trycker på sänd-knappen. Om meddelandet inte är tomt krypteras meddelanndet och meddelande-datan skickas till servern med hjälp av sockets (mer om kommunikation via sockets i avsnitt Backend).
+
+## handleDelete
+Om papperskorg-ikonen trycks på dyker en ruta upp som frågar om användaren är säker på att den vill ta bort chatten, om detta görs tas chatten bort från det lokala lagringsutrymmet (mer om lokal lagring i avsnitt "AsyncStorage") och användaren navigeras tillbaka till hemskärmen, där chatten nu saknas.
+
+## render
+Renderar skärmens innheåll. Uppifrån och ned renderas en statusbar, header (med bakåtknapp, namn på chatten och delete-funktion), en Flatlist som renderar meddelandeobjekt och en skrivruta.
+
+# Profile.js
+Profilsidan innehåller information om användaren och ger hen möjlighet att redigera sin avatar och användarnamn.
+
+## ComponentWillMount
+Funktionen kallas på när skärmen ska öppnas, innan renderfunktionen körs.
+SKRIV HÄR
+
+## ComponentWillUnmount
+Funktionen kallas på precis innan skärmen stängs ned.
+SKRIV HÄR
+
+## ComponentDidMount
+Här hämtas information om användaren från det lokala lagringsutrymmet och sparas i komponentens state för att kunna renderas på skärmen.
+
+## saveData
+Gör användaren ändringar i profilen och trycker här spras dessa i det lokala lagringsutymmet
+
+## switchImage
+Körs när användaren bläddrar mellan utseenden på sin Avatar.
+
+## InfoModul
+Trycker användaren på infoknappen högst upp till vänster triggas denna modul, som kort sammanfattar applikationens syfte och innnehåller kontaktinformation.
+
+## render
+Renderar skärmens innheåll. Uppifrån och ned renderas en StatusBar, en infoknapp, personens avatar och namn, knappar för att redigera dessa och en spara-knapp.
