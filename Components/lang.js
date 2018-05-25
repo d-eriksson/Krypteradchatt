@@ -76,7 +76,7 @@ export function buildTerms(){
       "Cancel" : "Avbryt",
       "Next" : "Nästa",
       "Back" : "Tillbaka",
-      "Do you want to delete this account? You cannot undo this action." : "Vill du ta bort det här kontot? Du kan inte ångra detta.",
+      "Do you want to delete this chat? You cannot undo this action." : "Vill du ta bort den här chatten? Du kan inte ångra detta.",
       "Welcome to" : "Välkommen till",
       "The chat app where everybody is your friend!" : "Chattappen där alla är kompisar",
       "Click a button like this one!" : "Klicka på en knapp som denna!",
