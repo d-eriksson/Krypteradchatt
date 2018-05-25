@@ -70,7 +70,6 @@ export default class HomeScreen extends Component {
   }
 
   async componentDidMount() {
-    AsyncStorage.clear();
     const data = [];
     let keys = await AsyncStorage.getAllKeys();
     for (let inKey of keys) {
@@ -120,6 +119,12 @@ export default class HomeScreen extends Component {
                 borderRadius:60,
                 backgroundColor: 'lightseagreen',
                 flex: 1,
+                //for shadow
+                shadowColor: 'rgba(0, 0, 0, 0.1)',
+                shadowOpacity: 0.9,
+                elevation: 6,
+                shadowRadius: 12 ,
+                shadowOffset : { width: 1, height: 13},
               }}
               onPress={() => {
                   this.createChat();
@@ -167,7 +172,7 @@ renderHeader = () => {
           <WelcomeModal title={"Välkommen!"}/>
           <StatusBarComponent style={{backgroundColor:'#132b30'}}/>
           {this.renderHeader()}
-      <View style={{height: Dimensions.get('window').height-140}}>
+      <View style={{height: Dimensions.get('window').height-140, backgroundColor:'white'}}>
         <List
         >
           <FlatList

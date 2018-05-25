@@ -1,8 +1,8 @@
 {
-  "expoServerNgrokUrl": "https://rz-7zu.josefineflygge.krypteradchatt.exp.direct",
-  "packagerNgrokUrl": "https://packager.rz-7zu.josefineflygge.krypteradchatt.exp.direct",
-  "ngrokPid": 8888,
   "expoServerPort": 19000,
-  "packagerPort": 19001,
-  "packagerPid": 1908
+  "expoServerNgrokUrl": "https://de-pe3.emmaweberyd.krypteradchatt.exp.direct",
+  "packagerNgrokUrl": "https://packager.de-pe3.emmaweberyd.krypteradchatt.exp.direct",
+  "ngrokPid": 3130,
+  "packagerPort": 19002,
+  "packagerPid": 3116
 }

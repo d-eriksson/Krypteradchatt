@@ -326,7 +326,7 @@ render() {
 
   return (
     <View style={styles.container}>
-    <StatusBarComponent style={{backgroundColor:'#fff'}}/>
+    <StatusBarComponent style={{backgroundColor:'#132b30'}}/>
     {this.renderHeader()}
     <KeyboardAvoidingView style={styles.container} behavior='padding'>
       {this.renderQR()}
